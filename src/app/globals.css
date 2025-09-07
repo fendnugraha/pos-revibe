@@ -1,26 +1,99 @@
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #f3f4f6;
+    --foreground: #171717;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    /* font-family: Arial, Helvetica, sans-serif; */
+}
+
+.btn-primary {
+    @apply px-4 py-2 min-w-32 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-400 text-white rounded-lg text-sm cursor-pointer;
+}
+
+.small-button {
+    @apply bg-white dark:bg-slate-700 dark:text-white font-bold p-2 rounded-lg border border-gray-300 dark:border-gray-500 hover:border-gray-400 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed;
+}
+
+/* card */
+.card {
+    @apply bg-white text-sm dark:bg-slate-700 hover:outline outline-slate-300 dark:hover:outline-slate-500 dark:text-white shadow-sm rounded-3xl;
+}
+
+.card .card-title {
+    @apply text-blue-950 text-lg font-bold dark:text-white;
+}
+
+.card .card-title .card-subtitle {
+    @apply text-xs block text-slate-500 font-normal dark:text-slate-400;
+}
+
+/* table */
+
+.table {
+    @apply divide-y divide-gray-200;
+}
+
+.table thead th {
+    @apply py-2 sm:py-5 text-gray-700 border-b-2 border-blue-200 dark:border-slate-500 dark:text-white;
+}
+
+.table tfoot th {
+    @apply py-2 sm:py-4 text-gray-700 border-t-2 border-b-0 border-orange-200 dark:border-slate-500 dark:text-yellow-300;
+}
+
+.table th,
+.table td {
+    @apply px-1.5 sm:px-6 py-2 sm:py-2.5 whitespace-nowrap;
+}
+
+.table tbody tr {
+    @apply border-b border-slate-200 last:border-0 dark:border-slate-600 hover:bg-yellow-50 dark:hover:bg-slate-700;
+}
+
+.form-control {
+    @apply block border border-slate-300 dark:border-slate-500 px-4 py-2 sm:py-2.5 bg-white dark:bg-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/30 disabled:text-slate-500 disabled:bg-gray-300 disabled:cursor-not-allowed;
+}
+
+.form-select {
+    @apply block border border-slate-300 dark:border-slate-500 px-4 py-2 sm:py-2.5 bg-white dark:bg-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/30 disabled:text-slate-500 disabled:bg-gray-300 disabled:cursor-not-allowed;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #print-area,
+    #print-area * {
+        visibility: visible;
+    }
+
+    #print-area {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    button,
+    .no-print {
+        display: none !important;
+    }
 }

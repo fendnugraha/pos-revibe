@@ -9,15 +9,23 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.7",
+    "axios": "^1.11.0",
+    "date-fns": "^4.1.0",
+    "file-saver": "^2.0.5",
+    "lucide-react": "^0.542.0",
+    "next": "15.5.2",
+    "qrcode.react": "^4.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.2"
+    "swr": "^2.3.6",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }
