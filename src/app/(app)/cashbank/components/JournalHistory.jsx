@@ -6,13 +6,12 @@ import { useState } from "react";
 import EditJournal from "./EditJournal";
 import axios from "@/libs/axios";
 
-const JournalHistory = ({ filterJournalByAccountId, formatDateTime, formatNumber, fetchJournalsByWarehouse, notification }) => {
+const JournalHistory = ({ filterJournalByAccountId, formatDateTime, formatNumber, fetchJournalsByWarehouse, notification, itemsPerPage }) => {
     const [isModalEditJournalOpen, setIsModalEditJournalOpen] = useState(false);
     const [isModalDeleteJournalOpen, setIsModalDeleteJournalOpen] = useState(false);
     const [selectedJournalId, setSelectedJournalId] = useState(null);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(5);
 
     const totalItems = filterJournalByAccountId?.length || 0;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -94,7 +93,7 @@ const JournalHistory = ({ filterJournalByAccountId, formatDateTime, formatNumber
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="2" className="text-center">
+                                <td colSpan="3" className="text-center">
                                     Tidak ada transaksi
                                 </td>
                             </tr>

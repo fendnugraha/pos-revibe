@@ -26,7 +26,7 @@ const TopBar = ({ user }) => {
                             <li key={index} className="">
                                 <NavLink href={item.href} active={pathName.startsWith(item.path)}>
                                     <item.icon size={20} className="" />
-                                    {item.name}
+                                    <span className="text-nowrap overflow-hidden">{item.name}</span>
                                 </NavLink>
                             </li>
                         ))}

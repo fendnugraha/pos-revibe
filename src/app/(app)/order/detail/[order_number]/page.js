@@ -14,10 +14,13 @@ import CreatePaymentFrom from "../../components/CreatePaymentFrom";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import { useAuth } from "@/libs/auth";
+import OrderAction from "../OrderAction";
 
 const OrderDetail = ({ params }) => {
     const { user } = useAuth();
     const warehouseId = user?.role?.warehouse_id;
+    const warehousePrimaryCashAccountId = user?.role?.warehouse?.primary_cash_account?.id;
+
     const { order_number } = use(params);
     const [notification, setNotification] = useState({
         type: "",
@@ -62,7 +65,6 @@ const OrderDetail = ({ params }) => {
             setIsLoading(false);
         }
     };
-    console.log(order);
     const totalPrice = order.transaction?.stock_movements?.reduce((total, part) => total + part.price * -part.quantity, 0);
     return (
         <>
@@ -98,27 +100,13 @@ const OrderDetail = ({ params }) => {
                         </p>
                     </div>
                 </div>
-                <select
-                    disabled={
-                        order.status === "Finished" || order.status === "Completed" || order.status === "Canceled" || order.status === "Rejected" || isLoading
-                    }
-                    onChange={(e) => handleUpdateOrderStatus(e.target.value)}
-                    value={order.status}
-                    className="form-select w-1/4"
-                >
-                    <option value={"Pending"}>-Pilih tindakan-</option>
-                    {order.status !== "In Progress" ? (
-                        <>
-                            <option value="In Progress">Proses</option>
-                            <option value="Rejected">Tolak</option>
-                        </>
-                    ) : (
-                        <>
-                            <option value="Take Over">Ambil Alih</option>
-                            <option value="Canceled">Batalkan</option>
-                        </>
-                    )}
-                </select>
+                <OrderAction
+                    status={order.status}
+                    isLoading={isLoading}
+                    handleUpdateOrderStatus={handleUpdateOrderStatus}
+                    user={user}
+                    orderUserId={order.user_id}
+                />
             </div>
             <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2 card p-4">
@@ -146,43 +134,50 @@ const OrderDetail = ({ params }) => {
                     <PartsTable parts={order.transaction} totalPrice={totalPrice} />
                     <h1 className="text-slate-500 text-sm">Teknisi: {order.technician?.name}</h1>
                     <hr className="border-slate-200 my-4" />
-                    <div className="mb-4 flex justify-between items-start">
-                        <h1 className="card-title flex gap-2 items-center mb-4">
-                            Order Summary{" "}
-                            <StatusBadge
-                                status={!order.transaction?.payment_method || order.transaction?.payment_method === "Unpaid" ? "Pending" : "Completed"}
-                                statusText={order.transaction?.payment_method ?? "Unpaid"}
-                            />
-                        </h1>
-                        {order.status === "Finished" && (
-                            <button
-                                className="px-4 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer text-sm"
-                                onClick={() => setIsModalCreatePaymentOpen(true)}
-                                hidden={order.status === "Completed"}
-                            >
-                                Input Pembayaran
-                            </button>
-                        )}
-                    </div>
-                    <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
-                        Subtotal: <span className="font-semibold">{formatNumber(totalPrice || 0)}</span>
-                    </p>
-                    <p className="text-sm text-red-500 flex items-center justify-between gap-2">
-                        Discount: <span className="font-semibold">{formatNumber(-order?.journal?.sales_discount?.debit || 0)}</span>
-                    </p>
-                    <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
-                        Biaya Jasa Service: <span className="font-semibold">{formatNumber(order?.journal?.service_fee?.credit || 0)}</span>
-                    </p>
-                    <hr className="border-slate-200 my-2 border-dashed" />
-                    <p className="text-sm font-semibold text-slate-800 flex items-center justify-between gap-2">
-                        Total{" "}
-                        <span className="">
-                            {formatNumber(
-                                Number(totalPrice || 0) + Number(order?.journal?.service_fee?.credit || 0) - Number(order?.journal?.sales_discount?.debit || 0)
-                            )}
-                        </span>
-                    </p>
+                    {!["Canceled", "Rejected"].includes(order.status) && (
+                        <>
+                            <div className="mb-4 flex justify-between items-start">
+                                <h1 className="card-title flex gap-2 items-center mb-3">
+                                    Order Summary{" "}
+                                    <StatusBadge
+                                        status={!order.transaction?.payment_method || order.transaction?.payment_method === "Unpaid" ? "Pending" : "Completed"}
+                                        statusText={order.transaction?.payment_method ?? "Unpaid"}
+                                    />
+                                </h1>
+                                {order.status === "Finished" && (
+                                    <button
+                                        className="px-4 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer text-sm"
+                                        onClick={() => setIsModalCreatePaymentOpen(true)}
+                                        hidden={order.status === "Completed"}
+                                    >
+                                        Input Pembayaran
+                                    </button>
+                                )}
+                            </div>
+                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                Subtotal: <span className="font-semibold">{formatNumber(totalPrice || 0)}</span>
+                            </p>
+                            <p className="text-sm text-red-500 flex items-center justify-between gap-2">
+                                Discount: <span className="font-semibold">{formatNumber(-order?.journal?.sales_discount?.debit || 0)}</span>
+                            </p>
+                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                Biaya Jasa Service: <span className="font-semibold">{formatNumber(order?.journal?.service_fee?.credit || 0)}</span>
+                            </p>
+                            <hr className="border-slate-200 my-2 border-dashed" />
+                            <p className="text-sm font-semibold text-slate-800 flex items-center justify-between gap-2">
+                                Total{" "}
+                                <span className="">
+                                    {formatNumber(
+                                        Number(totalPrice || 0) +
+                                            Number(order?.journal?.service_fee?.credit || 0) -
+                                            Number(order?.journal?.sales_discount?.debit || 0)
+                                    )}
+                                </span>
+                            </p>
+                        </>
+                    )}
                 </div>
+
                 <div>
                     <div className="card p-4 mb-4">
                         <h1 className="card-title mb-2">Order Note</h1>
@@ -229,6 +224,7 @@ const OrderDetail = ({ params }) => {
                     totalPrice={totalPrice}
                     order_number={order_number}
                     warehouseId={warehouseId}
+                    warehousePrimaryCashAccountId={warehousePrimaryCashAccountId}
                 />
             </Modal>
         </>

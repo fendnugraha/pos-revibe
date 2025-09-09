@@ -4,10 +4,9 @@ import axios from "@/libs/axios";
 import Label from "@/components/Label";
 import Input from "@/components/Input";
 
-const CreateIncome = ({ filteredCashBankByWarehouse, isModalOpen, notification, fetchJournalsByWarehouse, today }) => {
-    const [accounts, setAccounts] = useState([]);
+const CreateIncome = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalByWarehouse, isModalOpen, notification, today, warehouseId }) => {
     const [formData, setFormData] = useState({
-        dateIssued: today,
+        date_issued: today,
         debt_code: "",
         cred_code: "",
         amount: "",
@@ -18,31 +17,19 @@ const CreateIncome = ({ filteredCashBankByWarehouse, isModalOpen, notification, 
     const [errors, setErrors] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const fetchAccounts = async ({ account_ids }) => {
-        setLoading(true);
-        try {
-            const response = await axios.get(`/api/get-account-by-account-id`, { params: { account_ids } });
-            setAccounts(response.data.data);
-        } catch (error) {
-            notification(error.response?.data?.message || "Something went wrong.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchAccounts({ account_ids: [1, 2, 6, 7, 27, 28, 29, 30] });
-    }, []);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             const response = await axios.post("/api/create-mutation", formData);
-            notification("success", "Penambahan pendapatan berhasil");
-            fetchJournalsByWarehouse();
+            notification({
+                type: "success",
+                message: response.data.message,
+            });
+            fetchRevenueByWarehouse();
+            fetchJournalByWarehouse();
             setFormData({
-                dateIssued: today,
+                date_issued: today,
                 debt_code: "",
                 cred_code: "",
                 amount: "",
@@ -54,14 +41,17 @@ const CreateIncome = ({ filteredCashBankByWarehouse, isModalOpen, notification, 
             setErrors([]);
         } catch (error) {
             setErrors(error.response?.data?.errors || ["Something went wrong."]);
-            notification("error", error.response?.data?.message || "Something went wrong.");
+            notification({
+                type: "error",
+                message: error.response?.data?.message || "Something went wrong.",
+            });
         } finally {
             setLoading(false);
         }
     };
 
-    const filteredCreditAccounts = accounts.filter((account) => [27, 28, 29, 30].includes(account.account_id));
-    const filteredDebtAccounts = accounts.filter((account) => [1, 2, 6, 7].includes(account.account_id));
+    const cashBank = accounts.filter((account) => account.warehouse_id === warehouseId);
+    const revenue = accounts.filter((account) => account.account.type === "Revenue");
 
     return (
         <form onSubmit={handleSubmit}>
@@ -72,14 +62,14 @@ const CreateIncome = ({ filteredCashBankByWarehouse, isModalOpen, notification, 
                         className="w-full text-xs sm:text-sm"
                         type="datetime-local"
                         placeholder="Rp."
-                        value={formData.dateIssued || today}
-                        onChange={(e) => setFormData({ ...formData, dateIssued: e.target.value })}
+                        value={formData.date_issued || today}
+                        onChange={(e) => setFormData({ ...formData, date_issued: e.target.value })}
                     />
                     {errors.date_issued && <span className="text-red-500 text-xs">{errors.date_issued}</span>}
                 </div>
             </div>
             <div className="mb-2 grid grid-cols-1 sm:grid-cols-3 sm:gap-4 items-center">
-                <Label>Dari Rekening</Label>
+                <Label>Dari Akun</Label>
                 <div className="col-span-1 sm:col-span-2">
                     <select
                         onChange={(e) => setFormData({ ...formData, cred_code: e.target.value })}
@@ -87,7 +77,7 @@ const CreateIncome = ({ filteredCashBankByWarehouse, isModalOpen, notification, 
                         className="w-full rounded-md border p-2 shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     >
                         <option value="">--Pilih Rekening--</option>
-                        {filteredCreditAccounts.map((ac) => (
+                        {revenue.map((ac) => (
                             <option key={ac.id} value={ac.id}>
                                 {ac.acc_name}
                             </option>
@@ -97,7 +87,7 @@ const CreateIncome = ({ filteredCashBankByWarehouse, isModalOpen, notification, 
                 </div>
             </div>
             <div className="mb-2 grid grid-cols-1 sm:grid-cols-3 sm:gap-4 items-center">
-                <Label>Tujuan</Label>
+                <Label>Ke Rekening</Label>
                 <div className="col-span-1 sm:col-span-2">
                     <select
                         onChange={(e) => setFormData({ ...formData, debt_code: e.target.value })}
@@ -106,7 +96,7 @@ const CreateIncome = ({ filteredCashBankByWarehouse, isModalOpen, notification, 
                         className="w-full rounded-md border p-2 shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-slate-200 disabled:cursor-not-allowed disabled:text-slate-400"
                     >
                         <option value="">--Pilih Tujuan--</option>
-                        {filteredDebtAccounts.map((c) => (
+                        {cashBank.map((c) => (
                             <option key={c.id} value={c.id}>
                                 {c.acc_name}
                             </option>

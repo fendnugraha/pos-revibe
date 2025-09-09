@@ -125,78 +125,85 @@ const Warehouse = () => {
                         />
                     </Modal>
                 </div>
-                <div className="relative w-full sm:max-w-sm">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <SearchIcon className="w-6 h-6 text-gray-500" />
+                <div className="card p-4">
+                    <h1 className="card-title mb-4">List Warehouse</h1>
+                    <div className="relative w-full sm:max-w-sm">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <SearchIcon className="w-6 h-6 text-gray-500" />
+                        </div>
+                        <input
+                            type="search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search..."
+                            className="block w-full text-sm mb-2 pl-10 pr-4 py-2 text-gray-900 placeholder-gray-400 bg-white rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            autoComplete="off"
+                        />
                     </div>
-                    <input
-                        type="search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search..."
-                        className="block w-full text-sm mb-2 pl-10 pr-4 py-2 text-gray-900 placeholder-gray-400 bg-white rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                        autoComplete="off"
-                    />
-                </div>
-                <div className="overflow-y-auto bg-white rounded-2xl w-full sm:w-3/4">
-                    <table className="table w-full text-xs">
-                        <thead>
-                            <tr>
-                                <th>Warehouse Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {warehouses?.data?.length === 0 ? (
+                    <div className="overflow-y-auto">
+                        <table className="table w-full text-xs">
+                            <thead>
                                 <tr>
-                                    <td colSpan="7">No warehouse found</td>
+                                    <th>Warehouse Name</th>
+                                    <th>Address</th>
+                                    <th>Cash Account</th>
+                                    <th className="text-center">Created At</th>
+                                    <th className="text-center">Actions</th>
                                 </tr>
-                            ) : (
-                                warehouses?.data?.map((warehouse) => (
-                                    <tr key={warehouse.id}>
-                                        <td>
-                                            <span className="font-bold text-green-600">{warehouse.name}</span>
-                                            <span className="block text-xs">
-                                                {warehouse.code} | {warehouse.chart_of_account.acc_name} | {formatDateTime(warehouse.created_at)}
-                                            </span>
-                                            <span className="block text-xs">
-                                                <MapPinIcon className="w-4 h-4 inline" /> {warehouse.address}
-                                            </span>
-                                        </td>
-                                        <td className="text-center">
-                                            <span className="flex gap-2 justify-center">
-                                                {/* <Link
+                            </thead>
+                            <tbody>
+                                {warehouses?.data?.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="7">No warehouse found</td>
+                                    </tr>
+                                ) : (
+                                    warehouses?.data?.map((warehouse) => (
+                                        <tr key={warehouse.id}>
+                                            <td className="font-semibold">
+                                                {warehouse.name} <span className="text-xs font-normal">({warehouse.code})</span>
+                                            </td>
+                                            <td>
+                                                <span className="block text-xs">
+                                                    <MapPinIcon className="w-4 h-4 inline" /> {warehouse.address}
+                                                </span>
+                                            </td>
+                                            <td>{warehouse.primary_cash_account?.acc_name || "-"}</td>
+                                            <td className="text-center">{formatDateTime(warehouse.created_at)}</td>
+                                            <td className="text-center">
+                                                <span className="flex gap-2 justify-center">
+                                                    {/* <Link
                                                     className="cursor-pointer hover:scale-125 transition transform ease-in"
                                                     href={`/setting/warehouse/detail/${warehouse.id}`}
                                                 >
                                                     <EyeIcon size={24} />
                                                 </Link> */}
-                                                <button
-                                                    onClick={() => {
-                                                        setIsModalUpdateWarehouseOpen(true);
-                                                        setSelectedWarehouseId(warehouse.id);
-                                                    }}
-                                                    className="cursor-pointer hover:scale-125 transition transform ease-in"
-                                                >
-                                                    <PencilIcon size={20} />
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setIsModalDeleteWarehouseOpen(true);
-                                                        setSelectedWarehouseId(warehouse.id);
-                                                    }}
-                                                    className="disabled:text-red-400 cursor-pointer hover:scale-125 transition transform ease-in"
-                                                >
-                                                    <TrashIcon size={20} />
-                                                </button>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                    <div className="px-4">{warehouses?.last_page > 1 && <Paginator links={warehouses} handleChangePage={handleChangePage} />}</div>
+                                                    <button
+                                                        onClick={() => {
+                                                            setIsModalUpdateWarehouseOpen(true);
+                                                            setSelectedWarehouseId(warehouse.id);
+                                                        }}
+                                                        className="cursor-pointer hover:scale-125 transition transform ease-in"
+                                                    >
+                                                        <PencilIcon size={20} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setIsModalDeleteWarehouseOpen(true);
+                                                            setSelectedWarehouseId(warehouse.id);
+                                                        }}
+                                                        className="disabled:text-red-400 cursor-pointer hover:scale-125 transition transform ease-in"
+                                                    >
+                                                        <TrashIcon size={20} />
+                                                    </button>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                        <div className="px-4">{warehouses?.last_page > 1 && <Paginator links={warehouses} handleChangePage={handleChangePage} />}</div>
+                    </div>
                 </div>
             </div>
             <Modal isOpen={isModalUpdateWarehouseOpen} onClose={closeModal} modalTitle="Update warehouse" maxWidth="max-w-lg">

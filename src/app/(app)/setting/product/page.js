@@ -1,7 +1,6 @@
 "use client";
 import Button from "@/components/Button";
-import MainPage from "../../main";
-import { MessageCircleWarningIcon, PencilIcon, PlusIcon, SearchIcon, TrashIcon } from "lucide-react";
+import { FileUp, MessageCircleWarningIcon, PencilIcon, PlusIcon, SearchIcon, TrashIcon } from "lucide-react";
 import Input from "@/components/Input";
 import { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/Modal";
@@ -12,6 +11,8 @@ import Notification from "@/components/Notification";
 import formatNumber from "@/libs/formatNumber";
 import EditProduct from "./EditProduct";
 import Paginator from "@/components/Paginator";
+import Breadcrumb from "@/components/Breadcrumb";
+import ImportProducts from "./ImportProduct";
 
 const Product = () => {
     const [product, setProduct] = useState(null);
@@ -30,12 +31,14 @@ const Product = () => {
     const [isModalCreateCategoryProductOpen, setIsModalCreateCategoryProductOpen] = useState(false);
     const [isModalUpdateProductOpen, setIsModalUpdateProductOpen] = useState(false);
     const [isModalDeleteProductOpen, setIsModalDeleteProductOpen] = useState(false);
+    const [isModalImportProductOpen, setIsModalImportProductOpen] = useState(false);
 
     const closeModal = () => {
         setIsModalCreateProductOpen(false);
         setIsModalCreateCategoryProductOpen(false);
         setIsModalUpdateProductOpen(false);
         setIsModalDeleteProductOpen(false);
+        setIsModalImportProductOpen(false);
         // setIsModalUpdateAccountOpen(false)
     };
 
@@ -118,8 +121,15 @@ const Product = () => {
     };
 
     return (
-        <MainPage headerTitle="Product">
-            <div className="p-8">
+        <>
+            <Breadcrumb
+                BreadcrumbArray={[
+                    { name: "Setting", href: "/setting" },
+                    { name: "Product", href: "/setting/product" },
+                    { name: "Product List", href: "/setting/product" },
+                ]}
+            />
+            <div className="">
                 {notification.message && (
                     <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
                 )}
@@ -147,83 +157,91 @@ const Product = () => {
                         />
                     </Modal>
                 </div>
-                <div className="relative w-full sm:max-w-sm">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <SearchIcon className="w-6 h-6 text-gray-500" />
+                <div className="card p-4">
+                    <div className="flex justify-between items-start">
+                        <h1 className="card-title mb-4">Product List</h1>
+                        <button className="small-button !font-normal flex items-center gap-2" onClick={() => setIsModalImportProductOpen(true)}>
+                            <FileUp size={20} /> Import
+                        </button>
                     </div>
-                    <input
-                        type="search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search..."
-                        className="block w-full text-sm mb-2 pl-10 pr-4 py-2 text-gray-900 placeholder-gray-400 bg-white rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                        autoComplete="off"
-                    />
-                </div>
-                <div className="overflow-x-auto bg-white rounded-2xl w-full sm:w-3/4 drop-shadow-sm">
-                    <table className="table w-full text-xs">
-                        <thead>
-                            <tr>
-                                <th className="text-center">#</th>
-                                <th>Product</th>
-                                <th>Price (Jual)</th>
-                                <th>Cost (Beli)</th>
-                                <th className="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {product?.data?.length === 0 ? (
+                    <div className="relative w-full sm:max-w-sm">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <SearchIcon className="w-6 h-6 text-gray-500" />
+                        </div>
+                        <input
+                            type="search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search..."
+                            className="block w-full text-sm mb-2 pl-10 pr-4 py-2 text-gray-900 placeholder-gray-400 bg-white rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            autoComplete="off"
+                        />
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="table w-full text-xs">
+                            <thead>
                                 <tr>
-                                    <td colSpan="6">No products found</td>
+                                    <th className="text-center">#</th>
+                                    <th>Product</th>
+                                    <th>Price (Jual)</th>
+                                    <th>Cost (Beli)</th>
+                                    <th className="text-center">Actions</th>
                                 </tr>
-                            ) : (
-                                product?.data?.map((product) => (
-                                    <tr key={product.id}>
-                                        <td className="text-center">
-                                            <Input
-                                                checked={selectedProduct.includes(product.id)}
-                                                onChange={() => {
-                                                    handleSelectProduct(product.id);
-                                                }}
-                                                type="checkbox"
-                                            />
-                                        </td>
-                                        <td>
-                                            {product.name}
-                                            <span className="block text-xs text-slate-400">
-                                                {product.code} {product.category?.name}
-                                            </span>
-                                        </td>
-                                        <td>{formatNumber(product.price)}</td>
-                                        <td>{formatNumber(product.current_cost)}</td>
-                                        <td className="">
-                                            <span className="flex gap-2 justify-center">
-                                                <button
-                                                    onClick={() => {
-                                                        setSelectedProductId(product.id);
-                                                        setIsModalUpdateProductOpen(true);
-                                                    }}
-                                                    className="cursor-pointer hover:scale-125 transition transform ease-in"
-                                                >
-                                                    <PencilIcon className="size-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setSelectedProductId(product.id);
-                                                        setIsModalDeleteProductOpen(true);
-                                                    }}
-                                                    className="cursor-pointer hover:scale-125 transition transform ease-in"
-                                                >
-                                                    <TrashIcon className="size-4" />
-                                                </button>
-                                            </span>
-                                        </td>
+                            </thead>
+                            <tbody>
+                                {product?.data?.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6">No products found</td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                    <div className="px-4">{product?.last_page > 1 && <Paginator links={product} handleChangePage={handleChangePage} />}</div>
+                                ) : (
+                                    product?.data?.map((product) => (
+                                        <tr key={product.id}>
+                                            <td className="text-center">
+                                                <Input
+                                                    checked={selectedProduct.includes(product.id)}
+                                                    onChange={() => {
+                                                        handleSelectProduct(product.id);
+                                                    }}
+                                                    type="checkbox"
+                                                />
+                                            </td>
+                                            <td>
+                                                {product.name}
+                                                <span className="block text-xs text-slate-400">
+                                                    {product.code} {product.category?.name}
+                                                </span>
+                                            </td>
+                                            <td>{formatNumber(product.price)}</td>
+                                            <td>{formatNumber(product.current_cost)}</td>
+                                            <td className="">
+                                                <span className="flex gap-2 justify-center">
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedProductId(product.id);
+                                                            setIsModalUpdateProductOpen(true);
+                                                        }}
+                                                        className="cursor-pointer hover:scale-125 transition transform ease-in"
+                                                    >
+                                                        <PencilIcon className="size-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedProductId(product.id);
+                                                            setIsModalDeleteProductOpen(true);
+                                                        }}
+                                                        className="cursor-pointer hover:scale-125 transition transform ease-in"
+                                                    >
+                                                        <TrashIcon className="size-4" />
+                                                    </button>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                        <div className="px-4">{product?.last_page > 1 && <Paginator links={product} handleChangePage={handleChangePage} />}</div>
+                    </div>
                 </div>
             </div>
             <Modal isOpen={isModalUpdateProductOpen} onClose={closeModal} modalTitle="Edit Product" maxWidth="max-w-md">
@@ -256,7 +274,10 @@ const Product = () => {
                     </Button>
                 </div>
             </Modal>
-        </MainPage>
+            <Modal isOpen={isModalImportProductOpen} onClose={closeModal} modalTitle="Import Product" maxWidth="max-w-md">
+                <ImportProducts />
+            </Modal>
+        </>
     );
 };
 

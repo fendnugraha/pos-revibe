@@ -26,7 +26,6 @@ const RevenueByUser = ({ startDate, endDate }) => {
         fetchRevenue();
     }, [fetchRevenue]);
 
-    console.log(revenue);
     return (
         <div className="card p-4">
             <h1 className="card-title">
@@ -40,7 +39,7 @@ const RevenueByUser = ({ startDate, endDate }) => {
                     <thead>
                         <tr>
                             <th className="text-left">Teknisi</th>
-                            <th className="text-center">Service (Completed)</th>
+                            <th className="text-center">Repaired (Unit)</th>
                             <th className="text-right">Jasa Service</th>
                         </tr>
                     </thead>
@@ -55,7 +54,7 @@ const RevenueByUser = ({ startDate, endDate }) => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="2" className="text-center">
+                                <td colSpan="3" className="text-center">
                                     Tidak ada data
                                 </td>
                             </tr>

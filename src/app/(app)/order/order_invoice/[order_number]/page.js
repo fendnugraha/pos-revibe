@@ -39,13 +39,7 @@ const OrderNotes = ({ params }) => {
     };
 
     return (
-        <MainPage
-            headerTitle={
-                <>
-                    Serivce Order <span className="text-slate-400 font-normal">/ Nota Order</span>
-                </>
-            }
-        >
+        <>
             <div id="print-area" className="p-4 bg-white w-[300px]">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold">
@@ -78,7 +72,7 @@ const OrderNotes = ({ params }) => {
             <button onClick={() => window.print()} className="mt-4 bg-slate-700 text-white px-4 py-2 rounded no-print">
                 Cetak Nota
             </button>
-        </MainPage>
+        </>
     );
 };
 

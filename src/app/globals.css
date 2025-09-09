@@ -45,13 +45,15 @@ body {
 }
 
 /* table */
-
 .table {
-    @apply divide-y divide-gray-200;
+    @apply mt-2;
+}
+.table thead tr {
+    @apply py-2 sm:py-3 text-gray-700;
 }
 
-.table thead th {
-    @apply py-2 sm:py-5 text-gray-700 border-b-2 border-blue-200 dark:border-slate-500 dark:text-white;
+.table thead tr th {
+    @apply bg-slate-300 first:rounded-l-lg last:rounded-r-lg;
 }
 
 .table tfoot th {
@@ -60,7 +62,7 @@ body {
 
 .table th,
 .table td {
-    @apply px-1.5 sm:px-6 py-2 sm:py-2.5 whitespace-nowrap;
+    @apply px-1.5 sm:px-6 py-2 sm:py-3 whitespace-nowrap;
 }
 
 .table tbody tr {

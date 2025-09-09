@@ -10,11 +10,10 @@ import { useCallback, useEffect, useState } from "react";
 import CreateExpense from "../../cashbank/components/CreateExpense";
 import Notification from "@/components/Notification";
 import JournalHistory from "../../cashbank/components/JournalHistory";
-import CashBankBalance from "./CashBankBalance";
-import useCashBankBalance from "@/libs/cashBankBalance";
 import CreateJournal from "./CreateJournal";
 import { mutate } from "swr";
-import { set } from "date-fns";
+import RecentOrderStatus from "./RecentOrderStatus";
+import CreateIncome from "./CreateIncome";
 
 const CashBank = () => {
     const { user } = useAuth();
@@ -28,6 +27,7 @@ const CashBank = () => {
         type: "",
         message: "",
     });
+    const [itemsPerPage, setItemsPerPage] = useState(5);
     const [accounts, setAccounts] = useState([]);
     const [journalByWarehouse, setJournalByWarehouse] = useState([]);
     const [revenueByWarehouse, setRevenueByWarehouse] = useState([]);
@@ -35,6 +35,7 @@ const CashBank = () => {
         return Array.from({ length: end - start + 1 }, (_, i) => i + start);
     }
     const expenseId = range(33, 45);
+    const revenueId = range(27, 30);
 
     const fetchAccounts = async ({ account_ids }) => {
         setLoading(true);
@@ -49,7 +50,7 @@ const CashBank = () => {
     };
 
     useEffect(() => {
-        fetchAccounts({ account_ids: [1, 2, ...expenseId] });
+        fetchAccounts({ account_ids: [1, 2, ...expenseId, ...revenueId] });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -111,7 +112,6 @@ const CashBank = () => {
         setIsModalCreateIncomeOpen(false);
         setIsModalCreateExpenseOpen(false);
     };
-    const { accountBalance, error: accountBalanceError, loading: isValidating } = useCashBankBalance(warehouseId, endDate);
 
     useEffect(() => {
         mutate(`/api/get-cash-bank-balance/${warehouseId}/${endDate}`);
@@ -150,7 +150,11 @@ const CashBank = () => {
                     </ul>
                 </Dropdown>
             </div>
-            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-4 gap-4 mb-4">
+                <div className="card p-4">
+                    <h1 className="card-title">Saldo Kas</h1>
+                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.cash)}</h1>
+                </div>
                 <div className="card p-4">
                     <h1 className="card-title">Total Pendapatan</h1>
                     <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.revenue)}</h1>
@@ -166,7 +170,7 @@ const CashBank = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div className="card p-4 col-span-2">
-                    <div>
+                    <div className="flex justify-between items-center mb-4">
                         <select className="form-select" value={selectedAccountId} onChange={(e) => setSelectedAccountId(e.target.value)}>
                             <option value={"all"}>Semua Akun</option>
                             {filterAccountsByWarehouseId?.map((account) => (
@@ -175,6 +179,13 @@ const CashBank = () => {
                                 </option>
                             ))}
                         </select>
+                        <select className="form-select" value={itemsPerPage} onChange={(e) => setItemsPerPage(e.target.value)}>
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                        </select>
                     </div>
                     <JournalHistory
                         filterJournalByAccountId={filterJournalByAccountId}
@@ -182,10 +193,11 @@ const CashBank = () => {
                         notification={setNotification}
                         formatDateTime={formatDateTime}
                         formatNumber={formatNumber}
+                        itemsPerPage={itemsPerPage}
                     />
                 </div>
-                <div className="">
-                    <CashBankBalance accountBalance={accountBalance} />
+                <div>
+                    <RecentOrderStatus />
                 </div>
             </div>
 
@@ -207,6 +219,19 @@ const CashBank = () => {
                     accounts={accounts}
                     range={range}
                     isModalOpen={setIsModalCreateExpenseOpen}
+                    fetchRevenueByWarehouse={fetchRevenueByWarehouse}
+                    fetchJournalByWarehouse={fetchJournalByWarehouse}
+                    notification={setNotification}
+                    user={user}
+                    today={today}
+                    warehouseId={warehouseId}
+                />
+            </Modal>
+            <Modal isOpen={isModalCreateIncomeOpen} onClose={closeModal} maxWidth={"max-w-xl"} modalTitle="Kas Masuk">
+                <CreateIncome
+                    accounts={accounts}
+                    range={range}
+                    isModalOpen={setIsModalCreateIncomeOpen}
                     fetchRevenueByWarehouse={fetchRevenueByWarehouse}
                     fetchJournalByWarehouse={fetchJournalByWarehouse}
                     notification={setNotification}

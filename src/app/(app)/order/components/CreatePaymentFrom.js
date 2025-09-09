@@ -3,12 +3,12 @@ import DateTimeNow from "@/libs/dateTimeNow";
 import formatNumber from "@/libs/formatNumber";
 import { useCallback, useEffect, useState } from "react";
 
-const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, order_number, warehouseId }) => {
+const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, order_number, warehouseId, warehousePrimaryCashAccountId }) => {
     const { today } = DateTimeNow();
     const [formData, setFormData] = useState({
         date_issued: today,
         paymentMethod: "cash",
-        paymentAccountID: "",
+        paymentAccountID: warehousePrimaryCashAccountId,
         order_number: order_number,
         serviceFee: "",
         discount: "",

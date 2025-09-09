@@ -97,26 +97,42 @@ const OrderInvoice = ({ params }) => {
                         <tbody>
                             {order?.transaction?.stock_movements?.map((part) => (
                                 <tr className="border border-slate-300" key={part.id}>
-                                    <td className="p-1.5 border border-slate-300">
+                                    <td className="py-3 px-1.5 border border-slate-300">
                                         {part.product?.code} - {part.product?.name}
                                     </td>
-                                    <td className="p-1.5 border border-slate-300 text-center">{formatNumber(-part.quantity)}</td>
-                                    <td className="p-1.5 border border-slate-300 text-end">{formatNumber(part.price)}</td>
-                                    <td className="p-1.5 border border-slate-300 text-end">{formatNumber(part.price * -part.quantity)}</td>
+                                    <td className="py-3 px-1.5 border border-slate-300 text-center">{formatNumber(-part.quantity)}</td>
+                                    <td className="py-3 px-1.5 border border-slate-300 text-end">{formatNumber(part.price)}</td>
+                                    <td className="py-3 px-1.5 border border-slate-300 text-end">{formatNumber(part.price * -part.quantity)}</td>
                                 </tr>
                             ))}
                             {order?.journal?.service_fee?.credit > 0 && (
                                 <tr className="border border-slate-300">
-                                    <td className="p-1.5 border border-slate-300" colSpan={3}>
+                                    <td className="py-3 px-1.5 border border-slate-300" colSpan={3}>
                                         Biaya Jasa Service
                                     </td>
-                                    <td className="p-1.5 border border-slate-300 text-end">{formatNumber(order?.journal?.service_fee?.credit)}</td>
+                                    <td className="py-3 px-1.5 border border-slate-300 text-end">{formatNumber(order?.journal?.service_fee?.credit)}</td>
+                                </tr>
+                            )}
+
+                            {order?.journal?.sales_discount?.debit > 0 && (
+                                <tr className="border border-slate-300">
+                                    <td className="py-3 px-1.5 border border-slate-300" colSpan={3}>
+                                        Discount (Rp)
+                                    </td>
+                                    <td className="py-3 px-1.5 border border-slate-300 text-end text-red-500">
+                                        -{formatNumber(order?.journal?.sales_discount?.debit)}
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
                     <div className="flex flex-col items-end mt-4">
-                        <h1 className="font-bold text-sm">Total: {formatNumber(Number(totalPrice) + Number(order?.journal?.service_fee?.credit || 0))}</h1>
+                        <h1 className="font-bold text-sm">
+                            Total:{" "}
+                            {formatNumber(
+                                Number(totalPrice) + Number(order?.journal?.service_fee?.credit || 0) - Number(order?.journal?.sales_discount?.debit || 0)
+                            )}
+                        </h1>
                         <h1 className="text-slate-500 mt-4 text-sm">Teknisi: {order?.technician?.name}</h1>
                     </div>
                     <hr className="my-4 border-dashed border-slate-300" />

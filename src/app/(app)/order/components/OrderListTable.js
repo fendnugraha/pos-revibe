@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import StatusBadge from "@/components/StatusBadge";
-import { formatDate, formatNumber, todayDate } from "@/libs/format";
+import { formatDate, formatDateTime, formatNumber, todayDate } from "@/libs/format";
 import { DownloadIcon, FilterIcon, PrinterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -31,8 +31,13 @@ const OrderListTable = () => {
     const [CurrentOrderStatus, setCurrentOrderStatus] = useState("All Orders");
     const OrderStatus = ["All Orders", "Pending", "In Progress", "Finished", "Completed", "Canceled", "Rejected"];
     const countOrderByStatus = (status) => {
-        if (status === "All Orders") return OrderList.data?.length;
-        return OrderList.data?.filter((order) => order.status === status).length;
+        if (status === "All Orders") {
+            // jumlah total semua order
+            return Object.values(OrderList.orderStatusCount || {}).reduce((a, b) => a + b, 0);
+        }
+
+        // jumlah per status
+        return OrderList.orderStatusCount?.[status] || 0;
     };
 
     const fetchOrders = useCallback(
@@ -44,6 +49,7 @@ const OrderListTable = () => {
                         search: search,
                         start_date: startDate,
                         end_date: endDate,
+                        status: CurrentOrderStatus,
                     },
                 });
                 setOrderList(response.data.data);
@@ -53,7 +59,7 @@ const OrderListTable = () => {
                 setIsLoading(false);
             }
         },
-        [search, startDate, endDate]
+        [search, startDate, endDate, CurrentOrderStatus]
     );
 
     useEffect(() => {
@@ -70,6 +76,7 @@ const OrderListTable = () => {
         setIsModalCreateOrderOpen(false);
         setIsModalFilterJournalOpen(false);
     };
+    console.log(OrderList.orderStatusCount);
     return (
         <>
             {notification.message && (
@@ -114,7 +121,7 @@ const OrderListTable = () => {
                         Periode : {formatDate(startDate)} - {formatDate(endDate)}
                     </h1>
                 </div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto px-4 mt-2">
                     <table className="w-full text-xs table">
                         <thead>
                             <tr>
@@ -127,41 +134,42 @@ const OrderListTable = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {OrderList.data?.length > 0 ? (
-                                OrderList.data
-                                    ?.filter((order) => order.status === CurrentOrderStatus || CurrentOrderStatus === "All Orders")
-                                    .map((order) => (
-                                        <tr key={order.id}>
-                                            <td>
-                                                <Link href={`/order/detail/${order.order_number}`} className="hover:underline font-bold">
-                                                    {order.order_number}
-                                                </Link>
-                                                <span className="text-slate-500 dark:text-slate-400 block text-xs">{order.date_issued}</span>
-                                            </td>
-                                            <td>
-                                                {order.contact?.name}
-                                                <span className="text-slate-500 dark:text-slate-400 block text-xs">{order.contact?.phone_number}</span>
-                                            </td>
-                                            <td>
-                                                <span className="text-blue-500 dark:text-yellow-300 block text-xs font-bold">
-                                                    {order.phone_type.toUpperCase()}
-                                                </span>
-                                                {order.description}
-                                            </td>
-                                            <td className="text-center">
+                            {OrderList.orders?.data?.length > 0 ? (
+                                OrderList.orders?.data?.map((order) => (
+                                    <tr key={order.id}>
+                                        <td>
+                                            <Link href={`/order/detail/${order.order_number}`} className="hover:underline font-bold">
+                                                {order.order_number}
+                                            </Link>
+                                            <span className="text-slate-500 dark:text-slate-400 block text-xs">{formatDateTime(order.date_issued)}</span>
+                                        </td>
+                                        <td>
+                                            {order.contact?.name}
+                                            <span className="text-slate-500 dark:text-slate-400 block text-xs">{order.contact?.phone_number}</span>
+                                        </td>
+                                        <td>
+                                            <span className="text-blue-500 dark:text-yellow-300 block text-xs font-bold">
+                                                {order.phone_type.toUpperCase()} <span className="font-normal text-slate-500">({order.warehouse?.name})</span>
+                                            </span>
+                                            {order.description}
+                                        </td>
+                                        <td className="text-center">
+                                            <div className="flex gap-2 items-center">
                                                 <StatusBadge status={order.status} />
-                                            </td>
-                                            <td className="text-center">{order.technician?.name ?? "-"}</td>
-                                            <td className="flex items-center justify-center">
-                                                <Link
-                                                    href={`/order/order_invoice/${order.order_number}`}
-                                                    className="text-slate-500 hover:text-slate-600 cursor-pointer"
-                                                >
-                                                    <PrinterIcon size={20} />
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))
+                                                <span className="text-slate-400 dark:text-slate-400 block text-xs">({formatDateTime(order.updated_at)})</span>
+                                            </div>
+                                        </td>
+                                        <td className="text-center">{order.technician?.name ?? "-"}</td>
+                                        <td className="flex items-center justify-center">
+                                            <Link
+                                                href={`/order/order_invoice/${order.order_number}`}
+                                                className="text-slate-500 hover:text-slate-600 cursor-pointer"
+                                            >
+                                                <PrinterIcon size={20} />
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))
                             ) : (
                                 <tr>
                                     <td colSpan="6" className="text-center py-4">
@@ -172,7 +180,7 @@ const OrderListTable = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="px-4">{OrderList?.last_page > 1 && <Paginator links={OrderList} handleChangePage={handleChangePage} />}</div>
+                <div className="px-4">{OrderList?.orders?.last_page > 1 && <Paginator links={OrderList.orders} handleChangePage={handleChangePage} />}</div>
             </div>
             <Modal isOpen={isModalCreateOrderOpen} onClose={closeModal} modalTitle="Create New Order" maxWidth="max-w-2xl">
                 <CreateOrder

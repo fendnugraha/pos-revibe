@@ -2,6 +2,9 @@ import Breadcrumb from "@/components/Breadcrumb";
 import RevenueReport from "./RevenueReport";
 import { todayDate } from "@/libs/format";
 import RevenueByUser from "./RevenueByUser";
+import WarehouseBalance from "./WarehouseBalance";
+import Profit from "./Profit";
+import CashBankBalance from "./CashBankBalance";
 
 export const metadata = {
     title: "Revibe | Summary",
@@ -18,8 +21,16 @@ const SummaryPage = () => {
                     { name: "Summary Report", href: "/summary" },
                 ]}
             />
-            <div className="grid grid-cols-2 gap-4">
-                <RevenueReport startDate={startDate} endDate={endDate} />
+            <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="">
+                    <CashBankBalance />
+                </div>
+                <WarehouseBalance endDate={endDate} />
+            </div>
+            <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="col-span-2">
+                    <RevenueReport startDate={startDate} endDate={endDate} />
+                </div>
                 <RevenueByUser startDate={startDate} endDate={endDate} />
             </div>
         </>

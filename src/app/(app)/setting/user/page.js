@@ -102,87 +102,90 @@ const User = () => {
                         />
                     </Modal>
                 </div>
-                <div className="relative w-full sm:max-w-sm">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <SearchIcon className="w-6 h-6 text-gray-500" />
+                <div className="card p-4">
+                    <h1 className="card-title mb-4">User List</h1>
+                    <div className="relative w-full sm:max-w-sm">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <SearchIcon className="w-6 h-6 text-gray-500" />
+                        </div>
+                        <input
+                            type="search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search..."
+                            className="block w-full text-sm mb-2 pl-10 pr-4 py-2 text-gray-900 placeholder-gray-400 bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            autoComplete="off"
+                        />
                     </div>
-                    <input
-                        type="search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search..."
-                        className="block w-full text-sm mb-2 pl-10 pr-4 py-2 text-gray-900 placeholder-gray-400 bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                        autoComplete="off"
-                    />
-                </div>
-                <div className="overflow-x-auto bg-white rounded-2xl w-3/4">
-                    <table className="table w-full text-xs">
-                        <thead>
-                            <tr>
-                                <th className="">Name</th>
-                                <th className="">Role</th>
-                                <th className="">Warehouse</th>
-                                <th className="">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {loading ? (
+                    <div className="overflow-x-auto">
+                        <table className="table w-full text-xs">
+                            <thead>
                                 <tr>
-                                    <td className="text-center" colSpan={3}>
-                                        Loading ...
-                                    </td>
+                                    <th className="">Name</th>
+                                    <th className="">Role</th>
+                                    <th className="">Warehouse</th>
+                                    <th className="">Action</th>
                                 </tr>
-                            ) : (
-                                users?.data?.map((user) => (
-                                    <tr key={user.id}>
-                                        <td className="">
-                                            <span className="text-sm font-bold">{user.name}</span>
-                                            <span className="block">
-                                                <MailIcon className="h-4 w-4 inline" /> {user.email}
-                                            </span>
-                                            <span className="block text-slate-500">
-                                                Last update at <TimeAgo timestamp={user.updated_at} />
-                                            </span>
-                                        </td>
-                                        <td className="text-center">{user.role?.role}</td>
-                                        <td className="text-center">{user.role?.warehouse?.name}</td>
-                                        <td className="text-center">
-                                            <span className="flex gap-2 justify-center items-center">
-                                                <button
-                                                    onClick={() => {
-                                                        setSelectedUserId(user.id);
-                                                        setIsModalUpdateUserOpen(true);
-                                                    }}
-                                                    className="cursor-pointer hover:scale-125 transition transform ease-in"
-                                                >
-                                                    <PencilIcon className="size-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setSelectedUserId(user.id);
-                                                        setIsModalUpdateUserPasswordOpen(true);
-                                                    }}
-                                                    className="cursor-pointer hover:scale-125 transition transform ease-in"
-                                                >
-                                                    <RectangleEllipsisIcon className="size-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setSelectedUserId(user.id);
-                                                        setIsModalDeleteUserOpen(true);
-                                                    }}
-                                                    className="cursor-pointer hover:scale-125 transition transform ease-in"
-                                                >
-                                                    <TrashIcon className="size-4" />
-                                                </button>
-                                            </span>
+                            </thead>
+                            <tbody>
+                                {loading ? (
+                                    <tr>
+                                        <td className="text-center" colSpan={3}>
+                                            Loading ...
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                    <div className="px-4">{users?.last_page > 1 && <Paginator links={users} handleChangePage={handleChangePage} />}</div>
+                                ) : (
+                                    users?.data?.map((user) => (
+                                        <tr key={user.id}>
+                                            <td className="">
+                                                <span className="text-sm font-bold">{user.name}</span>
+                                                <span className="block">
+                                                    <MailIcon className="h-4 w-4 inline" /> {user.email}
+                                                </span>
+                                                <span className="block text-slate-500">
+                                                    Last update at <TimeAgo timestamp={user.updated_at} />
+                                                </span>
+                                            </td>
+                                            <td className="text-center">{user.role?.role}</td>
+                                            <td className="text-center">{user.role?.warehouse?.name}</td>
+                                            <td className="text-center">
+                                                <span className="flex gap-2 justify-center items-center">
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedUserId(user.id);
+                                                            setIsModalUpdateUserOpen(true);
+                                                        }}
+                                                        className="cursor-pointer hover:scale-125 transition transform ease-in"
+                                                    >
+                                                        <PencilIcon className="size-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedUserId(user.id);
+                                                            setIsModalUpdateUserPasswordOpen(true);
+                                                        }}
+                                                        className="cursor-pointer hover:scale-125 transition transform ease-in"
+                                                    >
+                                                        <RectangleEllipsisIcon className="size-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedUserId(user.id);
+                                                            setIsModalDeleteUserOpen(true);
+                                                        }}
+                                                        className="cursor-pointer hover:scale-125 transition transform ease-in"
+                                                    >
+                                                        <TrashIcon className="size-4" />
+                                                    </button>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                        <div className="px-4">{users?.last_page > 1 && <Paginator links={users} handleChangePage={handleChangePage} />}</div>
+                    </div>
                 </div>
             </div>
             <Modal isOpen={isModalUpdateUserOpen} onClose={closeModal} modalTitle="Update User" maxWidth="max-w-md">
