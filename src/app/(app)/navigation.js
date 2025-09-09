@@ -16,7 +16,7 @@ import NavLink from "@/components/NavLink";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/libs/auth";
 import DarkModeToggle from "@/components/DarkModeToggle";
-import { navMenu } from "@/config/NavMenu";
+import { navMenu } from "@/constants/NavMenu";
 
 const Navigation = ({ user }) => {
     const { logout } = useAuth();

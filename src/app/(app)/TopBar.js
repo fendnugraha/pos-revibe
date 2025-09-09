@@ -1,7 +1,7 @@
 "use client";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import NavLink from "@/components/NavLink";
-import { navMenu } from "@/config/NavMenu";
+import { navMenu } from "@/constants/NavMenu";
 import { useAuth } from "@/libs/auth";
 import { PowerIcon, User2Icon } from "lucide-react";
 import Image from "next/image";

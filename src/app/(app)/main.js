@@ -19,7 +19,7 @@ import { useAuth } from "@/libs/auth";
 import formatNumber from "@/libs/formatNumber";
 import { mutate } from "swr";
 import DarkModeToggle from "@/components/DarkModeToggle";
-import { navMenu } from "@/config/NavMenu";
+import { navMenu } from "@/constants/NavMenu";
 
 const MainPage = ({ children, headerTitle }) => {
     const { user } = useAuth({ middleware: "auth" });
