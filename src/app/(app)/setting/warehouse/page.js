@@ -13,6 +13,7 @@ import CreateWarehouse from "./CreateWarehouse";
 import CreateAccount from "../account/CreateAccount";
 import UpdateWarehouse from "./UpdateWarehouse";
 import { set } from "date-fns";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const Warehouse = () => {
     const [warehouses, setWarehouses] = useState([]);
@@ -99,7 +100,14 @@ const Warehouse = () => {
     console.log(warehouses);
     return (
         <>
-            <div className="p-8">
+            <Breadcrumb
+                BreadcrumbArray={[
+                    { name: "Setting", href: "/setting" },
+                    { name: "Warehouse", href: "/setting/warehouse" },
+                    { name: "Warehouse List", href: "/setting/warehouse" },
+                ]}
+            />
+            <div>
                 {notification.message && (
                     <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
                 )}

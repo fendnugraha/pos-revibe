@@ -1,9 +1,17 @@
 "use client";
 import axios from "@/libs/axios";
 import { formatDate, formatNumber, todayDate } from "@/libs/format";
+import { Download, Filter } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
-const RevenueByUser = ({ startDate, endDate }) => {
+const RevenueByUser = () => {
+    const [startDate, setStartDate] = useState(todayDate());
+    const [endDate, setEndDate] = useState(todayDate());
+
+    const [isModalFilterJournalOpen, setIsModalFilterJournalOpen] = useState(false);
+    const closeModal = () => {
+        setIsModalFilterJournalOpen(false);
+    };
     const [revenue, setRevenue] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -28,12 +36,22 @@ const RevenueByUser = ({ startDate, endDate }) => {
 
     return (
         <div className="card p-4">
-            <h1 className="card-title">
-                Pendapatan Jasa Service
-                <span className="card-subtitle">
-                    Periode: {formatDate(startDate)} - {formatDate(endDate)}
-                </span>
-            </h1>
+            <div className="flex justify-between items-start">
+                <h1 className="card-title">
+                    Pendapatan Jasa Service
+                    <span className="card-subtitle">
+                        Periode: {formatDate(startDate)} - {formatDate(endDate)}
+                    </span>
+                </h1>
+                <div className="flex gap-2">
+                    <button className="small-button">
+                        <Download size={20} />
+                    </button>
+                    <button className="small-button" onClick={() => setIsModalFilterJournalOpen(true)}>
+                        <Filter size={20} />
+                    </button>
+                </div>
+            </div>
             <div className="overflow-x-auto">
                 <table className="w-full text-xs table">
                     <thead>

@@ -14,6 +14,7 @@ import CreateJournal from "./CreateJournal";
 import { mutate } from "swr";
 import RecentOrderStatus from "./RecentOrderStatus";
 import CreateIncome from "./CreateIncome";
+import StatusBadge from "@/components/StatusBadge";
 
 const CashBank = () => {
     const { user } = useAuth();
@@ -156,12 +157,15 @@ const CashBank = () => {
                     <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.cash)}</h1>
                 </div>
                 <div className="card p-4">
-                    <h1 className="card-title">Total Pendapatan</h1>
+                    <div className="flex justify-between items-center">
+                        <h1 className="card-title">Total Pendapatan</h1>
+                        <StatusBadge statusText={`${formatNumber(revenueByWarehouse.service_order)} Order${revenueByWarehouse.service_order > 1 ? "s" : ""}`} />
+                    </div>
                     <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.revenue)}</h1>
                 </div>
                 <div className="card p-4">
-                    <h1 className="card-title">Total Order</h1>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.service_order)}</h1>
+                    <h1 className="card-title">Pengeluaran</h1>
+                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.expense)}</h1>
                 </div>
                 <div className="card p-4">
                     <h1 className="card-title">Net Profit</h1>

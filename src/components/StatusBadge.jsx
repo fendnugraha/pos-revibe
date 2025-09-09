@@ -1,9 +1,9 @@
-import { Activity, AlarmClockCheck, Ban, CheckCheck, ClipboardClock, DotIcon, X } from "lucide-react";
+import { Activity, AlarmClockCheck, Award, Ban, CheckCheck, ClipboardClock, DotIcon, X } from "lucide-react";
 
 const StatusBadge = ({ status, statusText }) => {
     let icon = (
         <span className="flex items-center gap-1 bg-slate-500 text-slate-100 rounded-full p-0.5">
-            <DotIcon size={12} strokeWidth={2} />
+            <Award size={12} strokeWidth={2} />
         </span>
     );
     let style = "bg-green-100 text-green-800";

@@ -56,7 +56,12 @@ const EditProduct = ({ isModalOpen, notification, fetchProducts, selectedProduct
                     </div>
                     <div className="">
                         <Label htmlFor="stock">Cost (Harga Beli):</Label>
-                        <Input type="number" className={"w-full"} value={formData.cost} onChange={(e) => setFormData({ ...formData, cost: e.target.value })} />
+                        <Input
+                            type="number"
+                            className={"w-full"}
+                            value={formData.current_cost}
+                            onChange={(e) => setFormData({ ...formData, current_cost: e.target.value })}
+                        />
                     </div>
                 </div>
 

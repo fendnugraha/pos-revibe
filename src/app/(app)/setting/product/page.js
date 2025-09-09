@@ -13,6 +13,7 @@ import EditProduct from "./EditProduct";
 import Paginator from "@/components/Paginator";
 import Breadcrumb from "@/components/Breadcrumb";
 import ImportProducts from "./ImportProduct";
+import ImportCategoryProducts from "./ImportCategory";
 
 const Product = () => {
     const [product, setProduct] = useState(null);
@@ -32,6 +33,7 @@ const Product = () => {
     const [isModalUpdateProductOpen, setIsModalUpdateProductOpen] = useState(false);
     const [isModalDeleteProductOpen, setIsModalDeleteProductOpen] = useState(false);
     const [isModalImportProductOpen, setIsModalImportProductOpen] = useState(false);
+    const [isModalImportCategoryProductOpen, setIsModalImportCategoryProductOpen] = useState(false);
 
     const closeModal = () => {
         setIsModalCreateProductOpen(false);
@@ -39,6 +41,7 @@ const Product = () => {
         setIsModalUpdateProductOpen(false);
         setIsModalDeleteProductOpen(false);
         setIsModalImportProductOpen(false);
+        setIsModalImportCategoryProductOpen(false);
         // setIsModalUpdateAccountOpen(false)
     };
 
@@ -160,9 +163,14 @@ const Product = () => {
                 <div className="card p-4">
                     <div className="flex justify-between items-start">
                         <h1 className="card-title mb-4">Product List</h1>
-                        <button className="small-button !font-normal flex items-center gap-2" onClick={() => setIsModalImportProductOpen(true)}>
-                            <FileUp size={20} /> Import
-                        </button>
+                        <div className="flex gap-2">
+                            <button className="small-button !font-normal flex items-center gap-2" onClick={() => setIsModalImportProductOpen(true)}>
+                                <FileUp size={20} /> Import
+                            </button>
+                            <button className="small-button !font-normal flex items-center gap-2" onClick={() => setIsModalImportCategoryProductOpen(true)}>
+                                <FileUp size={20} /> Import Category
+                            </button>
+                        </div>
                     </div>
                     <div className="relative w-full sm:max-w-sm">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -275,7 +283,14 @@ const Product = () => {
                 </div>
             </Modal>
             <Modal isOpen={isModalImportProductOpen} onClose={closeModal} modalTitle="Import Product" maxWidth="max-w-md">
-                <ImportProducts />
+                <ImportProducts isModalOpen={setIsModalImportProductOpen} fetchData={fetchProducts} setNotification={setNotification} />
+            </Modal>
+            <Modal isOpen={isModalImportCategoryProductOpen} onClose={closeModal} modalTitle="Import Category Product" maxWidth="max-w-md">
+                <ImportCategoryProducts
+                    isModalOpen={setIsModalImportCategoryProductOpen}
+                    fetchData={fetchProductCategories}
+                    setNotification={setNotification}
+                />
             </Modal>
         </>
     );

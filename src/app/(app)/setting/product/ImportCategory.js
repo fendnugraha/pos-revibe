@@ -5,7 +5,7 @@ import axios from "@/libs/axios";
 import Button from "@/components/Button";
 import Notification from "@/components/Notification";
 
-export default function ImportProducts({ isModalOpen, fetchData, setNotification }) {
+export default function ImportCategoryProducts({ isModalOpen, fetchData, setNotification }) {
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -33,7 +33,7 @@ export default function ImportProducts({ isModalOpen, fetchData, setNotification
     const uploadToServer = async () => {
         setLoading(true);
         try {
-            await axios.post("/api/import-products", { data: rows });
+            await axios.post("/api/import-category", { data: rows });
             setNotification({ type: "success", message: "Data imported successfully!" });
             isModalOpen(false);
             fetchData();
