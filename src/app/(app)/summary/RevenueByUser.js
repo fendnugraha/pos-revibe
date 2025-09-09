@@ -29,7 +29,7 @@ const RevenueByUser = ({ startDate, endDate }) => {
     return (
         <div className="card p-4">
             <h1 className="card-title">
-                Revenue By User
+                Pendapatan Jasa Service
                 <span className="card-subtitle">
                     Periode: {formatDate(startDate)} - {formatDate(endDate)}
                 </span>
@@ -40,7 +40,7 @@ const RevenueByUser = ({ startDate, endDate }) => {
                         <tr>
                             <th className="text-left">Teknisi</th>
                             <th className="text-center">Repaired (Unit)</th>
-                            <th className="text-right">Jasa Service</th>
+                            <th className="text-right">Jasa (Rp)</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -15,8 +15,11 @@ import Dropdown from "@/components/Dropdown";
 import CreatePayable from "./components/CreatePayable";
 import CreateReceivable from "./components/CreateReceivable";
 import CreateContact from "../setting/contact/CreateContact";
+import { todayDate } from "@/libs/format";
 
 const FinancePage = () => {
+    const [startDate, setStartDate] = useState(todayDate());
+    const [endDate, setEndDate] = useState(todayDate());
     const [notification, setNotification] = useState({ type: "", message: "" });
     const [isModalCreateContactOpen, setIsModalCreateContactOpen] = useState(false);
     const [isModalCreatePayableOpen, setIsModalCreatePayableOpen] = useState(false);
@@ -32,7 +35,7 @@ const FinancePage = () => {
     const [loading, setLoading] = useState(true);
 
     const fetchFinance = useCallback(
-        async (url = `/api/finance-by-type/${selectedContactId}/${financeType}`) => {
+        async (url = `/api/finance-by-type/${selectedContactId}/${financeType}/${startDate}/${endDate}`) => {
             setLoading(true);
             try {
                 const response = await axios.get(url);
@@ -43,7 +46,7 @@ const FinancePage = () => {
                 setLoading(false);
             }
         },
-        [selectedContactId, financeType]
+        [selectedContactId, financeType, startDate, endDate]
     );
 
     useEffect(() => {
@@ -149,13 +152,13 @@ const FinancePage = () => {
                             align="right"
                         >
                             <ul className="min-w-max outline-none text-sm">
-                                <li className="border-b border-slate-200 px-2 py-1 hover:bg-slate-100 ">
+                                <li className="border-b border-slate-200 px-2 py-1.5 w-36 hover:bg-slate-100 ">
                                     <button onClick={() => setIsModalCreateContactOpen(true)}>Kontak baru</button>
                                 </li>
-                                <li className="border-b border-slate-200 px-2 py-1 hover:bg-slate-100 ">
+                                <li className="border-b border-slate-200 px-2 py-1.5 w-36 hover:bg-slate-100 ">
                                     <button onClick={() => setIsModalCreatePayableOpen(true)}>Hutang Usaha</button>
                                 </li>
-                                <li className="border-b border-slate-200 px-2 py-1 hover:bg-slate-100 ">
+                                <li className=" px-2 py-1.5 w-36 hover:bg-slate-100 ">
                                     <button onClick={() => setIsModalCreateReceivableOpen(true)}>Piutang Usaha</button>
                                 </li>
                             </ul>
@@ -260,6 +263,11 @@ const FinancePage = () => {
                     formatDateTime={formatDateTime}
                     formatNumber={formatNumber}
                     handleChangePage={handleChangePage}
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                    fetchFinance={fetchFinance}
                 />
             </div>
             <Modal isOpen={isModalDeleteFinanceOpen} onClose={closeModal} modalTitle="Confirm Delete" maxWidth="max-w-md">

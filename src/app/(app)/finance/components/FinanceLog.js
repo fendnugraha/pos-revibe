@@ -7,28 +7,22 @@ import { ArrowBigDown, ArrowBigUp, Eye, EyeIcon, FilterIcon, XCircleIcon } from 
 import Link from "next/link";
 import { useState } from "react";
 
-const getCurrentDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-};
-
-const FinanceLog = ({ finance, loading, formatDateTime, formatNumber, handleChangePage }) => {
+const FinanceLog = ({ finance, fetchFinance, loading, formatDateTime, formatNumber, handleChangePage, startDate, setStartDate, endDate, setEndDate }) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [startDate, setStartDate] = useState(getCurrentDate());
-    const [endDate, setEndDate] = useState(getCurrentDate());
     const [isModalFilterDataOpen, setIsModalFilterDataOpen] = useState(false);
 
     const closeModal = () => {
         setIsModalFilterDataOpen(false);
     };
-    console.log(finance);
     return (
         <div className="card p-4">
             <div className="flex justify-between items-start">
-                <h1 className="text-xl font-bold">Finance Log</h1>
+                <h1 className="card-title mb-4">
+                    Finance Log
+                    <span className="card-subtitle">
+                        Periode: {formatDateTime(startDate)} - {formatDateTime(endDate)}
+                    </span>
+                </h1>
                 <button
                     onClick={() => setIsModalFilterDataOpen(true)}
                     className="bg-white font-bold p-2 rounded-lg border border-gray-300 hover:border-gray-400"
@@ -40,7 +34,7 @@ const FinanceLog = ({ finance, loading, formatDateTime, formatNumber, handleChan
                 <div className="mb-4">
                     <Label className="font-bold">Dari</Label>
                     <Input
-                        type="date"
+                        type="datetime-local"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                         className="w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -49,13 +43,13 @@ const FinanceLog = ({ finance, loading, formatDateTime, formatNumber, handleChan
                 <div className="mb-4">
                     <Label className="font-bold">Sampai</Label>
                     <Input
-                        type="date"
+                        type="datetime-local"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                         className="w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     />
                 </div>
-                <button onClick={() => fetchProfitLoss()} disabled={loading} className="btn-primary">
+                <button onClick={() => fetchFinance()} disabled={loading} className="btn-primary">
                     Submit
                 </button>
             </Modal>
@@ -79,9 +73,10 @@ const FinanceLog = ({ finance, loading, formatDateTime, formatNumber, handleChan
                             >
                                 {item.bill_amount > 0 ? <ArrowBigUp size={20} /> : <ArrowBigDown size={20} />}
                             </span>
-                            <div className="flex flex-col justify-center">
-                                <span className="text-xs text-gray-500">{formatDateTime(item.created_at)}</span>
-                                <h1 className="text-xs">{item.journal?.description}</h1>
+                            <div className="flex flex-col text-xs justify-center">
+                                {item.contact?.name}
+                                <span className="text-gray-500">{formatDateTime(item.date_issued)}</span>
+                                <h1>{item.journal?.description}</h1>
                             </div>
                         </div>
                         <h1 className="font-bold text-lg">{formatNumber(item.bill_amount > 0 ? item.bill_amount : item.payment_amount)}</h1>

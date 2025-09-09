@@ -63,7 +63,7 @@ const OrderNotes = ({ params }) => {
                 </div>
                 <div className="flex flex-col gap-2 items-center justify-center">
                     <small className="text-slate-500">Scan QR Code</small>
-                    <QRCodeSVG value={`${typeof window !== "undefined" ? window.location.origin : ""}/order/tracking/${order.order_number}`} size={200} />
+                    <QRCodeSVG value={`${typeof window !== "undefined" ? window.location.origin : ""}/tracking`} size={200} />
                     <small className="text-slate-500">{order.order_number}</small>
 
                     <small className="text-slate-500">{"***"}</small>

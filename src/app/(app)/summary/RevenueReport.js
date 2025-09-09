@@ -32,7 +32,7 @@ const RevenueReport = ({ startDate, endDate }) => {
     return (
         <div className="card p-4">
             <h1 className="card-title">
-                Revenue Report
+                Pendapatan Per Cabang
                 <span className="card-subtitle">
                     Periode: {formatDate(startDate)} - {formatDate(endDate)}
                 </span>

@@ -32,7 +32,7 @@ const TopBar = ({ user }) => {
                         ))}
                 </ul>
             </div>
-            <div className="flex items-center gap-4 w-[270px]">
+            <div className="flex items-center justify-end gap-4 w-[270px]">
                 <div className="flex items-center gap-4 rounded-full bg-white/75 hover:outline outline-slate-300 backdrop-blur-sm px-4 py-1 text-sm shadow">
                     <User2Icon size={20} />
                     <h1 className="font-bold">

@@ -114,12 +114,7 @@ const OrderListTable = () => {
                     </div>
                 </div>
                 <div className="px-4">
-                    <InputGroup maxWidth="min-w-lg" InputIcon={<SearchIcon size={18} />} placeholder="Search" />
-                </div>
-                <div className="px-4 text-sm text-slate-500">
-                    <h1>
-                        Periode : {formatDate(startDate)} - {formatDate(endDate)}
-                    </h1>
+                    <InputGroup maxWidth="min-w-lg" InputIcon={<SearchIcon size={18} />} onChange={(e) => setSearch(e.target.value)} placeholder="Search" />
                 </div>
                 <div className="overflow-x-auto px-4 mt-2">
                     <table className="w-full text-xs table">
