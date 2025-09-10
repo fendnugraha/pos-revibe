@@ -4,7 +4,7 @@ import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import StatusBadge from "@/components/StatusBadge";
 import { formatDate, formatDateTime, formatNumber, todayDate } from "@/libs/format";
-import { DownloadIcon, FilterIcon, PrinterIcon, SearchIcon } from "lucide-react";
+import { ChevronRightIcon, DownloadIcon, FilterIcon, PrinterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import CreateOrder from "./CreateOrder";
@@ -13,6 +13,7 @@ import Notification from "@/components/Notification";
 import Paginator from "@/components/Paginator";
 import Label from "@/components/Label";
 import Input from "@/components/Input";
+import Dropdown from "@/components/Dropdown";
 
 const OrderListTable = () => {
     const today = todayDate();
@@ -86,7 +87,33 @@ const OrderListTable = () => {
 
             <div className="mt-4 card">
                 <div className="p-4 flex items-start justify-between">
-                    <div>
+                    <div className="sm:hidden">
+                        <Dropdown
+                            trigger={
+                                <Button buttonType="secondary" className={"group text-nowrap"}>
+                                    All Orders{" "}
+                                    <ChevronRightIcon size={18} className="inline group-hover:rotate-90 delay-300 transition-transform duration-200" />
+                                </Button>
+                            }
+                            align="left"
+                        >
+                            <ul className="p-0">
+                                {OrderStatus.map((status, index) => (
+                                    <li onClick={() => setCurrentOrderStatus(status)} key={index}>
+                                        <button className="px-4 text-start py-2 hover:bg-slate-100 w-48 border-b border-slate-200 cursor-pointer flex items-center justify-between gap-2">
+                                            {status}{" "}
+                                            <span
+                                                className={`ml-2 ${CurrentOrderStatus === status ? "bg-blue-500" : "bg-slate-400"} text-white px-2 rounded-lg`}
+                                            >
+                                                {formatNumber(countOrderByStatus(status))}
+                                            </span>
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </Dropdown>
+                    </div>
+                    <div className="items-center hidden sm:flex">
                         {OrderStatus.map((status, index) => (
                             <button
                                 className={`mr-2 sm:mr-4 py-2 cursor-pointer text-xs ${
@@ -114,7 +141,12 @@ const OrderListTable = () => {
                     </div>
                 </div>
                 <div className="px-4">
-                    <InputGroup maxWidth="min-w-lg" InputIcon={<SearchIcon size={18} />} onChange={(e) => setSearch(e.target.value)} placeholder="Search" />
+                    <InputGroup
+                        maxWidth="w-full sm:min-w-lg"
+                        InputIcon={<SearchIcon size={18} />}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search"
+                    />
                 </div>
                 <div className="overflow-x-auto px-4 mt-2">
                     <table className="w-full text-xs table">

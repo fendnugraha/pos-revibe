@@ -158,7 +158,7 @@ const CashBank = () => {
                     </ul>
                 </Dropdown>
             </div>
-            <div className="grid grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-4 mb-4">
                 <div className="card p-4">
                     <h1 className="card-title">Saldo Kas</h1>
                     <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.cash || 0)}</h1>

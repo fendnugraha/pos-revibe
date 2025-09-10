@@ -135,7 +135,6 @@ const WarehouseDetail = ({ params }) => {
                             <table className="w-full table">
                                 <thead>
                                     <tr>
-                                        <th className="text-left">Kode</th>
                                         <th className="text-left">Nama</th>
                                         <th className="text-left">
                                             <CheckSquare size={16} />
@@ -147,7 +146,6 @@ const WarehouseDetail = ({ params }) => {
                                         .filter((item) => item.acc_name.toLowerCase().includes(search.toLowerCase()))
                                         .map((item) => (
                                             <tr key={item.id}>
-                                                <td>{item.acc_code}</td>
                                                 <td>{item.acc_name}</td>
                                                 <td>
                                                     <input
