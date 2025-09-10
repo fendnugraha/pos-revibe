@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import { X } from "lucide-react";
 
 const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user, orderUserId }) => {
     return (
@@ -65,15 +66,15 @@ const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user,
                         >
                             Selesai
                         </Button>
-                        <Button
-                            buttonType="danger"
+                        <button
+                            className="small-button border !border-red-500 !hover:bg-red-400 text-red-500"
                             disabled={status === "Finished" || status === "Completed" || status === "Canceled" || status === "Rejected" || isLoading}
                             onClick={() => {
                                 if (confirm("Apakah anda yakin ingin membatalkan order ini?")) handleUpdateOrderStatus("Canceled");
                             }}
                         >
-                            Batalkan
-                        </Button>
+                            <X size={16} />
+                        </button>
                     </>
                 )}
             </div>

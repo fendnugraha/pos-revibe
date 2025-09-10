@@ -15,6 +15,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import { useAuth } from "@/libs/auth";
 import OrderAction from "../OrderAction";
+import { set } from "date-fns";
 
 const OrderDetail = ({ params }) => {
     const { user } = useAuth();
@@ -131,7 +132,14 @@ const OrderDetail = ({ params }) => {
                             </div>
                         )}
                     </div>
-                    <PartsTable parts={order.transaction} totalPrice={totalPrice} />
+                    <PartsTable
+                        parts={order.transaction}
+                        fetchOrder={fetchOrder}
+                        notification={setNotification}
+                        totalPrice={totalPrice}
+                        orderId={order.id}
+                        orderStatus={order.status}
+                    />
                     <h1 className="text-slate-500 text-sm">Teknisi: {order.technician?.name}</h1>
                     <hr className="border-slate-200 my-4" />
                     {!["Canceled", "Rejected"].includes(order.status) && (

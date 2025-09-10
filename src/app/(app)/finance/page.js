@@ -1,6 +1,5 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import MainPage from "../main";
 import exportToExcel from "@/libs/exportToExcel";
 import formatNumber from "@/libs/formatNumber";
 import Notification from "@/components/Notification";
@@ -16,9 +15,11 @@ import CreatePayable from "./components/CreatePayable";
 import CreateReceivable from "./components/CreateReceivable";
 import CreateContact from "../setting/contact/CreateContact";
 import { todayDate } from "@/libs/format";
-import { set } from "date-fns";
+import { useAuth } from "@/libs/auth";
 
 const FinancePage = () => {
+    const { user } = useAuth({ middleware: "auth" });
+    const userRole = user?.role?.role;
     const [startDate, setStartDate] = useState(todayDate());
     const [endDate, setEndDate] = useState(todayDate());
     const [notification, setNotification] = useState({ type: "", message: "" });
@@ -141,7 +142,9 @@ const FinancePage = () => {
                             onChange={(e) => setFinanceType(e.target.value)}
                             className="p-1 px-4 bg-blue-500 text-white drop-shadow-sm rounded-xl"
                         >
-                            <option value="Payable">Hutang Usaha</option>
+                            <option value="Payable" hidden={userRole !== "Administrator"}>
+                                Hutang Usaha
+                            </option>
                             <option value="Receivable">Piutang Usaha</option>
                         </select>
                         <Dropdown
@@ -156,7 +159,7 @@ const FinancePage = () => {
                                 <li className="border-b border-slate-200 px-2 py-1.5 w-36 hover:bg-slate-100 ">
                                     <button onClick={() => setIsModalCreateContactOpen(true)}>Kontak baru</button>
                                 </li>
-                                <li className="border-b border-slate-200 px-2 py-1.5 w-36 hover:bg-slate-100 ">
+                                <li className="border-b border-slate-200 px-2 py-1.5 w-36 hover:bg-slate-100 " hidden={userRole !== "Administrator"}>
                                     <button onClick={() => setIsModalCreatePayableOpen(true)}>Hutang Usaha</button>
                                 </li>
                                 <li className=" px-2 py-1.5 w-36 hover:bg-slate-100 ">
