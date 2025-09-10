@@ -161,22 +161,24 @@ const CashBank = () => {
             <div className="grid grid-cols-4 gap-4 mb-4">
                 <div className="card p-4">
                     <h1 className="card-title">Saldo Kas</h1>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.cash)}</h1>
+                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.cash || 0)}</h1>
                 </div>
                 <div className="card p-4">
                     <div className="flex justify-between items-center">
                         <h1 className="card-title">Total Pendapatan</h1>
-                        <StatusBadge statusText={`${formatNumber(revenueByWarehouse.service_order)} Order${revenueByWarehouse.service_order > 1 ? "s" : ""}`} />
+                        <StatusBadge
+                            statusText={`${formatNumber(revenueByWarehouse.service_order || 0)} Order${revenueByWarehouse.service_order > 1 ? "s" : ""}`}
+                        />
                     </div>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.revenue)}</h1>
+                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.revenue || 0)}</h1>
                 </div>
                 <div className="card p-4">
                     <h1 className="card-title">Pengeluaran</h1>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.expense)}</h1>
+                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.expense || 0)}</h1>
                 </div>
                 <div className="card p-4">
                     <h1 className="card-title">Net Profit</h1>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.net_profit)}</h1>
+                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.net_profit || 0)}</h1>
                 </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">

@@ -179,12 +179,12 @@ const Warehouse = () => {
                                             <td className="text-center">{formatDateTime(warehouse.created_at)}</td>
                                             <td className="text-center">
                                                 <span className="flex gap-2 justify-center">
-                                                    {/* <Link
-                                                    className="cursor-pointer hover:scale-125 transition transform ease-in"
-                                                    href={`/setting/warehouse/detail/${warehouse.id}`}
-                                                >
-                                                    <EyeIcon size={24} />
-                                                </Link> */}
+                                                    <Link
+                                                        className="cursor-pointer hover:scale-125 transition transform ease-in"
+                                                        href={`/setting/warehouse/detail/${warehouse.id}`}
+                                                    >
+                                                        <EyeIcon size={24} />
+                                                    </Link>
                                                     <button
                                                         onClick={() => {
                                                             setIsModalUpdateWarehouseOpen(true);

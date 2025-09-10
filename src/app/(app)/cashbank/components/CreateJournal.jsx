@@ -16,7 +16,7 @@ const CreateJournal = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalB
     const [loading, setLoading] = useState(false);
 
     const branchAccount = accounts.filter((account) => account.warehouse_id === warehouseId);
-    const cashBank = accounts.filter((account) => account.warehouse_id !== warehouseId && [1, 2].includes(account.account_id));
+    const cashBank = accounts.filter((account) => [1, 2].includes(account.account_id));
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -93,7 +93,7 @@ const CreateJournal = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalB
                     >
                         <option value="">--Pilih Tujuan--</option>
                         {cashBank.map((cb) => (
-                            <option key={cb.id} value={cb.id}>
+                            <option key={cb.id} value={cb.id} hidden={cb.id === Number(formData.cred_code)}>
                                 {cb.acc_name}
                             </option>
                         ))}
