@@ -4,8 +4,8 @@ import Dropdown from "@/components/Dropdown";
 import Modal from "@/components/Modal";
 import { useAuth } from "@/libs/auth";
 import axios from "@/libs/axios";
-import { formatDateTime, formatNumber, todayDate } from "@/libs/format";
-import { ChevronRightIcon, Search } from "lucide-react";
+import { formatDate, formatDateTime, formatNumber, todayDate } from "@/libs/format";
+import { ChevronRightIcon, Download, Filter, Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import CreateExpense from "../../cashbank/components/CreateExpense";
 import Notification from "@/components/Notification";
@@ -15,12 +15,18 @@ import { mutate } from "swr";
 import RecentOrderStatus from "./RecentOrderStatus";
 import CreateIncome from "./CreateIncome";
 import StatusBadge from "@/components/StatusBadge";
+import Label from "@/components/Label";
+import Input from "@/components/Input";
 
 const CashBank = () => {
     const { user } = useAuth();
     const warehouseId = user?.role?.warehouse_id;
-    const startDate = todayDate();
-    const endDate = todayDate();
+    const [startDate, setStartDate] = useState(todayDate());
+    const [endDate, setEndDate] = useState(todayDate());
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const [isModalFilterJournalOpen, setIsModalFilterJournalOpen] = useState(false);
+
     const today = todayDate();
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
@@ -112,6 +118,7 @@ const CashBank = () => {
         setIsModalCreateJournalOpen(false);
         setIsModalCreateIncomeOpen(false);
         setIsModalCreateExpenseOpen(false);
+        setIsModalFilterJournalOpen(false);
     };
 
     useEffect(() => {
@@ -174,7 +181,30 @@ const CashBank = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div className="card p-4 col-span-2">
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex justify-between items-start mb-4">
+                        <h1 className="card-title">
+                            Riwayat Kas
+                            <span className="card-subtitle">
+                                Periode: {formatDate(startDate)} - {formatDate(endDate)}
+                            </span>
+                        </h1>
+                        <div className="flex gap-2">
+                            <button className="small-button">
+                                <Download size={20} />
+                            </button>
+                            <button className="small-button" onClick={() => setIsModalFilterJournalOpen(true)}>
+                                <Filter size={20} />
+                            </button>
+                        </div>
+                    </div>
+                    <div className="flex justify-between items-center gap-2 mb-4">
+                        <input
+                            type="search"
+                            placeholder="Cari .."
+                            className="form-control w-full"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                         <select className="form-select" value={selectedAccountId} onChange={(e) => setSelectedAccountId(e.target.value)}>
                             <option value={"all"}>Semua Akun</option>
                             {filterAccountsByWarehouseId?.map((account) => (
@@ -243,6 +273,38 @@ const CashBank = () => {
                     today={today}
                     warehouseId={warehouseId}
                 />
+            </Modal>
+            <Modal isOpen={isModalFilterJournalOpen} onClose={closeModal} modalTitle="Filter Tanggal" maxWidth="max-w-md">
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                    <div>
+                        <Label>Tanggal</Label>
+                        <Input
+                            type="datetime-local"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            className="w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        />
+                    </div>
+                    <div>
+                        <Label>s/d</Label>
+                        <Input
+                            type="datetime-local"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            className="w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            disabled={!startDate}
+                        />
+                    </div>
+                </div>
+                <button
+                    onClick={() => {
+                        fetchRevenue();
+                        setIsModalFilterJournalOpen(false);
+                    }}
+                    className="btn-primary"
+                >
+                    Submit
+                </button>
             </Modal>
         </>
     );

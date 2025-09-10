@@ -16,6 +16,7 @@ import CreatePayable from "./components/CreatePayable";
 import CreateReceivable from "./components/CreateReceivable";
 import CreateContact from "../setting/contact/CreateContact";
 import { todayDate } from "@/libs/format";
+import { set } from "date-fns";
 
 const FinancePage = () => {
     const [startDate, setStartDate] = useState(todayDate());
@@ -263,6 +264,7 @@ const FinancePage = () => {
                     formatDateTime={formatDateTime}
                     formatNumber={formatNumber}
                     handleChangePage={handleChangePage}
+                    notification={setNotification}
                     startDate={startDate}
                     endDate={endDate}
                     setStartDate={setStartDate}

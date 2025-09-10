@@ -3,16 +3,39 @@ import Input from "@/components/Input";
 import Label from "@/components/Label";
 import Modal from "@/components/Modal";
 import Paginator from "@/components/Paginator";
-import { ArrowBigDown, ArrowBigUp, Eye, EyeIcon, FilterIcon, XCircleIcon } from "lucide-react";
+import axios from "@/libs/axios";
+import { ArrowBigDown, ArrowBigUp, Eye, EyeIcon, FilterIcon, Trash2Icon, XCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-const FinanceLog = ({ finance, fetchFinance, loading, formatDateTime, formatNumber, handleChangePage, startDate, setStartDate, endDate, setEndDate }) => {
+const FinanceLog = ({
+    finance,
+    fetchFinance,
+    loading,
+    formatDateTime,
+    formatNumber,
+    notification,
+    handleChangePage,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+}) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalFilterDataOpen, setIsModalFilterDataOpen] = useState(false);
 
     const closeModal = () => {
         setIsModalFilterDataOpen(false);
+    };
+
+    const handleDeleteFinance = async (id) => {
+        try {
+            const response = await axios.delete(`/api/finance/${id}`);
+            notification({ type: "success", message: response.data.message });
+            fetchFinance();
+        } catch (error) {
+            notification({ type: "error", message: error.response?.data?.message || "Something went wrong." });
+        }
     };
     return (
         <div className="card p-4">
@@ -79,7 +102,15 @@ const FinanceLog = ({ finance, fetchFinance, loading, formatDateTime, formatNumb
                                 <h1>{item.journal?.description}</h1>
                             </div>
                         </div>
-                        <h1 className="font-bold text-lg">{formatNumber(item.bill_amount > 0 ? item.bill_amount : item.payment_amount)}</h1>
+                        <div className="flex gap-4 items-center">
+                            <h1 className="font-bold text-lg">{formatNumber(item.bill_amount > 0 ? item.bill_amount : item.payment_amount)}</h1>
+                            <button
+                                className="text-red-500 p-1 border border-red-500 rounded-full hover:bg-red-500 hover:text-white cursor-pointer"
+                                onClick={() => handleDeleteFinance(item.id)}
+                            >
+                                <Trash2Icon size={12} />
+                            </button>
+                        </div>
                     </div>
                 ))}
                 <div className="px-4 pt-2 sm:py-0">

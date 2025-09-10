@@ -38,7 +38,6 @@ const RecentOrderStatus = () => {
         fetchOrders();
     }, [fetchOrders]);
 
-    console.log(OrderList);
     return (
         <div className="card p-4">
             <h1 className="card-title mb-4">Recent updates</h1>

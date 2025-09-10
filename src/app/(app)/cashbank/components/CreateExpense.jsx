@@ -9,8 +9,8 @@ const CreateExpense = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalB
         debt_code: "",
         cred_code: "",
         amount: "",
-        admin_fee: 0,
-        description: "Biaya Operasional Toko",
+        journal_type: "Expense",
+        description: "",
     });
     const [errors, setErrors] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -34,9 +34,8 @@ const CreateExpense = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalB
                 debt_code: "",
                 cred_code: "",
                 amount: "",
-                fee_amount: 0,
-                trx_type: "Pengeluaran",
-                description: "Biaya Operasional Toko",
+                journal_type: "Expense",
+                description: "",
             });
             isModalOpen(false);
             setErrors([]);

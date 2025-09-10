@@ -9,7 +9,7 @@ const CreateJournal = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalB
         debt_code: "",
         cred_code: "",
         amount: "",
-        admin_fee: 0,
+        journal_type: "Mutation",
         description: "",
     });
     const [errors, setErrors] = useState([]);
@@ -34,8 +34,7 @@ const CreateJournal = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalB
                 debt_code: "",
                 cred_code: "",
                 amount: "",
-                fee_amount: 0,
-                trx_type: "Pengeluaran",
+                trx_type: "Mutation",
                 description: "",
             });
             isModalOpen(false);

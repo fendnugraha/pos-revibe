@@ -38,8 +38,6 @@ const JournalHistory = ({ filterJournalByAccountId, formatDateTime, formatNumber
         }
     };
 
-    const filterSelectedJournalId = currentItems?.find((entries) => entries.journal_id === selectedJournalId);
-
     return (
         <>
             <div className="overflow-x-auto">
@@ -69,7 +67,7 @@ const JournalHistory = ({ filterJournalByAccountId, formatDateTime, formatNumber
                                         <div className="flex justify-center gap-3">
                                             <button
                                                 className=" hover:scale-125 transtition-all duration-200"
-                                                hidden={!["General"].includes(entries.journal?.journal_type)}
+                                                hidden={["Transaction", "Finance"].includes(entries.journal?.journal_type)}
                                                 onClick={() => {
                                                     setSelectedJournalId(entries.journal_id);
                                                     setIsModalEditJournalOpen(true);
@@ -82,7 +80,7 @@ const JournalHistory = ({ filterJournalByAccountId, formatDateTime, formatNumber
                                                     setSelectedJournalId(entries.journal_id);
                                                     setIsModalDeleteJournalOpen(true);
                                                 }}
-                                                disabled={!["General"].includes(entries.journal?.journal_type)}
+                                                disabled={["Transaction", "Finance"].includes(entries.journal?.journal_type)}
                                                 className="disabled:text-slate-300 disabled:cursor-not-allowed text-red-600 dark:text-red-400 hover:scale-125 transition-all group-hover:text-white duration-200"
                                             >
                                                 <TrashIcon className="size-4" />
@@ -108,7 +106,12 @@ const JournalHistory = ({ filterJournalByAccountId, formatDateTime, formatNumber
             </div>
 
             <Modal isOpen={isModalEditJournalOpen} onClose={closeModal} modalTitle="Edit Journal" maxWidth="max-w-2xl">
-                <EditJournal isModalOpen={setIsModalEditJournalOpen} journal={filterSelectedJournalId} />
+                <EditJournal
+                    isModalOpen={setIsModalEditJournalOpen}
+                    notification={notification}
+                    fetchJournalsByWarehouse={fetchJournalsByWarehouse}
+                    journalId={selectedJournalId}
+                />
             </Modal>
             <Modal isOpen={isModalDeleteJournalOpen} onClose={closeModal} modalTitle="Confirm Delete" maxWidth="max-w-md">
                 <div className="flex flex-col items-center justify-center gap-3 mb-4">

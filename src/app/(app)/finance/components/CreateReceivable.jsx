@@ -86,6 +86,7 @@ const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
                             value={formData.date_issued}
                             onChange={(e) => setFormData({ ...formData, date_issued: e.target.value })}
                             className="w-1/2 border border-slate-300 rounded-lg p-2"
+                            required
                         />
                     </div>
                 </div>
@@ -96,6 +97,7 @@ const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
                             value={formData.debt_code}
                             onChange={(e) => setFormData({ ...formData, debt_code: e.target.value })}
                             className="w-full border border-slate-300 rounded-lg p-2"
+                            required
                         >
                             <option value="">--Pilih Akun--</option>
                             {filterReceivableAccounts.map((account) => (
@@ -114,6 +116,7 @@ const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
                             onChange={(e) => setFormData({ ...formData, cred_code: e.target.value })}
                             className="w-full border border-slate-300 rounded-lg p-2 disabled:bg-slate-300 disabled:text-white disabled:cursor-not-allowed"
                             disabled={formData.cred_code === 8}
+                            required
                         >
                             <option value="">--Pilih Rekening--</option>
                             {filterCashAccounts.map((account) => (
@@ -131,6 +134,7 @@ const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
                             value={formData.contact_id}
                             onChange={(e) => setFormData({ ...formData, contact_id: e.target.value })}
                             className={`w-full border border-slate-300 rounded-lg p-2 ${errors.contact_id ? "border-red-500" : ""}`}
+                            required
                         >
                             <option value="">--Pilih Contact--</option>
                             {contacts.map((contact) => (
@@ -151,6 +155,7 @@ const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
                             type="number"
                             className="w-full border border-slate-300 rounded-lg p-2"
                             placeholder="Rp"
+                            required
                         />
                     </div>
                     <h1 className="font-bold text-end">{formatNumber(formData.amount)}</h1>
@@ -163,6 +168,7 @@ const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             className="w-full border border-slate-300 rounded-lg p-2"
                             placeholder="Catatan (Optional)"
+                            required
                         />
                     </div>
                 </div>

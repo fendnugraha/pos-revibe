@@ -11,7 +11,7 @@ const CreateIncome = ({ accounts, range, fetchRevenueByWarehouse, fetchJournalBy
         cred_code: "",
         amount: "",
         fee_amount: 0,
-        trx_type: "Pendapatan",
+        journal_type: "Income",
         description: "Pendapatan lain-lain",
     });
     const [errors, setErrors] = useState([]);
