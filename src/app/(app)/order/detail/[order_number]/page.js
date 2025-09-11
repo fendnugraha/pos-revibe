@@ -106,7 +106,7 @@ const OrderDetail = ({ params }) => {
                     isLoading={isLoading}
                     handleUpdateOrderStatus={handleUpdateOrderStatus}
                     user={user}
-                    orderUserId={order.user_id}
+                    orderTechnicianId={order.technician_id}
                 />
             </div>
             <div className="grid grid-cols-3 gap-4">

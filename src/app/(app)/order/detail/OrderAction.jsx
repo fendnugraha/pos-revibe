@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { X } from "lucide-react";
 
-const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user, orderUserId }) => {
+const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user, orderTechnicianId }) => {
     return (
         // <select
         //     disabled={status === "Finished" || status === "Completed" || status === "Canceled" || status === "Rejected" || isLoading}
@@ -50,7 +50,7 @@ const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user,
                         <Button
                             buttonType="dark"
                             disabled={isLoading}
-                            hidden={user?.id === orderUserId}
+                            hidden={user?.id === orderTechnicianId}
                             onClick={() => {
                                 if (confirm("Apakah anda yakin ingin mengambil alih order ini?")) handleUpdateOrderStatus("Take Over");
                             }}
@@ -60,7 +60,7 @@ const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user,
                         <Button
                             buttonType="info"
                             disabled={isLoading}
-                            hidden={user?.id !== orderUserId}
+                            hidden={user?.id !== orderTechnicianId}
                             onClick={() => {
                                 if (confirm("Apakah anda yakin ingin menyelesaikan order ini?")) handleUpdateOrderStatus("Finished");
                             }}
@@ -69,7 +69,7 @@ const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user,
                         </Button>
                         <button
                             className="small-button border !border-red-500 !hover:bg-red-400 text-red-500"
-                            hidden={user?.id !== orderUserId}
+                            hidden={user?.id !== orderTechnicianId}
                             disabled={status === "Finished" || status === "Completed" || status === "Canceled" || status === "Rejected" || isLoading}
                             onClick={() => {
                                 if (confirm("Apakah anda yakin ingin membatalkan order ini?")) handleUpdateOrderStatus("Canceled");
