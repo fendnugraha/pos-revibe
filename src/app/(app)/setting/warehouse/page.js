@@ -113,10 +113,10 @@ const Warehouse = () => {
                 )}
                 <div className="flex gap-2 mb-4">
                     <Button buttonType="primary" onClick={() => setIsModalCreateWarehouseOpen(true)} className={`flex item-center gap-2`}>
-                        <PlusIcon size={20} /> Add Warehouse
+                        <PlusIcon size={20} /> Tambah Cabang
                     </Button>
                     <Button buttonType="primary" onClick={() => setIsModalCreateAccountOpen(true)} className={`flex item-center gap-2`}>
-                        <PlusIcon size={20} /> Add Account
+                        <PlusIcon size={20} /> Tambah Akun
                     </Button>
                     <Modal isOpen={isModalCreateWarehouseOpen} onClose={closeModal} modalTitle="Add new warehouse" maxWidth="max-w-lg">
                         <CreateWarehouse
@@ -152,9 +152,9 @@ const Warehouse = () => {
                         <table className="table w-full text-xs">
                             <thead>
                                 <tr>
-                                    <th>Warehouse Name</th>
-                                    <th>Address</th>
-                                    <th>Cash Account</th>
+                                    <th>Nama Cabang</th>
+                                    <th>Alamat lengkap</th>
+                                    <th>Akun Kas</th>
                                     <th className="text-center">Created At</th>
                                     <th className="text-center">Actions</th>
                                 </tr>

@@ -153,8 +153,8 @@ const Account = () => {
                         <table className="table w-full text-xs">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Init. Balance</th>
+                                    <th>Account</th>
+                                    <th>Saldo Awal</th>
                                     <th className="text-center">Actions</th>
                                 </tr>
                             </thead>
