@@ -88,8 +88,8 @@ const OrderDetail = ({ params }) => {
                             Order ID: <span className="text-xl font-bold">{order_number}</span>{" "}
                         </h1>
                         <StatusBadge
-                            status={!order.transaction?.payment_method || order.transaction?.payment_method === "Unpaid" ? "Pending" : "Completed"}
-                            statusText={order.transaction?.payment_method ?? "Unpaid"}
+                            status={!order.payment_method || order.payment_method === "Unpaid" ? "Pending" : "Completed"}
+                            statusText={order.payment_method ?? "Unpaid"}
                         />
                         <StatusBadge status={order.status} />
                     </div>
@@ -148,8 +148,8 @@ const OrderDetail = ({ params }) => {
                                 <h1 className="card-title flex gap-2 items-center mb-3">
                                     Order Summary{" "}
                                     <StatusBadge
-                                        status={!order.transaction?.payment_method || order.transaction?.payment_method === "Unpaid" ? "Pending" : "Completed"}
-                                        statusText={order.transaction?.payment_method ?? "Unpaid"}
+                                        status={!order.payment_method || order.payment_method === "Unpaid" ? "Pending" : "Completed"}
+                                        statusText={order.payment_method ?? "Unpaid"}
                                     />
                                 </h1>
                                 {order.status === "Finished" && (

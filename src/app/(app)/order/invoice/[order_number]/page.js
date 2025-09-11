@@ -129,7 +129,7 @@ const OrderInvoice = ({ params }) => {
                         <h1 className="font-bold text-sm">
                             Total:{" "}
                             {formatNumber(
-                                Number(totalPrice) + Number(order?.journal?.service_fee?.credit || 0) - Number(order?.journal?.sales_discount?.debit || 0)
+                                Number(totalPrice || 0) + Number(order?.journal?.service_fee?.credit || 0) - Number(order?.journal?.sales_discount?.debit || 0)
                             )}
                         </h1>
                         <h1 className="text-slate-500 mt-4 text-sm">Teknisi: {order?.technician?.name}</h1>
@@ -139,9 +139,9 @@ const OrderInvoice = ({ params }) => {
                     <div className="flex justify-between mb-8">
                         <div>
                             <h1 className="font-bold text-sm">Metode Pembayaran</h1>
-                            <h1 className="text-slate-500 text-sm mb-2">{order?.transaction?.payment_method}</h1>
+                            <h1 className="text-slate-500 text-sm mb-2">{order?.payment_method}</h1>
                             <h1 className="font-bold text-sm">Tanggal Selesai</h1>
-                            <h1 className="text-slate-500 text-sm">{formatLongDate(order?.transaction?.updated_at)}</h1>
+                            <h1 className="text-slate-500 text-sm">{formatLongDate(order?.updated_at)}</h1>
                         </div>
                         <div>
                             <h1 className="font-bold text-right">Catatan</h1>

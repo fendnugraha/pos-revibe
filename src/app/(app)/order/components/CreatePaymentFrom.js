@@ -93,7 +93,7 @@ const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, 
                         <div className="flex justify-between text-sm">
                             <h1>Biaya Spareparts</h1>
                             <h1 className="font-bold">
-                                <span className="font-light">Rp</span> {formatNumber(totalPrice)}
+                                <span className="font-light">Rp</span> {formatNumber(totalPrice || 0)}
                             </h1>
                         </div>
                         <div className="flex justify-between text-sm">
@@ -111,7 +111,7 @@ const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, 
                         <div className="flex justify-between text-sm border-t border-slate-200 pt-2">
                             <h1>Total Tagihan</h1>
                             <h1 className="font-bold">
-                                <span className="font-light">Rp</span> {formatNumber(totalPrice + Number(formData.serviceFee) - Number(formData.discount))}
+                                <span className="font-light">Rp</span> {formatNumber(totalPrice || 0 + Number(formData.serviceFee) - Number(formData.discount))}
                             </h1>
                         </div>
                     </div>
