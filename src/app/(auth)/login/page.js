@@ -42,7 +42,7 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-2 mt-4 mb-2 w-full">
                     <div className="space-y-2">
-                        <label className="text-xs text-red-500 block font-semibold">Email Address</label>
+                        <label className="text-xs text-slate-500 block font-semibold">Email Address</label>
                         <input
                             className="px-6 py-4 rounded-2xl border border-white focus:border-red-400 outline-none w-96 bg-slate-200 text-red-500"
                             type="email"
@@ -51,9 +51,10 @@ const Login = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
+                        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
                     </div>
                     <div className="space-y-2">
-                        <label className="text-xs text-red-500 block font-semibold">Password</label>
+                        <label className="text-xs text-slate-500 block font-semibold">Password</label>
                         <input
                             className="px-6 py-4 rounded-2xl border border-white focus:border-red-400 outline-none w-96 bg-slate-200 text-red-500"
                             type="password"

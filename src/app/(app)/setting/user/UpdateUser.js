@@ -23,6 +23,7 @@ const UpdateUser = ({ isModalOpen, notification, fetchUsers, findSelectedAccount
         } catch (error) {
             notification("error", error.response?.data?.message || "Something went wrong.");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -77,30 +78,21 @@ const UpdateUser = ({ isModalOpen, notification, fetchUsers, findSelectedAccount
                 </select>
             </div>
             <div className="mb-4">
-                <label>Role</label>
-                <div className="flex gap-4">
-                    <div className="flex justify-center items-center gap-2">
-                        <input
-                            type="radio"
-                            name="role"
-                            id="Administrator"
-                            value="Administrator"
-                            checked={updateUserData.role === "Administrator"}
-                            onChange={(e) => setUpdateUserData({ ...updateUserData, role: e.target.value })}
-                        />
-                        <label htmlFor="Administrator">Administrator</label>
-                    </div>
-                    <div className="flex justify-center items-center gap-2">
-                        <input
-                            type="radio"
-                            name="role"
-                            id="Staff"
-                            value="Staff"
-                            checked={updateUserData.role === "Staff"}
-                            onChange={(e) => setUpdateUserData({ ...updateUserData, role: e.target.value })}
-                        />
-                        <label htmlFor="Staff">Staff</label>
-                    </div>
+                <div>
+                    <label htmlFor="role">Role</label>
+                    <select
+                        name="role"
+                        required
+                        value={updateUserData.role}
+                        onChange={(e) => setUpdateUserData({ ...updateUserData, role: e.target.value })}
+                        className="w-full rounded-md shadow-sm border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    >
+                        <option value="">Select role</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Cashier">Kasir</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Technician">Teknisi</option>
+                    </select>
                 </div>
             </div>
             <div className="flex justify-end gap-2">

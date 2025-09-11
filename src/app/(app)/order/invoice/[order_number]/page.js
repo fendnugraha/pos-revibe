@@ -55,9 +55,8 @@ const OrderInvoice = ({ params }) => {
             <div id="print-area" className="p-6 bg-white md:mx-8 lg:mx-12 sm:mx-4 rounded-3xl">
                 <div className="grid grid-cols-2 my-4 pb-8">
                     <div>
-                        <h1 className="text-2xl font-bold">
-                            Re<span className="text-red-500">V</span>IBE ID
-                        </h1>
+                        <h1 className="text-2xl font-bold">{process.env.NEXT_PUBLIC_APP_NAME || "Revibe ID"}</h1>
+                        <p className="text-xs text-slate-500">{process.env.NEXT_PUBLIC_COMPANY_ADDRESS || "Bandung, Jawa Barat, ID, 40375"}</p>
                         <small className="text-slate-400">Phone Service & Accessories</small>
                     </div>
                     <div>

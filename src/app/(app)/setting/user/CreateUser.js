@@ -24,6 +24,7 @@ const CreateUser = ({ isModalOpen, notification, fetchUsers }) => {
         } catch (error) {
             notification(error.response?.data?.message || "Something went wrong.");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -128,7 +129,9 @@ const CreateUser = ({ isModalOpen, notification, fetchUsers }) => {
                     >
                         <option value="">Select role</option>
                         <option value="Administrator">Administrator</option>
+                        <option value="Cashier">Kasir</option>
                         <option value="Staff">Staff</option>
+                        <option value="Technician">Teknisi</option>
                     </select>
                     {errors.role && <p className="text-xs text-red-500">{errors.role}</p>}
                 </div>

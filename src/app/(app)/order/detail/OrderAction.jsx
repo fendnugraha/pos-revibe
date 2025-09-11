@@ -60,6 +60,7 @@ const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user,
                         <Button
                             buttonType="info"
                             disabled={isLoading}
+                            hidden={user?.id !== orderUserId}
                             onClick={() => {
                                 if (confirm("Apakah anda yakin ingin menyelesaikan order ini?")) handleUpdateOrderStatus("Finished");
                             }}
@@ -68,6 +69,7 @@ const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user,
                         </Button>
                         <button
                             className="small-button border !border-red-500 !hover:bg-red-400 text-red-500"
+                            hidden={user?.id !== orderUserId}
                             disabled={status === "Finished" || status === "Completed" || status === "Canceled" || status === "Rejected" || isLoading}
                             onClick={() => {
                                 if (confirm("Apakah anda yakin ingin membatalkan order ini?")) handleUpdateOrderStatus("Canceled");
