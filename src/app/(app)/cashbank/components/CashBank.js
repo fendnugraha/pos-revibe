@@ -77,7 +77,7 @@ const CashBank = () => {
     useEffect(() => {
         fetchJournalByWarehouse();
     }, [fetchJournalByWarehouse]);
-
+    console.log(journalByWarehouse);
     const fetchRevenueByWarehouse = useCallback(async () => {
         try {
             const response = await axios.get(`/api/get-revenue-by-warehouse/${warehouseId}/${startDate}/${endDate}`);
@@ -100,7 +100,7 @@ const CashBank = () => {
         }
     }, [warehouseCashAccountId]);
 
-    const filterAccountsByWarehouseId = accounts.filter((account) => account.warehouse_id === warehouseId);
+    const filterAccountsByWarehouseId = accounts.filter((account) => account.warehouse_id === Number(warehouseId));
     const filterJournalByAccountId = journalByWarehouse.filter((journal) => {
         const matchAccountId = journal.chart_of_account_id === Number(selectedAccountId) || Number(selectedAccountId) === "all";
         if (selectedAccountId !== "all") {
@@ -300,7 +300,7 @@ const CashBank = () => {
                 </div>
                 <button
                     onClick={() => {
-                        fetchRevenue();
+                        fetchJournalByWarehouse();
                         setIsModalFilterJournalOpen(false);
                     }}
                     className="btn-primary"

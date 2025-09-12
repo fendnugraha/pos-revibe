@@ -20,7 +20,7 @@ const TopBar = ({ user }) => {
                     <Image src="/revibe-logo.png" alt="Logo" width={75} height={32} priority />
                 </div>
                 <div className="hidden sm:flex items-center gap-4">
-                    <ul className="flex items-center gap-4 bg-white/75 hover:outline outline-slate-300 dark:bg-slate-800 backdrop-blur-sm px-6 py-2 rounded-full shadow">
+                    <ul className="flex items-center gap-4 bg-white/75 dark:bg-slate-600 hover:outline outline-slate-300 backdrop-blur-sm px-6 py-2 rounded-full shadow">
                         {navMenu.mainMenu
                             .filter((item) => item.role.includes(userRole))
                             .map((item, index) => (
@@ -34,7 +34,7 @@ const TopBar = ({ user }) => {
                     </ul>
                 </div>
                 <div className="flex items-center justify-end gap-4 w-[270px]">
-                    <div className="flex items-center gap-4 rounded-full bg-white/75 hover:outline outline-slate-300 backdrop-blur-sm px-4 py-1 text-sm shadow">
+                    <div className="flex items-center gap-4 rounded-full bg-white/75 dark:bg-slate-600 hover:outline outline-slate-300 backdrop-blur-sm px-4 py-1 text-sm shadow">
                         <User2Icon size={20} />
                         <h1 className="font-bold">
                             {user.email}
