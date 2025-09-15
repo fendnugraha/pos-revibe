@@ -39,7 +39,7 @@ const TopBar = ({ user }) => {
                     <div className="flex items-center gap-4 rounded-full bg-white/75 dark:bg-slate-600 hover:outline outline-slate-300 backdrop-blur-sm px-4 py-1 text-sm shadow">
                         <User2Icon size={20} />
                         <h1 className="font-bold text-nowrap overflow-hidden">
-                            {user.email}
+                            {user.name}
                             <span className="text-xs font-light block"> {warehouseName}</span>
                         </h1>
                         <DarkModeToggle />
