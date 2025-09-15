@@ -99,13 +99,15 @@ const OrderDetail = ({ params }) => {
                         </p>
                     </div>
                 </div>
-                <OrderAction
-                    status={order?.status}
-                    isLoading={isLoading}
-                    handleUpdateOrderStatus={handleUpdateOrderStatus}
-                    user={user}
-                    orderTechnicianId={order?.technician_id}
-                />
+                {order && warehouseId === order?.warehouse_id && (
+                    <OrderAction
+                        status={order?.status}
+                        isLoading={isLoading}
+                        handleUpdateOrderStatus={handleUpdateOrderStatus}
+                        user={user}
+                        orderTechnicianId={order?.technician_id}
+                    />
+                )}
             </div>
             <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2 card p-4">
@@ -150,7 +152,7 @@ const OrderDetail = ({ params }) => {
                                         statusText={order?.payment_method ?? "Unpaid"}
                                     />
                                 </h1>
-                                {order?.status === "Finished" && (
+                                {order?.status === "Finished" && warehouseId === order?.warehouse_id && (
                                     <button
                                         className="px-4 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer text-sm"
                                         onClick={() => setIsModalCreatePaymentOpen(true)}

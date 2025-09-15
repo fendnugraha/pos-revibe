@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import { X } from "lucide-react";
 
 const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user, orderTechnicianId }) => {
+    const warehouseId = user?.role?.warehouse_id;
     return (
         // <select
         //     disabled={status === "Finished" || status === "Completed" || status === "Canceled" || status === "Rejected" || isLoading}
