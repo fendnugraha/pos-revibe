@@ -23,7 +23,8 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
             isModalOpen(false);
             fetchOrders();
         } catch (error) {
-            notification("error", error.response?.data?.message || "Something went wrong.");
+            notification("error", "Something went wrong.");
+            console.log(error);
         }
     };
     return (
