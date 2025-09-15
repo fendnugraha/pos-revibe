@@ -1,10 +1,9 @@
 import Breadcrumb from "@/components/Breadcrumb";
-import RevenueReport from "./RevenueReport";
+import RevenueReport from "./components/RevenueReport";
 import { todayDate } from "@/libs/format";
-import RevenueByUser from "./RevenueByUser";
-import WarehouseBalance from "./WarehouseBalance";
-import Profit from "./Profit";
-import CashBankBalance from "./CashBankBalance";
+import RevenueByUser from "./components/RevenueByUser";
+import WarehouseBalance from "./components/WarehouseBalance";
+import CashBankBalance from "./components/CashBankBalance";
 
 export const metadata = {
     title: "Revibe | Summary",

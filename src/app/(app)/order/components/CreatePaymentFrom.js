@@ -12,6 +12,7 @@ const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, 
         order_number: order_number,
         serviceFee: "",
         discount: "",
+        note: "",
     });
     const [accounts, setAccounts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -85,6 +86,15 @@ const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, 
                             placeholder="Rp."
                             onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
                             value={formData.discount}
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-900">Catatan</label>
+                        <textarea
+                            className="w-full border bg-white border-slate-200 px-4 py-2 rounded-xl mb-4"
+                            placeholder="Catatan teknisi"
+                            onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+                            value={formData.note}
                         />
                     </div>
                 </div>

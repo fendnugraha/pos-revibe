@@ -17,10 +17,12 @@ import CreateIncome from "./CreateIncome";
 import StatusBadge from "@/components/StatusBadge";
 import Label from "@/components/Label";
 import Input from "@/components/Input";
+import CreatePrive from "./CreatePrive";
 
 const CashBank = () => {
     const { user } = useAuth();
     const warehouseId = user?.role?.warehouse_id;
+    const userRole = user?.role?.role;
     const [startDate, setStartDate] = useState(todayDate());
     const [endDate, setEndDate] = useState(todayDate());
     const [searchTerm, setSearchTerm] = useState("");
@@ -77,7 +79,6 @@ const CashBank = () => {
     useEffect(() => {
         fetchJournalByWarehouse();
     }, [fetchJournalByWarehouse]);
-    console.log(journalByWarehouse);
     const fetchRevenueByWarehouse = useCallback(async () => {
         try {
             const response = await axios.get(`/api/get-revenue-by-warehouse/${warehouseId}/${startDate}/${endDate}`);
@@ -113,12 +114,14 @@ const CashBank = () => {
     const [isModalCreateJournalOpen, setIsModalCreateJournalOpen] = useState(false);
     const [isModalCreateIncomeOpen, setIsModalCreateIncomeOpen] = useState(false);
     const [isModalCreateExpenseOpen, setIsModalCreateExpenseOpen] = useState(false);
+    const [isModalCreatePriveOpen, setIsModalCreatePriveOpen] = useState(false);
 
     const closeModal = () => {
         setIsModalCreateJournalOpen(false);
         setIsModalCreateIncomeOpen(false);
         setIsModalCreateExpenseOpen(false);
         setIsModalFilterJournalOpen(false);
+        setIsModalCreatePriveOpen(false);
     };
 
     useEffect(() => {
@@ -150,9 +153,14 @@ const CashBank = () => {
                                 Kas Masuk
                             </button>
                         </li>
-                        <li className="hover:bg-slate-100 dark:hover:bg-slate-500">
+                        <li className="border-b border-slate-200 hover:bg-slate-100 dark:border-slate-500 dark:hover:bg-slate-500">
                             <button className="w-full text-sm text-left py-2 px-4" onClick={() => setIsModalCreateExpenseOpen(true)}>
                                 Kas Keluar
+                            </button>
+                        </li>
+                        <li className="hover:bg-slate-100 dark:hover:bg-slate-500" hidden={userRole !== "Administrator"}>
+                            <button className="w-full text-sm text-left py-2 px-4" onClick={() => setIsModalCreatePriveOpen(true)}>
+                                Input Prive
                             </button>
                         </li>
                     </ul>
@@ -248,6 +256,17 @@ const CashBank = () => {
                     user={user}
                     today={today}
                     warehouseId={warehouseId}
+                />
+            </Modal>
+            <Modal isOpen={isModalCreatePriveOpen} onClose={closeModal} maxWidth={"max-w-xl"} modalTitle="Buat Jurnal Prive">
+                <CreatePrive
+                    accounts={accounts}
+                    isModalOpen={setIsModalCreatePriveOpen}
+                    fetchRevenueByWarehouse={fetchRevenueByWarehouse}
+                    fetchJournalByWarehouse={fetchJournalByWarehouse}
+                    notification={setNotification}
+                    user={user}
+                    today={today}
                 />
             </Modal>
             <Modal isOpen={isModalCreateExpenseOpen} onClose={closeModal} maxWidth={"max-w-xl"} modalTitle="Pengeluaran Kas">
