@@ -3,7 +3,6 @@ import Modal from "@/components/Modal";
 import Notification from "@/components/Notification";
 import StatusBadge from "@/components/StatusBadge";
 import axios from "@/libs/axios";
-import TimeAgo from "@/libs/formatDateDistance";
 import formatDateTime from "@/libs/formatDateTime";
 import formatNumber from "@/libs/formatNumber";
 import { ArrowLeftIcon, MailIcon, Phone, PhoneCallIcon, PhoneIcon, PinIcon, ReceiptTextIcon, ShoppingBagIcon, SmartphoneIcon, User2Icon } from "lucide-react";
@@ -15,7 +14,6 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import { useAuth } from "@/libs/auth";
 import OrderAction from "../OrderAction";
-import { set } from "date-fns";
 
 const OrderDetail = ({ params }) => {
     const { user } = useAuth();
@@ -66,7 +64,7 @@ const OrderDetail = ({ params }) => {
             setIsLoading(false);
         }
     };
-    const totalPrice = order?.transaction?.stock_movements?.reduce((total, part) => total + part.price * -part.quantity, 0);
+    const totalPrice = order?.transaction?.stock_movements?.reduce((total, part) => total + part.price * -part.quantity, 0) || 0;
     return (
         <>
             <Breadcrumb

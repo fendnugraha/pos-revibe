@@ -111,7 +111,8 @@ const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, 
                         <div className="flex justify-between text-sm border-t border-slate-200 pt-2">
                             <h1>Total Tagihan</h1>
                             <h1 className="font-bold">
-                                <span className="font-light">Rp</span> {formatNumber(totalPrice || 0 + Number(formData.serviceFee) - Number(formData.discount))}
+                                <span className="font-light">Rp</span>{" "}
+                                {formatNumber(Number(totalPrice) + Number(formData.serviceFee) - Number(formData.discount))}
                             </h1>
                         </div>
                     </div>
