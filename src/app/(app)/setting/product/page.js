@@ -14,6 +14,7 @@ import Paginator from "@/components/Paginator";
 import Breadcrumb from "@/components/Breadcrumb";
 import ImportProducts from "./ImportProduct";
 import ImportCategoryProducts from "./ImportCategory";
+import Link from "next/link";
 
 const Product = () => {
     const [product, setProduct] = useState(null);
@@ -214,7 +215,9 @@ const Product = () => {
                                                 />
                                             </td>
                                             <td>
-                                                {product.name}
+                                                <Link className="hover:underline" href={`/setting/product/history/${product.id}`}>
+                                                    {product.name}
+                                                </Link>
                                                 <span className="block text-xs text-slate-400">
                                                     {product.code} {product.category?.name}
                                                 </span>

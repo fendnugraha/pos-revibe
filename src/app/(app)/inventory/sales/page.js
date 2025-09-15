@@ -28,7 +28,7 @@ const useDebounce = (value, delay) => {
     return debouncedValue;
 };
 
-const PurchaseOrder = () => {
+const SalesOrder = () => {
     const PurchasePageBreadcrumb = [
         {
             name: "Inventory",
@@ -36,8 +36,8 @@ const PurchaseOrder = () => {
             current: false,
         },
         {
-            name: "Purchase Order",
-            href: "/inventory/purchase",
+            name: "Sales Order",
+            href: "/inventory/sales",
             current: true,
         },
     ];
@@ -53,7 +53,7 @@ const PurchaseOrder = () => {
     const [search, setSearch] = useState("");
     const [productList, setProductList] = useState([]);
     const debouncedSearch = useDebounce(search, 500); // Apply debounce with 500ms delay
-    const [cartPo, setCartPo] = useState([]);
+    const [cart, setCart] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [showProductList, setShowProductList] = useState(false);
@@ -105,7 +105,7 @@ const PurchaseOrder = () => {
 
     // Add product to part
     const handleAddToCart = (product) => {
-        setCartPo((prevpart) => {
+        setCart((prevpart) => {
             const existingProduct = prevpart.find((item) => item.id === product.id);
             if (existingProduct) {
                 // If product is already in the part, increase its quantity
@@ -122,13 +122,13 @@ const PurchaseOrder = () => {
     };
 
     const handleUpdatePrice = (product, newPrice) => {
-        setCartPo((prevpart) => {
-            return prevpart.map((item) => (item.id === product.id ? { ...item, current_cost: newPrice } : item));
+        setCart((prevpart) => {
+            return prevpart.map((item) => (item.id === product.id ? { ...item, price: newPrice } : item));
         });
     };
 
     const handleIncrementQuantity = (product) => {
-        setCartPo((prevpart) => {
+        setCart((prevpart) => {
             return prevpart.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
         });
     };
@@ -140,35 +140,35 @@ const PurchaseOrder = () => {
             handleRemoveFromPart(product);
             return;
         }
-        setCartPo((prevpart) => {
+        setCart((prevpart) => {
             return prevpart.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item));
         });
     };
 
     // Calculate total price
     const calculateTotalPrice = useCallback(() => {
-        return cartPo.reduce((total, item) => total + item.current_cost * item.quantity, 0);
-        // return cartPo.reduce((total, item) => total + item.cost * item.quantity, 0);
-    }, [cartPo]);
+        return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        // return cart.reduce((total, item) => total + item.cost * item.quantity, 0);
+    }, [cart]);
 
     const calculateTotalQuantity = useCallback(() => {
-        return cartPo.reduce((total, item) => total + item.quantity, 0);
-    }, [cartPo]);
+        return cart.reduce((total, item) => total + item.quantity, 0);
+    }, [cart]);
 
     // Remove product from part
     const handleRemoveFromPart = (product) => {
-        setCartPo((prevpart) => prevpart.filter((item) => item.id !== product.id));
+        setCart((prevpart) => prevpart.filter((item) => item.id !== product.id));
     };
 
     // Handle clear part
     const handleClearPart = () => {
-        setCartPo([]);
+        setCart([]);
     };
 
     // Load part from localStorage on component mount
     useEffect(() => {
         const storedPart = JSON.parse(localStorage.getItem("part")) || [];
-        setCartPo(storedPart);
+        setCart(storedPart);
     }, []);
 
     // Fetch product list when debounced search term changes
@@ -178,9 +178,9 @@ const PurchaseOrder = () => {
 
     // Save part to localStorage whenever it changes
     useEffect(() => {
-        localStorage.setItem("cartPo", JSON.stringify(cartPo));
+        localStorage.setItem("cart", JSON.stringify(cart));
         setTotalPrice(calculateTotalPrice());
-    }, [cartPo, calculateTotalPrice]);
+    }, [cart, calculateTotalPrice]);
 
     const fetchAccountByIds = useCallback(async ({ account_ids }) => {
         setLoading(true);
@@ -210,7 +210,7 @@ const PurchaseOrder = () => {
     const handleCheckOut = async () => {
         setLoading(true);
         try {
-            const response = await axios.post("/api/purchase-order", { ...formData, cart: cartPo });
+            const response = await axios.post("/api/sales-order", { ...formData, cart: cart });
             setNotification({ type: "success", message: response.data.message });
             handleClearPart();
             setFormData({
@@ -286,12 +286,12 @@ const PurchaseOrder = () => {
                         <h1 className="mb-2 font-bold text-lg px-4 pt-4">
                             Order List{" "}
                             <span className="text-gray-500">
-                                ({cartPo.length} {cartPo.length === 1 ? "item" : "items"})
+                                ({cart.length} {cart.length === 1 ? "item" : "items"})
                             </span>
                         </h1>
                         <div className="max-h-[calc(85px*5)] overflow-auto border-t border-slate-300">
-                            {cartPo.length > 0 ? (
-                                cartPo.map((item) => (
+                            {cart.length > 0 ? (
+                                cart.map((item) => (
                                     <div className="flex justify-between items-center p-4 last:border-0 border-b border-dashed border-slate-300" key={item.id}>
                                         <div>
                                             <h2 className="mb-2 font-semibold text-sm">{item.name}</h2>
@@ -316,7 +316,7 @@ const PurchaseOrder = () => {
                                                     <label className="font-medium text-xs text-gray-700 dark:text-white mb-1">Rp</label>
                                                     <input
                                                         type="number"
-                                                        value={item.current_cost}
+                                                        value={item.price}
                                                         onChange={(e) => handleUpdatePrice(item, e.target.value)}
                                                         className="w-auto text-sm border border-slate-300 rounded-xl px-4 py-1"
                                                         placeholder="Harga"
@@ -327,7 +327,7 @@ const PurchaseOrder = () => {
                                         <div className="flex items-center gap-6">
                                             <h1 className="text-lg font-semibold">
                                                 <span className="text-gray-500 text-sm block text-end">Subtotal</span>
-                                                {formatRupiah(item.current_cost * item.quantity)}
+                                                {formatRupiah(item.price * item.quantity)}
                                             </h1>
                                             <button
                                                 onClick={() => handleRemoveFromPart(item)}
@@ -368,7 +368,7 @@ const PurchaseOrder = () => {
                         <h1 className="font-semibold text-sm">Total Bayar</h1>
                         <h1 className="font-semibold text-3xl">{formatRupiah(totalPrice)}</h1>
                     </div>
-                    <Button buttonType="dark" onClick={() => setIsModalCheckOutOpen(true)} disabled={cartPo.length === 0} className="w-full mt-4">
+                    <Button buttonType="dark" onClick={() => setIsModalCheckOutOpen(true)} disabled={cart.length === 0} className="w-full mt-4">
                         Checkout
                     </Button>
                 </div>
@@ -490,4 +490,4 @@ const PurchaseOrder = () => {
     );
 };
 
-export default PurchaseOrder;
+export default SalesOrder;

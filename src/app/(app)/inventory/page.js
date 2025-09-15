@@ -14,6 +14,7 @@ import formatDateTime from "@/libs/formatDateTime";
 import formatNumber from "@/libs/formatNumber";
 import ProductTable from "./components/ProductTable";
 import { set } from "date-fns";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const getCurrentDate = () => {
     const today = new Date();
@@ -94,7 +95,13 @@ const Inventory = () => {
     };
 
     return (
-        <MainPage headerTitle="Service Order">
+        <>
+            <Breadcrumb
+                BreadcrumbArray={[
+                    { name: "Inventory", href: "/inventory" },
+                    { name: "Inventory Management", href: "/inventory" },
+                ]}
+            />
             {notification.message && (
                 <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
             )}
@@ -108,7 +115,8 @@ const Inventory = () => {
                     </Link>
                 )}
             </div>
-            <div className="card mb-4">
+            <ProductTable warehouse={warehouse} warehouses={warehouses} warehouseName={warehouseName} notification={setNotification} />
+            <div className="card mt-4">
                 <div className="p-4 flex justify-between sm:flex-row flex-col items-start">
                     <h1 className="text-2xl font-bold mb-4">
                         Transaksi Barang
@@ -242,8 +250,7 @@ const Inventory = () => {
                 </div>
                 <div className="px-4">{transactions.last_page > 1 && <Paginator links={transactions} handleChangePage={handleChangePage} />}</div>
             </div>
-            <ProductTable warehouse={warehouse} warehouses={warehouses} warehouseName={warehouseName} notification={setNotification} />
-        </MainPage>
+        </>
     );
 };
 

@@ -77,7 +77,7 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
     const summarizeTotal = (warehouseStock) => {
         let total = 0;
         warehouseStock.forEach((item) => {
-            total += item.current_cost * item.current_stock;
+            total += item.current_cost * item.stock_movements_sum_quantity;
         });
         return total;
     };
@@ -191,9 +191,9 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                                         {item.code} - {item.name}
                                     </Link>
                                 </td>
-                                <td className="text-end">{formatNumber(item.current_stock)}</td>
+                                <td className="text-end">{formatNumber(item.stock_movements_sum_quantity)}</td>
                                 <td className="text-end">{formatNumber(item.current_cost)}</td>
-                                <td className="text-end font-semibold">{formatNumber(item.current_cost * item.current_stock)}</td>
+                                <td className="text-end font-semibold">{formatNumber(item.current_cost * item.stock_movements_sum_quantity)}</td>
                                 <td className="flex justify-center gap-2">
                                     <button
                                         onClick={() => {

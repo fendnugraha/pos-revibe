@@ -1,5 +1,6 @@
 "use client";
 import MainPage from "@/app/(app)/main";
+import Breadcrumb from "@/components/Breadcrumb";
 import Dropdown from "@/components/Dropdown";
 import Notification from "@/components/Notification";
 import axios from "@/libs/axios";
@@ -64,13 +65,14 @@ const TransactionDetail = ({ params }) => {
         }
     };
     return (
-        <MainPage
-            headerTitle={
-                <>
-                    Transaction <span className="text-slate-400 font-normal">/ Detail</span>
-                </>
-            }
-        >
+        <>
+            <Breadcrumb
+                BreadcrumbArray={[
+                    { name: "Inventory", href: "/inventory" },
+                    { name: "Inventory Management", href: "/inventory" },
+                    { name: "Transaction Detail", href: `/inventory/detail/${invoice}` },
+                ]}
+            />
             {notification.message && (
                 <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
             )}
@@ -180,7 +182,7 @@ const TransactionDetail = ({ params }) => {
                     </table>
                 </div>
             </div>
-        </MainPage>
+        </>
     );
 };
 
