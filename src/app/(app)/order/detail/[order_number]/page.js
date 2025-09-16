@@ -5,7 +5,7 @@ import StatusBadge from "@/components/StatusBadge";
 import axios from "@/libs/axios";
 import formatDateTime from "@/libs/formatDateTime";
 import formatNumber from "@/libs/formatNumber";
-import { ArrowLeftIcon, MailIcon, Phone, PhoneCallIcon, PhoneIcon, PinIcon, ReceiptTextIcon, ShoppingBagIcon, SmartphoneIcon, User2Icon } from "lucide-react";
+import { ArrowLeftIcon, MailIcon, Pencil, PhoneCallIcon, ReceiptTextIcon, ShoppingBagIcon, SmartphoneIcon, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { use, useCallback, useEffect, useState } from "react";
 import PartsTable from "../../components/PartsTable";
@@ -14,6 +14,8 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import { useAuth } from "@/libs/auth";
 import OrderAction from "../OrderAction";
+import PaymentEditForm from "./EditPayment";
+import { set } from "date-fns";
 
 const OrderDetail = ({ params }) => {
     const { user } = useAuth();
@@ -28,8 +30,10 @@ const OrderDetail = ({ params }) => {
     const [order, setOrder] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [isModalCreatePaymentOpen, setIsModalCreatePaymentOpen] = useState(false);
+    const [isModalEditPaymentOpen, setIsModalEditPaymentOpen] = useState(false);
     const closeModal = () => {
         setIsModalCreatePaymentOpen(false);
+        setIsModalEditPaymentOpen(false);
     };
 
     const fetchOrder = useCallback(async () => {
@@ -184,6 +188,30 @@ const OrderDetail = ({ params }) => {
                             </p>
                         </>
                     )}
+                    <hr className="border-slate-200 my-4" />
+                    <div className="mt-4">
+                        <h1 className="card-title mb-4">
+                            Payment Detail{"  "}
+                            <button className="small-button" onClick={() => setIsModalEditPaymentOpen(true)}>
+                                <Pencil size={12} />
+                            </button>
+                        </h1>
+                        <div className="">
+                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                <span className="font-semibold">Tanggal:</span> <span className="">{formatDateTime(order?.journal?.date_issued)}</span>
+                            </p>
+                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                <span className="font-semibold">Metode Pembayaran:</span> <span className="">{order?.payment_method}</span>
+                            </p>
+                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                <span className="font-semibold">Bank/Rekening:</span>{" "}
+                                <span className="">
+                                    {order?.journal?.entries?.find((e) => [1, 2, 4, 5].includes(e?.chart_of_account?.account_id))?.chart_of_account?.acc_name ??
+                                        "N/A"}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <div>
@@ -228,6 +256,18 @@ const OrderDetail = ({ params }) => {
                     order={order}
                     isModalOpen={setIsModalCreatePaymentOpen}
                     notification={(type, message) => setNotification({ type, message })}
+                    fetchOrder={fetchOrder}
+                    totalPrice={totalPrice}
+                    order_number={order_number}
+                    warehouseId={warehouseId}
+                    warehousePrimaryCashAccountId={warehousePrimaryCashAccountId}
+                />
+            </Modal>
+            <Modal isOpen={isModalEditPaymentOpen} onClose={closeModal} modalTitle="Edit Pembayaran" maxWidth="max-w-md">
+                <PaymentEditForm
+                    order={order}
+                    isModalOpen={setIsModalEditPaymentOpen}
+                    notification={setNotification}
                     fetchOrder={fetchOrder}
                     totalPrice={totalPrice}
                     order_number={order_number}
