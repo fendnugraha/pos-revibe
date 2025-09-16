@@ -188,30 +188,34 @@ const OrderDetail = ({ params }) => {
                             </p>
                         </>
                     )}
-                    <hr className="border-slate-200 my-4" />
-                    <div className="mt-4">
-                        <h1 className="card-title mb-4">
-                            Payment Detail{"  "}
-                            <button className="small-button" onClick={() => setIsModalEditPaymentOpen(true)}>
-                                <Pencil size={12} />
-                            </button>
-                        </h1>
-                        <div className="">
-                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
-                                <span className="font-semibold">Tanggal:</span> <span className="">{formatDateTime(order?.journal?.date_issued)}</span>
-                            </p>
-                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
-                                <span className="font-semibold">Metode Pembayaran:</span> <span className="">{order?.payment_method}</span>
-                            </p>
-                            <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
-                                <span className="font-semibold">Bank/Rekening:</span>{" "}
-                                <span className="">
-                                    {order?.journal?.entries?.find((e) => [1, 2, 4, 5].includes(e?.chart_of_account?.account_id))?.chart_of_account?.acc_name ??
-                                        "N/A"}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
+                    {order?.journal && (
+                        <>
+                            <hr className="border-slate-200 my-4" />
+                            <div className="mt-4">
+                                <h1 className="card-title mb-4">
+                                    Payment Detail{"  "}
+                                    <button className="small-button" onClick={() => setIsModalEditPaymentOpen(true)}>
+                                        <Pencil size={12} />
+                                    </button>
+                                </h1>
+                                <div className="">
+                                    <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                        <span className="font-semibold">Tanggal:</span> <span className="">{formatDateTime(order?.journal?.date_issued)}</span>
+                                    </p>
+                                    <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                        <span className="font-semibold">Metode Pembayaran:</span> <span className="">{order?.payment_method}</span>
+                                    </p>
+                                    <p className="text-sm text-slate-500 flex items-center justify-between gap-2">
+                                        <span className="font-semibold">Bank/Rekening:</span>{" "}
+                                        <span className="">
+                                            {order?.journal?.entries?.find((e) => [1, 2, 4, 5].includes(e?.chart_of_account?.account_id))?.chart_of_account
+                                                ?.acc_name ?? "N/A"}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 <div>
