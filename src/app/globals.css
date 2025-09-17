@@ -28,12 +28,12 @@ body {
 }
 
 .small-button {
-    @apply bg-white dark:bg-slate-700 dark:text-white font-bold p-3 rounded-lg border border-gray-300 dark:border-gray-500 hover:border-gray-400 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed;
+    @apply bg-white dark:bg-slate-500 dark:text-white font-bold p-3 rounded-lg border border-gray-300 dark:border-gray-500 hover:border-gray-400 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed;
 }
 
 /* card */
 .card {
-    @apply bg-white text-sm dark:bg-slate-700 hover:outline outline-slate-300 dark:hover:outline-slate-500 dark:text-white shadow-sm rounded-3xl;
+    @apply bg-white text-sm dark:bg-slate-800 hover:outline outline-slate-300 dark:hover:outline-slate-500 dark:text-white shadow-sm rounded-3xl;
 }
 
 .card .card-title {

@@ -10,7 +10,7 @@ const AppLayout = ({ children }) => {
         return <Loading />;
     }
     return (
-        <div className="h-screen overflow-hidden dark:bg-slate-800 dark:text-white">
+        <div className="h-screen overflow-hidden dark:bg-slate-700 dark:text-white">
             {/* <Navigation user={user} /> */}
             <TopBar user={user} />
             <div className="px-4 sm:px-12 py-4 h-[calc(100vh-80px)] overflow-auto">{children}</div>

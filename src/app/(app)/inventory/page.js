@@ -106,11 +106,11 @@ const Inventory = () => {
                 <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
             )}
             <div className="flex items-center gap-2 mb-4">
-                <Link href="/inventory/sales" className="btn-primary text-sm font-normal">
+                <Link href="/inventory/sales" className="btn-primary text-sm font-normal flex items-center gap-2 justify-center">
                     <PlusCircleIcon className="w-4 h-4 inline" /> Penjualan
                 </Link>
-                {userRole === "Administrator" && (
-                    <Link href="/inventory/purchase" className="btn-primary text-sm font-normal">
+                {["Administrator", "Cashier"].includes(userRole) && (
+                    <Link href="/inventory/purchase" className="btn-primary text-sm font-normal flex items-center gap-2 justify-center">
                         <PlusCircleIcon className="w-4 h-4 inline" /> Pembelian
                     </Link>
                 )}

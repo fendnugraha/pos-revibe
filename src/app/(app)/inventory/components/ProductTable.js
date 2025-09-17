@@ -149,78 +149,78 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                         </button>
                     </Modal>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 mb-4">
-                    <div className="flex items-center gap-2">
-                        <InputGroup
-                            type="search"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            maxWidth="w-full"
-                            InputIcon={<SearchIcon size={18} />}
-                            placeholder="Search"
-                        />
-                        <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className="form-select !w-20">
-                            <option value="10">10</option>
-                            <option value="20">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </div>
+                <div className="flex items-center justify-between gap-2 mb-4">
+                    <InputGroup
+                        type="search"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        maxWidth="w-full"
+                        InputIcon={<SearchIcon size={18} />}
+                        placeholder="Search"
+                    />
+                    <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className="form-select !w-20">
+                        <option value="10">10</option>
+                        <option value="20">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
                 </div>
-                <table className="w-full table text-sm">
-                    <thead>
-                        <tr>
-                            <th className="">Product Name</th>
-                            <th className="">Quantity</th>
-                            <th className="">Price</th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentItems?.map((item, index) => (
-                            <tr key={index} className="text-xs">
-                                <td className="text-start w-1/2">
-                                    <Link className="hover:underline" href={`/setting/product/history/${item.id}`}>
-                                        {item.code} - {item.name}
-                                    </Link>
-                                </td>
-                                <td className="text-end">{formatNumber(item.stock_movements_sum_quantity)}</td>
-                                <td className="text-end">{formatNumber(item.current_cost)}</td>
-                                <td className="text-end font-semibold">{formatNumber(item.current_cost * item.stock_movements_sum_quantity)}</td>
-                                <td className="flex justify-center gap-2">
-                                    <button
-                                        onClick={() => {
-                                            setIsModalAdjustmentOpen(true);
-                                            setSelectedProduct(item.id);
-                                        }}
-                                        className="cursor-pointer flex items-center gap-1 hover:underline text-cyan-600"
-                                    >
-                                        <PencilRulerIcon size={20} /> Stock Adjustment
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            setIsModalReversalOpen(true);
-                                            setSelectedProduct(item.id);
-                                        }}
-                                        className="cursor-pointer flex items-center gap-1 hover:underline text-red-600"
-                                    >
-                                        <UndoIcon size={20} /> Reversal
-                                    </button>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full table text-sm">
+                        <thead>
+                            <tr>
+                                <th className="">Product Name</th>
+                                <th className="">Quantity</th>
+                                <th className="">Price</th>
+                                <th>Total</th>
+                                <th></th>
                             </tr>
-                        ))}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colSpan="3" className="text-end font-bold">
-                                Total
-                            </th>
-                            <th className="text-end font-bold">{formatNumber(summarizeTotal(warehouseStock))}</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </thead>
+                        <tbody>
+                            {currentItems?.map((item, index) => (
+                                <tr key={index} className="text-xs">
+                                    <td className="text-start w-1/2">
+                                        <Link className="hover:underline" href={`/setting/product/history/${item.id}`}>
+                                            {item.code} - {item.name}
+                                        </Link>
+                                    </td>
+                                    <td className="text-end">{formatNumber(item.stock_movements_sum_quantity)}</td>
+                                    <td className="text-end">{formatNumber(item.current_cost)}</td>
+                                    <td className="text-end font-semibold">{formatNumber(item.current_cost * item.stock_movements_sum_quantity)}</td>
+                                    <td className="flex justify-center gap-2">
+                                        <button
+                                            onClick={() => {
+                                                setIsModalAdjustmentOpen(true);
+                                                setSelectedProduct(item.id);
+                                            }}
+                                            className="cursor-pointer flex items-center gap-1 hover:underline text-cyan-600 dark:text-cyan-400"
+                                        >
+                                            <PencilRulerIcon size={20} /> Stock Adjustment
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setIsModalReversalOpen(true);
+                                                setSelectedProduct(item.id);
+                                            }}
+                                            className="cursor-pointer flex items-center gap-1 hover:underline text-red-600 dark:text-red-400"
+                                        >
+                                            <UndoIcon size={20} /> Reversal
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colSpan="3" className="text-end font-bold">
+                                    Total
+                                </th>
+                                <th className="text-end font-bold">{formatNumber(summarizeTotal(warehouseStock))}</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
                 {totalPages > 1 && (
                     <Pagination
                         className="w-full px-4"

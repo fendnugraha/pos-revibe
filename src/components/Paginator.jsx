@@ -39,8 +39,8 @@ export default function Paginator({ links, handleChangePage }) {
                                       disabled={!link.url}
                                       className={
                                           link.active
-                                              ? "z-10 bg-indigo-500 text-white border-indigo-500 scale-110 relative inline-flex items-center px-2 py-1 rounded-sm border text-sm font-bold"
-                                              : "border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-2 py-1 border text-xs font-medium"
+                                              ? "z-10 bg-indigo-500 dark:bg-orange-500 text-white dark:text-slate-100 border-indigo-500 dark:border-orange-500 scale-110 relative inline-flex items-center px-2 py-1 rounded-sm border text-sm font-bold"
+                                              : "dark:bg-slate-500 border-gray-300 dark:border-gray-400 text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 relative inline-flex items-center px-2 py-1 border text-xs font-medium"
                                       }
                                   >
                                       {link.label === "&laquo; Previous" ? (

@@ -6,9 +6,9 @@ const Setting = () => {
     return (
         <>
             <div className="p-6">
-                <ul className="flex flex-col w-full sm:w-1/2 bg-white rounded-2xl">
+                <ul className="flex flex-col w-full sm:w-1/2 bg-white dark:bg-slate-700 rounded-2xl">
                     <Link href="/setting/user">
-                        <li className="border-b p-2 border-slate-300 hover:bg-slate-200">
+                        <li className="border-b p-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600">
                             <button className="px-4 w-full text-start py-2 cursor-pointer flex items-center gap-2">
                                 <User2Icon size={20} />
                                 User
@@ -16,7 +16,7 @@ const Setting = () => {
                         </li>
                     </Link>
                     <Link href="/setting/product">
-                        <li className="border-b p-2 border-slate-300 hover:bg-slate-200">
+                        <li className="border-b p-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600">
                             <button className="px-4 w-full text-start py-2 cursor-pointer flex items-center gap-2">
                                 <BoxesIcon size={20} />
                                 Product
@@ -24,7 +24,7 @@ const Setting = () => {
                         </li>
                     </Link>
                     <Link href="/setting/contact">
-                        <li className="border-b p-2 border-slate-300 hover:bg-slate-200">
+                        <li className="border-b p-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600">
                             <button className="px-4 w-full text-start py-2 cursor-pointer flex items-center gap-2">
                                 <ContactIcon size={20} />
                                 Contact
@@ -32,7 +32,7 @@ const Setting = () => {
                         </li>
                     </Link>
                     <Link href="/setting/account">
-                        <li className="border-b p-2 border-slate-300 hover:bg-slate-200">
+                        <li className="border-b p-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600">
                             <button className="px-4 w-full text-start py-2 cursor-pointer flex items-center gap-2">
                                 <ScaleIcon size={20} />
                                 Chart of Account
@@ -40,7 +40,7 @@ const Setting = () => {
                         </li>
                     </Link>
                     <Link href="/setting/warehouse">
-                        <li className="p-2 border-slate-300 hover:bg-slate-200">
+                        <li className="p-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600">
                             <button className="px-4 w-full text-start py-2 cursor-pointer flex items-center gap-2">
                                 <WarehouseIcon size={20} />
                                 Warehouse
