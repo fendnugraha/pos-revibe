@@ -1,4 +1,7 @@
 "use client";
+import Input from "@/components/Input";
+import Label from "@/components/Label";
+import Modal from "@/components/Modal";
 import axios from "@/libs/axios";
 import { formatDate, formatNumber, todayDate } from "@/libs/format";
 import { Download, Filter } from "lucide-react";
@@ -87,6 +90,38 @@ const RevenueByUser = () => {
                     </tfoot>
                 </table>
             </div>
+            <Modal isOpen={isModalFilterJournalOpen} onClose={closeModal} modalTitle="Filter Tanggal" maxWidth="max-w-md">
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                    <div>
+                        <Label>Tanggal</Label>
+                        <Input
+                            type="datetime-local"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            className="w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        />
+                    </div>
+                    <div>
+                        <Label>s/d</Label>
+                        <Input
+                            type="datetime-local"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            className="w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            disabled={!startDate}
+                        />
+                    </div>
+                </div>
+                <button
+                    onClick={() => {
+                        fetchRevenue();
+                        setIsModalFilterJournalOpen(false);
+                    }}
+                    className="btn-primary"
+                >
+                    Submit
+                </button>
+            </Modal>
         </div>
     );
 };

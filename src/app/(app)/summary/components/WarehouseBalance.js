@@ -34,7 +34,7 @@ const WarehouseBalance = ({}) => {
     return (
         <div className="card p-4">
             <h1 className="card-title">
-                Warehouse Balance
+                Saldo Kas & Bank (Cabang)
                 <span className="card-subtitle">Periode: {formatDate(endDate)}</span>
             </h1>
             <div className="overflow-x-auto">

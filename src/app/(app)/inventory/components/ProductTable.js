@@ -123,20 +123,14 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                             {endDate}, Total: {formatNumber(summarizeTotal(warehouseStock))}
                         </span>
                     </div>
-                    <div>
-                        <button
-                            onClick={() => fetchWarehouseStock(`/api/get-all-products-by-warehouse/${warehouse}/${endDate}`)}
-                            className="bg-white font-bold p-3 mr-1 rounded-lg border border-gray-300 hover:border-gray-400"
-                        >
+                    <div className="flex gap-2">
+                        <button onClick={() => fetchWarehouseStock(`/api/get-all-products-by-warehouse/${warehouse}/${endDate}`)} className="small-button">
                             <RefreshCcwIcon className="size-4" />
                         </button>
-                        <button onClick={exportStockToExcel} className="bg-white font-bold p-3 mr-1 rounded-lg border border-gray-300 hover:border-gray-400">
+                        <button onClick={exportStockToExcel} className="small-button">
                             <DownloadIcon className="size-4" />
                         </button>
-                        <button
-                            onClick={() => setIsModalFilterDataOpen(true)}
-                            className="bg-white font-bold p-3 rounded-lg border border-gray-300 hover:border-gray-400"
-                        >
+                        <button onClick={() => setIsModalFilterDataOpen(true)} className="small-button">
                             <FilterIcon className="size-4" />
                         </button>
                     </div>
@@ -165,7 +159,7 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                             InputIcon={<SearchIcon size={18} />}
                             placeholder="Search"
                         />
-                        <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className="form-select">
+                        <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className="form-select !w-20">
                             <option value="10">10</option>
                             <option value="20">25</option>
                             <option value="50">50</option>

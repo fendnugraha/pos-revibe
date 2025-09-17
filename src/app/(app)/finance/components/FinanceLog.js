@@ -46,10 +46,7 @@ const FinanceLog = ({
                         Periode: {formatDateTime(startDate)} - {formatDateTime(endDate)}
                     </span>
                 </h1>
-                <button
-                    onClick={() => setIsModalFilterDataOpen(true)}
-                    className="bg-white font-bold p-2 rounded-lg border border-gray-300 hover:border-gray-400"
-                >
+                <button onClick={() => setIsModalFilterDataOpen(true)} className="small-button">
                     <FilterIcon className="size-4" />
                 </button>
             </div>
