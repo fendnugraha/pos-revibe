@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "@/libs/axios";
 
 const EditProduct = ({ isModalOpen, notification, fetchProducts, selectedProductId, products, productCategories }) => {
-    const product = products.data.find((product) => product.id === selectedProductId);
+    const product = products.products?.data?.find((product) => product.id === selectedProductId);
     const [formData, setFormData] = useState(product);
     const [loading, setLoading] = useState(false);
 

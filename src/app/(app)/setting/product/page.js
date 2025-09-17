@@ -143,7 +143,6 @@ const Product = () => {
 
         exportToExcel(data, headers, `Laporan Produk ${formatDateTime(new Date())}.xlsx`, `Laporan Produk ${formatDateTime(new Date())}`);
     };
-    console.log(product);
     return (
         <>
             <Breadcrumb
@@ -274,7 +273,9 @@ const Product = () => {
                                 )}
                             </tbody>
                         </table>
-                        <div className="px-4">{product?.last_page > 1 && <Paginator links={product} handleChangePage={handleChangePage} />}</div>
+                        <div className="px-4">
+                            {product?.products?.last_page > 1 && <Paginator links={product.products} handleChangePage={handleChangePage} />}
+                        </div>
                     </div>
                 </div>
             </div>
