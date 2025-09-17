@@ -24,6 +24,7 @@ const Product = () => {
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [exportLoading, setExportLoading] = useState(false);
     const [search, setSearch] = useState("");
     const [notification, setNotification] = useState({
         type: "",
@@ -134,6 +135,7 @@ const Product = () => {
             { key: "current_cost", label: "Harga Modal" },
         ];
 
+        setExportLoading(true); // ⬅️ mulai loading
         try {
             const response = await axios.get("/api/get-all-products");
             const products = response.data.data;
@@ -147,8 +149,13 @@ const Product = () => {
 
             exportToExcel(data, headers, `Laporan Produk ${formatDateTime(new Date())}.xlsx`, `Laporan Produk ${formatDateTime(new Date())}`);
         } catch (error) {
-            setNotification({ type: "error", message: error.response?.data?.message || "Something went wrong." });
-            console.log(error);
+            setNotification({
+                type: "error",
+                message: error.response?.data?.message || "Something went wrong.",
+            });
+            console.error(error);
+        } finally {
+            setExportLoading(false); // ⬅️ selesai loading
         }
     };
 
@@ -193,14 +200,24 @@ const Product = () => {
                     <div className="flex justify-between items-start">
                         <h1 className="card-title mb-4">Product List</h1>
                         <div className="flex gap-2">
-                            <button className="small-button !font-normal flex items-center gap-2" onClick={() => setIsModalImportProductOpen(true)}>
+                            <button
+                                className="small-button !font-normal flex items-center gap-2 cursor-pointer disabled:bg-slate-300"
+                                onClick={() => setIsModalImportProductOpen(true)}
+                            >
                                 <FileUp size={20} /> Import
                             </button>
-                            <button className="small-button !font-normal flex items-center gap-2" onClick={() => setIsModalImportCategoryProductOpen(true)}>
+                            <button
+                                className="small-button !font-normal flex items-center gap-2 cursor-pointer disabled:bg-slate-300"
+                                onClick={() => setIsModalImportCategoryProductOpen(true)}
+                            >
                                 <FileUp size={20} /> Import Category
                             </button>
-                            <button className="small-button !font-normal flex items-center gap-2" onClick={exportExcel}>
-                                <Download size={20} /> Export
+                            <button
+                                className="small-button !font-normal flex items-center gap-2 cursor-pointer disabled:bg-slate-300"
+                                onClick={exportExcel}
+                                disabled={exportLoading}
+                            >
+                                <Download size={20} /> {exportLoading ? "Exporting..." : "Export"}
                             </button>
                         </div>
                     </div>
