@@ -77,7 +77,6 @@ const OrderListTable = () => {
         setIsModalCreateOrderOpen(false);
         setIsModalFilterJournalOpen(false);
     };
-    console.log(OrderList.orderStatusCount);
     return (
         <>
             {notification.message && (

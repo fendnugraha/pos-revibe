@@ -15,7 +15,6 @@ import Button from "@/components/Button";
 import { useAuth } from "@/libs/auth";
 import OrderAction from "../OrderAction";
 import PaymentEditForm from "./EditPayment";
-import { set } from "date-fns";
 
 const OrderDetail = ({ params }) => {
     const { user } = useAuth();
@@ -107,9 +106,13 @@ const OrderDetail = ({ params }) => {
                     <OrderAction
                         status={order?.status}
                         isLoading={isLoading}
+                        setIsLoading={setIsLoading}
                         handleUpdateOrderStatus={handleUpdateOrderStatus}
                         user={user}
                         orderTechnicianId={order?.technician_id}
+                        order_number={order?.order_number}
+                        notification={setNotification}
+                        fetchOrder={fetchOrder}
                     />
                 )}
             </div>

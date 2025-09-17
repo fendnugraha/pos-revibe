@@ -1,28 +1,26 @@
 import Button from "@/components/Button";
-import { X } from "lucide-react";
+import axios from "@/libs/axios";
+import { X, XCircle } from "lucide-react";
 
-const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user, orderTechnicianId }) => {
+const OrderAction = ({ status, isLoading = false, setIsLoading, fetchOrder, notification, handleUpdateOrderStatus, user, orderTechnicianId, order_number }) => {
     const warehouseId = user?.role?.warehouse_id;
+
+    const handleVoidOrder = async () => {
+        setIsLoading(true);
+        try {
+            const response = await axios.delete(`/api/void-order`, {
+                params: { order_number: order_number, warehouse_id: warehouseId },
+            });
+            notification({ type: "success", message: response.data.message });
+            fetchOrder();
+        } catch (error) {
+            console.error("Error voiding order:", error);
+            notification({ type: "error", message: error.response.data.message });
+        } finally {
+            setIsLoading(false);
+        }
+    };
     return (
-        // <select
-        //     disabled={status === "Finished" || status === "Completed" || status === "Canceled" || status === "Rejected" || isLoading}
-        //     onChange={(e) => handleUpdateOrderStatus(e.target.value)}
-        //     value={status}
-        //     className="form-select w-1/4"
-        // >
-        //     <option value={"Pending"}>-Pilih tindakan-</option>
-        //     {status !== "In Progress" ? (
-        //         <>
-        //             <option value="In Progress">Proses</option>
-        //             <option value="Rejected">Tolak</option>
-        //         </>
-        //     ) : (
-        //         <>
-        //             <option value="Take Over">Ambil Alih</option>
-        //             <option value="Canceled">Batalkan</option>
-        //         </>
-        //     )}
-        // </select>
         <div>
             <div className="flex gap-2" hidden={["Finished", "Completed", "Canceled", "Rejected"].includes(status)}>
                 {status !== "In Progress" ? (
@@ -81,6 +79,17 @@ const OrderAction = ({ status, isLoading = false, handleUpdateOrderStatus, user,
                     </>
                 )}
             </div>
+            <Button
+                buttonType="dark"
+                className={"flex items-center gap-2 justify-center"}
+                disabled={isLoading}
+                onClick={() => {
+                    if (confirm("Apakah anda yakin ingin membatalkan order ini?")) handleVoidOrder();
+                }}
+                hidden={["Finished", "Canceled", "In Progress", "Rejected", "Pending"].includes(status)}
+            >
+                <XCircle size={20} /> {isLoading ? "Sending..." : "Void Order"}
+            </Button>
         </div>
     );
 };
