@@ -134,7 +134,7 @@ const Product = () => {
             { key: "current_cost", label: "Harga Modal" },
         ];
 
-        const data = product.data?.map((item) => ({
+        const data = product.getAllProducts?.data?.map((item) => ({
             name: item.name,
             category: item.category.name,
             price: formatNumber(item.price),
@@ -143,7 +143,7 @@ const Product = () => {
 
         exportToExcel(data, headers, `Laporan Produk ${formatDateTime(new Date())}.xlsx`, `Laporan Produk ${formatDateTime(new Date())}`);
     };
-
+    console.log(product);
     return (
         <>
             <Breadcrumb
@@ -221,12 +221,12 @@ const Product = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {product?.data?.length === 0 ? (
+                                {product?.products?.data?.length === 0 ? (
                                     <tr>
                                         <td colSpan="6">No products found</td>
                                     </tr>
                                 ) : (
-                                    product?.data?.map((product) => (
+                                    product?.products?.data?.map((product) => (
                                         <tr key={product.id}>
                                             <td className="text-center">
                                                 <Input
