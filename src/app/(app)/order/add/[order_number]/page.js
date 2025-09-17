@@ -86,7 +86,7 @@ const AddPartsReplacement = ({ params }) => {
                 const response = await axios.get("/api/products", {
                     params: { search: debouncedSearch },
                 });
-                setProductList(response.data.data.products);
+                setProductList(response.data.data);
             } catch (error) {
                 console.log("Error fetching products:", error);
             } finally {

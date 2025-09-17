@@ -126,7 +126,7 @@ const Product = () => {
         }
     };
 
-    const exportExcel = () => {
+    const exportExcel = async () => {
         const headers = [
             { key: "name", label: "Nama" },
             { key: "category", label: "Kategori" },
@@ -134,15 +134,24 @@ const Product = () => {
             { key: "current_cost", label: "Harga Modal" },
         ];
 
-        const data = product.getAllProducts?.data?.map((item) => ({
-            name: item.name,
-            category: item.category.name,
-            price: formatNumber(item.price),
-            current_cost: formatNumber(item.current_cost),
-        }));
+        try {
+            const response = await axios.get("/api/get-all-products");
+            const products = response.data.data;
 
-        exportToExcel(data, headers, `Laporan Produk ${formatDateTime(new Date())}.xlsx`, `Laporan Produk ${formatDateTime(new Date())}`);
+            const data = products.map((item) => ({
+                name: item.name,
+                category: item.category.name,
+                price: formatNumber(item.price),
+                current_cost: formatNumber(item.current_cost),
+            }));
+
+            exportToExcel(data, headers, `Laporan Produk ${formatDateTime(new Date())}.xlsx`, `Laporan Produk ${formatDateTime(new Date())}`);
+        } catch (error) {
+            setNotification({ type: "error", message: error.response?.data?.message || "Something went wrong." });
+            console.log(error);
+        }
     };
+
     return (
         <>
             <Breadcrumb
@@ -220,12 +229,12 @@ const Product = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {product?.products?.data?.length === 0 ? (
+                                {product?.data?.length === 0 ? (
                                     <tr>
                                         <td colSpan="6">No products found</td>
                                     </tr>
                                 ) : (
-                                    product?.products?.data?.map((product) => (
+                                    product?.data?.map((product) => (
                                         <tr key={product.id}>
                                             <td className="text-center">
                                                 <Input
@@ -273,9 +282,7 @@ const Product = () => {
                                 )}
                             </tbody>
                         </table>
-                        <div className="px-4">
-                            {product?.products?.last_page > 1 && <Paginator links={product.products} handleChangePage={handleChangePage} />}
-                        </div>
+                        <div className="px-4">{product?.last_page > 1 && <Paginator links={product} handleChangePage={handleChangePage} />}</div>
                     </div>
                 </div>
             </div>
