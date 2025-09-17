@@ -92,7 +92,7 @@ const SalesOrder = () => {
                 const response = await axios.get("/api/products", {
                     params: { search: debouncedSearch },
                 });
-                setProductList(response.data.data);
+                setProductList(response.data.data.products);
             } catch (error) {
                 console.log("Error fetching products:", error);
             } finally {

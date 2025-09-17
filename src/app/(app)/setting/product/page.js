@@ -213,7 +213,7 @@ const Product = () => {
                             <thead>
                                 <tr>
                                     <th className="text-center">#</th>
-                                    <th>Product</th>
+                                    <th>Product {loading && " is loading .."}</th>
                                     <th>Price (Jual)</th>
                                     <th>Cost (Beli)</th>
                                     <th className="text-center">Actions</th>
