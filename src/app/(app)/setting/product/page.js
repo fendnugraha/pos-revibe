@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/Button";
-import { FileUp, MessageCircleWarningIcon, PencilIcon, PlusIcon, SearchIcon, TrashIcon } from "lucide-react";
+import { Download, FileUp, MessageCircleWarningIcon, PencilIcon, PlusIcon, SearchIcon, TrashIcon } from "lucide-react";
 import Input from "@/components/Input";
 import { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/Modal";
@@ -15,6 +15,8 @@ import Breadcrumb from "@/components/Breadcrumb";
 import ImportProducts from "./ImportProduct";
 import ImportCategoryProducts from "./ImportCategory";
 import Link from "next/link";
+import exportToExcel from "@/libs/exportToExcel";
+import { formatDateTime } from "@/libs/format";
 
 const Product = () => {
     const [product, setProduct] = useState(null);
@@ -124,6 +126,24 @@ const Product = () => {
         }
     };
 
+    const exportExcel = () => {
+        const headers = [
+            { key: "name", label: "Nama" },
+            { key: "category", label: "Kategori" },
+            { key: "price", label: "Harga Jual" },
+            { key: "current_cost", label: "Harga Modal" },
+        ];
+
+        const data = product.data?.map((item) => ({
+            name: item.name,
+            category: item.category.name,
+            price: formatNumber(item.price),
+            current_cost: formatNumber(item.current_cost),
+        }));
+
+        exportToExcel(data, headers, `Laporan Produk ${formatDateTime(new Date())}.xlsx`, `Laporan Produk ${formatDateTime(new Date())}`);
+    };
+
     return (
         <>
             <Breadcrumb
@@ -170,6 +190,9 @@ const Product = () => {
                             </button>
                             <button className="small-button !font-normal flex items-center gap-2" onClick={() => setIsModalImportCategoryProductOpen(true)}>
                                 <FileUp size={20} /> Import Category
+                            </button>
+                            <button className="small-button !font-normal flex items-center gap-2" onClick={exportExcel}>
+                                <Download size={20} /> Export
                             </button>
                         </div>
                     </div>
