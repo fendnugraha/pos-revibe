@@ -3,7 +3,6 @@ import * as XLSX from "xlsx";
 import { useState } from "react";
 import axios from "@/libs/axios";
 import Button from "@/components/Button";
-import Notification from "@/components/Notification";
 
 export default function ImportCategoryProducts({ isModalOpen, fetchData, setNotification }) {
     const [rows, setRows] = useState([]);
@@ -39,7 +38,7 @@ export default function ImportCategoryProducts({ isModalOpen, fetchData, setNoti
             fetchData();
         } catch (error) {
             console.error(error);
-            setNotification({ type: "error", message: "Failed to import data." });
+            setNotification({ type: "error", message: error.response?.data?.message || "Failed to import data." });
         } finally {
             setLoading(false);
         }
@@ -53,7 +52,9 @@ export default function ImportCategoryProducts({ isModalOpen, fetchData, setNoti
                     {loading ? "Uploading..." : "Upload to Server"}
                 </Button>
 
-                {rows.length > 0 && <pre className="bg-gray-100 p-2 rounded max-h-64 overflow-y-auto text-xs">{JSON.stringify(rows, null, 2)}</pre>}
+                {rows.length > 0 && (
+                    <pre className="bg-gray-100 dark:bg-slate-800 p-2 rounded max-h-64 overflow-y-auto text-xs">{JSON.stringify(rows, null, 2)}</pre>
+                )}
             </div>
         </>
     );

@@ -6,7 +6,6 @@ import { useAuth } from "@/libs/auth";
 import { PowerIcon, User2Icon } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 const TopBar = ({ user }) => {
     const { logout } = useAuth();

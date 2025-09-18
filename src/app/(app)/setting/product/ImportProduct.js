@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import { useState } from "react";
 import axios from "@/libs/axios";
 import Button from "@/components/Button";
-import Notification from "@/components/Notification";
+import formatNumber from "@/libs/formatNumber";
 
 export default function ImportProducts({ isModalOpen, fetchData, setNotification }) {
     const [rows, setRows] = useState([]);
@@ -39,7 +39,7 @@ export default function ImportProducts({ isModalOpen, fetchData, setNotification
             fetchData();
         } catch (error) {
             console.error(error);
-            setNotification({ type: "error", message: "Failed to import data." });
+            setNotification({ type: "error", message: error.response?.data?.message || "Failed to import data." });
         } finally {
             setLoading(false);
         }
@@ -53,7 +53,12 @@ export default function ImportProducts({ isModalOpen, fetchData, setNotification
                     {loading ? "Uploading..." : "Upload to Server"}
                 </Button>
 
-                {rows.length > 0 && <pre className="bg-gray-100 p-2 rounded max-h-64 overflow-y-auto text-xs">{JSON.stringify(rows, null, 2)}</pre>}
+                {rows.length > 0 && (
+                    <>
+                        <h3 className="text-xs font-semibold">Product to import {formatNumber(rows.length)} items</h3>
+                        <pre className="bg-gray-100 dark:bg-slate-800 p-2 rounded max-h-64 overflow-y-auto text-xs">{JSON.stringify(rows, null, 2)}</pre>
+                    </>
+                )}
             </div>
         </>
     );
