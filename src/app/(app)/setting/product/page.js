@@ -129,6 +129,7 @@ const Product = () => {
 
     const exportExcel = async () => {
         const headers = [
+            { key: "code", label: "Kode" },
             { key: "name", label: "Nama" },
             { key: "category", label: "Kategori" },
             { key: "price", label: "Harga Jual" },
@@ -141,6 +142,7 @@ const Product = () => {
             const products = response.data.data;
 
             const data = products.map((item) => ({
+                code: item.code,
                 name: item.name,
                 category: item.category.name,
                 price: formatNumber(item.price),

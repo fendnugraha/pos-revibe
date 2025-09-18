@@ -6,7 +6,7 @@ const Setting = () => {
     return (
         <>
             <div className="p-6">
-                <ul className="flex flex-col w-full sm:w-1/2 bg-white dark:bg-slate-700 rounded-2xl">
+                <ul className="flex flex-col w-full sm:w-1/2 bg-white dark:bg-slate-800 rounded-2xl">
                     <Link href="/setting/user">
                         <li className="border-b p-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600">
                             <button className="px-4 w-full text-start py-2 cursor-pointer flex items-center gap-2">
