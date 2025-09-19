@@ -101,9 +101,12 @@ const CashBank = () => {
         }
     }, [warehouseCashAccountId]);
 
-    const filterAccountsByWarehouseId = accounts.filter((account) => account.warehouse_id === Number(warehouseId));
+    const filterAccountsByWarehouseId = accounts.filter((account) =>
+        userRole === "Administrator" ? [1, 2].includes(account.account_id) : account.warehouse_id === warehouseId
+    );
     const filterJournalByAccountId = journalByWarehouse.filter((journal) => {
         const matchAccountId = journal.chart_of_account_id === Number(selectedAccountId) || Number(selectedAccountId) === "all";
+
         if (selectedAccountId !== "all") {
             return matchAccountId;
         }
