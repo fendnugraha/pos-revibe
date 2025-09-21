@@ -6,9 +6,11 @@ import Label from "@/components/Label";
 import formatNumber from "@/libs/formatNumber";
 import Input from "@/components/Input";
 import formatDateTime from "@/libs/formatDateTime";
+import { todayDate } from "@/libs/format";
 
 const PaymentForm = ({ contactId, notification, fetchFinance, isModalOpen }) => {
     const [formData, setFormData] = useState({
+        date_issued: todayDate(),
         contact_id: contactId,
         invoice: "",
         account_id: "",
@@ -76,6 +78,15 @@ const PaymentForm = ({ contactId, notification, fetchFinance, isModalOpen }) => 
         <div>
             <h1 className="text-lg mb-4 font-semibold">{contactName}</h1>
             <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                    <Label>Tanggal</Label>
+                    <input
+                        className={"w-full border border-slate-300 rounded-lg p-2"}
+                        type="datetime-local"
+                        value={formData.date_issued}
+                        onChange={(e) => setFormData({ ...formData, date_issued: e.target.value })}
+                    />
+                </div>
                 <div className="mb-4">
                     <Label>Invoice No.</Label>
                     <select
