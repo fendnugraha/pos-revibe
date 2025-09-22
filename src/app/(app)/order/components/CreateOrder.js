@@ -29,17 +29,17 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
     };
     return (
         <form onSubmit={handleCreateOrder}>
+            <div className="mb-4">
+                <Label>Tanggal</Label>
+                <input
+                    type="datetime-local"
+                    className="form-control w-full"
+                    value={formData.date_issued}
+                    onChange={(e) => setFormData({ ...formData, date_issued: e.target.value })}
+                />
+            </div>
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <div className="mb-4">
-                        <Label>Tanggal</Label>
-                        <input
-                            type="datetime-local"
-                            className="form-control w-full"
-                            value={formData.date_issued}
-                            onChange={(e) => setFormData({ ...formData, date_issued: e.target.value })}
-                        />
-                    </div>
                     <div className="mb-4">
                         <Label>Nama</Label>
                         <input
