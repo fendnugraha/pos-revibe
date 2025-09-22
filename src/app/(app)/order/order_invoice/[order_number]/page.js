@@ -42,7 +42,7 @@ const OrderNotes = ({ params }) => {
         <>
             <div id="print-area" className="p-4 bg-white w-[300px]">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold">{process.env.NEXT_PUBLIC_APP_NAME || "Revibe ID"}</h1>
+                    <h1 className="text-xl font-bold">{process.env.NEXT_PUBLIC_APP_NAME || "Revibe ID"}</h1>
                     <small className="text-slate-400">Phone Service & Accessories</small>
                     <h1 className="text-sm text-slate-500 mt-2">{order_number}</h1>
                     <h1 className="text-xs text-slate-500">{formatLongDate(order.date_issued)} </h1>
@@ -67,7 +67,7 @@ const OrderNotes = ({ params }) => {
                     <small className="text-slate-500">{"***"}</small>
                 </div>
             </div>
-            <button onClick={() => window.print()} className="mt-4 bg-slate-700 text-white px-4 py-2 rounded no-print">
+            <button onClick={() => window.print()} className="mt-4 bg-slate-700 text-white px-4 py-2 rounded no-print mb-18 sm:mb-0">
                 Cetak Nota
             </button>
         </>
