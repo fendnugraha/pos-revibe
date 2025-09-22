@@ -48,7 +48,7 @@ const OrderNotes = ({ params }) => {
                     <h1 className="text-xs text-slate-500">{formatLongDate(order.date_issued)} </h1>
                 </div>
                 <div className="text-xs text-slate-500 flex justify-between mt-8">
-                    <h1 className="text-sm font-bold text-slate-500">{order.contact?.name}</h1>
+                    <h1 className="text-sm font-bold text-slate-500">{order.contact?.name.toUpperCase()}</h1>
                     <h1>{order.phone_number}</h1>
                 </div>
                 <div>
@@ -64,7 +64,7 @@ const OrderNotes = ({ params }) => {
                     <QRCodeSVG value={`${typeof window !== "undefined" ? window.location.origin : ""}/tracking`} size={200} />
                     <small className="text-slate-500">{order.order_number}</small>
 
-                    <small className="text-slate-500">{"***"}</small>
+                    <small className="text-slate-500 mt-5">{"*****"}</small>
                 </div>
             </div>
             <button onClick={() => window.print()} className="mt-4 bg-slate-700 text-white px-4 py-2 rounded no-print mb-18 sm:mb-0">

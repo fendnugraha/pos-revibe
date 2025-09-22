@@ -32,13 +32,13 @@ const TrackingOrder = () => {
         }
     }, [search]);
     return (
-        <div className="flex flex-col items-center justify-center gap-4 h-screen">
-            <Image src="/revibe-logo.png" alt="Revibe Logo" className="inline" width={100} height={24} priority />
-            <h1 className="text-3xl font-bold mb-4">Order Tracking</h1>
+        <>
+            <Image src="/revibe-logo.png" alt="Revibe Logo" className="inline" width={120} height={24} priority />
+            <h1 className="text-2xl font-bold mb-4">Order Tracking</h1>
             <div className="card p-4 w-full">
                 <InputGroup
                     type="search"
-                    maxWidth="w-fit"
+                    maxWidth="w-full sm:w-64"
                     InputIcon={<SearchIcon size={18} />}
                     onChange={(e) => setSearch(e.target.value)}
                     value={search}
@@ -50,38 +50,40 @@ const TrackingOrder = () => {
                         <p className="text-center mt-4">
                             Menampilkan {orders.length} order untuk {search}.
                         </p>
-                        <table className="w-full table mt-4">
-                            <thead>
-                                <tr className="">
-                                    <th className="text-center">Order Number</th>
-                                    <th className="text-center">Tanggal Masuk</th>
-                                    <th className="text-center">Nama Customer</th>
-                                    <th className="text-center">Tipe Ponsel</th>
-                                    <th className="text-center">Status</th>
-                                    <th className="text-center">Update Terakhir</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {orders.map((order, index) => (
-                                    <tr key={index}>
-                                        <td className="text-center">{order.order_number}</td>
-                                        <td className="text-center">{formatDateTime(order.date_issued)}</td>
-                                        <td className="text-center">{order.contact?.name}</td>
-                                        <td className="">{order.phone_type}</td>
-                                        <td className="text-center">
-                                            <StatusBadge status={order.status} />
-                                        </td>
-                                        <td className="text-center">{formatDateTime(order.updated_at)}</td>
+                        <div className="overflow-x-auto mt-4">
+                            <table className="w-full table text-xs sm:text-sm mt-4">
+                                <thead>
+                                    <tr className="">
+                                        <th className="text-center">Order Number</th>
+                                        <th className="text-center">Tanggal Masuk</th>
+                                        <th className="text-center">Nama Customer</th>
+                                        <th className="text-center">Tipe Ponsel</th>
+                                        <th className="text-center">Status</th>
+                                        <th className="text-center">Update Terakhir</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {orders.map((order, index) => (
+                                        <tr key={index}>
+                                            <td className="text-center">{order.order_number}</td>
+                                            <td className="text-center">{formatDateTime(order.date_issued)}</td>
+                                            <td className="text-center">{order.contact?.name}</td>
+                                            <td className="">{order.phone_type}</td>
+                                            <td className="text-center">
+                                                <StatusBadge status={order.status} />
+                                            </td>
+                                            <td className="text-center">{formatDateTime(order.updated_at)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </>
                 ) : (
                     error && <p className="text-center text-red-500 italic mt-4">{error}</p>
                 )}
             </div>
-        </div>
+        </>
     );
 };
 
