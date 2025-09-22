@@ -44,27 +44,31 @@ const OrderNotes = ({ params }) => {
                 <div className="text-center">
                     <h1 className="text-xl font-bold">{process.env.NEXT_PUBLIC_APP_NAME || "Revibe ID"}</h1>
                     <small className="text-slate-400">Phone Service & Accessories</small>
-                    <h1 className="text-sm text-slate-500 mt-2">{order_number}</h1>
-                    <h1 className="text-xs text-slate-500">{formatLongDate(order.date_issued)} </h1>
+                    <h1 className="text-xs text-slate-500 ">{order.warehouse?.address}</h1>
+                    <h1 className="text-xs text-slate-500 mt-2">{formatLongDate(order.date_issued)} </h1>
                 </div>
                 <div className="text-xs text-slate-500 flex justify-between mt-8">
-                    <h1 className="text-sm font-bold text-slate-500">{order.contact?.name.toUpperCase()}</h1>
+                    <h1 className="text-sm font-bold text-slate-500">Nama</h1>
+                    <h1>{order.contact?.name.toUpperCase()}</h1>
+                </div>
+                <div className="text-xs text-slate-500 flex justify-between">
+                    <h1 className="text-sm font-bold text-slate-500">No HP</h1>
                     <h1>{order.phone_number}</h1>
                 </div>
                 <div>
-                    <hr className="mt-2 border-slate-300 border-dashed" />
+                    <hr className="mt-2 border-slate-500 border-dashed" />
                     <small className="text-slate-500">Type HP</small>
                     <h1 className="text-sm text-slate-700 font-bold mb-4">{order.phone_type?.toUpperCase()}</h1>
                     <small className="text-slate-500">Keluhan/Problem</small>
                     <h1 className="text-sm text-slate-700 ">{order.description}</h1>
-                    <hr className="my-2 border-slate-300 border-dashed" />
+                    <hr className="my-2 border-slate-500 border-dashed" />
                 </div>
                 <div className="flex flex-col gap-2 items-center justify-center">
                     <small className="text-slate-500">Scan QR Code</small>
                     <QRCodeSVG value={`${typeof window !== "undefined" ? window.location.origin : ""}/tracking`} size={200} />
                     <small className="text-slate-500">{order.order_number}</small>
 
-                    <small className="text-slate-500 mt-5">{"*****"}</small>
+                    <small className="text-slate-500 mt-5">Terimakasih</small>
                 </div>
             </div>
             <button onClick={() => window.print()} className="mt-4 bg-slate-700 text-white px-4 py-2 rounded no-print mb-18 sm:mb-0">
