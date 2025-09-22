@@ -20,14 +20,14 @@ const SummaryPage = () => {
                     { name: "Summary Report", href: "/summary" },
                 ]}
             />
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div className="">
                     <CashBankBalance />
                 </div>
                 <WarehouseBalance endDate={endDate} />
             </div>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-                <div className="col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-18 sm:mb-4">
+                <div className="sm:col-span-2">
                     <RevenueReport startDate={startDate} endDate={endDate} />
                 </div>
                 <RevenueByUser startDate={startDate} endDate={endDate} />

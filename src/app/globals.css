@@ -28,7 +28,7 @@ body {
 }
 
 .small-button {
-    @apply bg-white dark:bg-slate-500 dark:text-white font-bold p-3 rounded-lg border border-gray-300 dark:border-gray-500 hover:border-gray-400 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed;
+    @apply bg-white dark:bg-slate-500 dark:text-white font-bold p-2 sm:p-3 rounded-lg border border-gray-300 dark:border-gray-500 hover:border-gray-400 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed;
 }
 
 /* card */

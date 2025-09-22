@@ -38,7 +38,7 @@ const FinanceLog = ({
         }
     };
     return (
-        <div className="card p-4">
+        <div className="card p-4 mb-18 sm:mb-0">
             <div className="flex justify-between items-start">
                 <h1 className="card-title mb-4">
                     Finance Log
@@ -87,7 +87,7 @@ const FinanceLog = ({
                     <div key={item.id} className="flex justify-between items-center border rounded-2xl border-slate-200 mb-2 p-2">
                         <div className="flex gap-2 items-center">
                             <span
-                                className={`w-10 h-10 rounded-full ${
+                                className={`w-6 sm:w-10 h-6 sm:h-10 rounded-full ${
                                     item.bill_amount > 0 ? "bg-green-100 text-green-500" : "bg-red-100 text-red-500"
                                 } flex justify-center items-center`}
                             >
@@ -100,7 +100,7 @@ const FinanceLog = ({
                             </div>
                         </div>
                         <div className="flex gap-4 items-center">
-                            <h1 className="font-bold text-lg">{formatNumber(item.bill_amount > 0 ? item.bill_amount : item.payment_amount)}</h1>
+                            <h1 className="font-bold text-xs sm:text-lg">{formatNumber(item.bill_amount > 0 ? item.bill_amount : item.payment_amount)}</h1>
                             <button
                                 className="text-red-500 p-1 border border-red-500 rounded-full hover:bg-red-500 hover:text-white cursor-pointer"
                                 onClick={() => handleDeleteFinance(item.id)}

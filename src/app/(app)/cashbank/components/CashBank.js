@@ -161,7 +161,7 @@ const CashBank = () => {
                                 Kas Keluar
                             </button>
                         </li>
-                        <li className="hover:bg-slate-100 dark:hover:bg-slate-500" hidden={userRole !== "Administrator"}>
+                        <li className="hover:bg-slate-100 dark:hover:bg-slate-500" hidden={["Administrator", "Owner", "Cashier"].includes(userRole)}>
                             <button className="w-full text-sm text-left py-2 px-4" onClick={() => setIsModalCreatePriveOpen(true)}>
                                 Input Prive
                             </button>
@@ -170,30 +170,30 @@ const CashBank = () => {
                 </Dropdown>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-4 mb-4">
-                <div className="card p-4">
+                <div className="card px-4 py-2 sm:py-4">
                     <h1 className="card-title">Saldo Kas</h1>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.cash || 0)}</h1>
+                    <h1 className="text-lg sm:text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.cash || 0)}</h1>
                 </div>
-                <div className="card p-4">
+                <div className="card px-4 py-2 sm:py-4">
                     <div className="flex justify-between items-center">
                         <h1 className="card-title">Total Pendapatan</h1>
                         <StatusBadge
                             statusText={`${formatNumber(revenueByWarehouse.service_order || 0)} Order${revenueByWarehouse.service_order > 1 ? "s" : ""}`}
                         />
                     </div>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.revenue || 0)}</h1>
+                    <h1 className="text-lg sm:text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.revenue || 0)}</h1>
                 </div>
-                <div className="card p-4">
+                <div className="card px-4 py-2 sm:py-4">
                     <h1 className="card-title">Pengeluaran</h1>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.expense || 0)}</h1>
+                    <h1 className="text-lg sm:text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.expense || 0)}</h1>
                 </div>
-                <div className="card p-4">
+                <div className="card px-4 py-2 sm:py-4">
                     <h1 className="card-title">Net Profit</h1>
-                    <h1 className="text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.net_profit || 0)}</h1>
+                    <h1 className="text-lg sm:text-2xl font-bold mt-1">{formatNumber(revenueByWarehouse.net_profit || 0)}</h1>
                 </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                <div className="card p-4 col-span-2">
+                <div className="card px-4 py-2 sm:py-4 col-span-2">
                     <div className="flex justify-between items-start mb-4">
                         <h1 className="card-title">
                             Riwayat Kas

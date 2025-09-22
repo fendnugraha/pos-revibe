@@ -13,7 +13,7 @@ const AppLayout = ({ children }) => {
         <div className="h-screen overflow-hidden dark:bg-slate-700 dark:text-white">
             {/* <Navigation user={user} /> */}
             <TopBar user={user} />
-            <div className="px-4 sm:px-12 py-4 h-[calc(100vh-80px)] overflow-auto">{children}</div>
+            <div className="px-4 sm:px-12 py-2 sm:py-4 h-[calc(100vh-80px)] overflow-auto">{children}</div>
         </div>
     );
 };

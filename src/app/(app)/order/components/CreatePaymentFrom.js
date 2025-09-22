@@ -68,25 +68,27 @@ const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, 
                             onChange={(e) => setFormData({ ...formData, date_issued: e.target.value })}
                         />
                     </div>
-                    <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-900">Biaya Jasa Service</label>
-                        <input
-                            type="text"
-                            className="w-full border bg-white border-slate-200 px-4 py-2 rounded-xl mb-4"
-                            placeholder="Rp."
-                            onChange={(e) => setFormData({ ...formData, serviceFee: e.target.value })}
-                            value={formData.serviceFee}
-                        />
-                    </div>
-                    <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-900">Discount</label>
-                        <input
-                            type="text"
-                            className="w-full border bg-white border-slate-200 px-4 py-2 rounded-xl mb-4"
-                            placeholder="Rp."
-                            onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
-                            value={formData.discount}
-                        />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block mb-1 text-sm font-medium text-gray-900">Biaya Jasa Service</label>
+                            <input
+                                type="text"
+                                className="w-full border bg-white border-slate-200 px-4 py-2 rounded-xl mb-4"
+                                placeholder="Rp."
+                                onChange={(e) => setFormData({ ...formData, serviceFee: e.target.value })}
+                                value={formData.serviceFee}
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1 text-sm font-medium text-gray-900">Discount</label>
+                            <input
+                                type="text"
+                                className="w-full border bg-white border-slate-200 px-4 py-2 rounded-xl mb-4"
+                                placeholder="Rp."
+                                onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
+                                value={formData.discount}
+                            />
+                        </div>
                     </div>
                     <div>
                         <label className="block mb-1 text-sm font-medium text-gray-900">Catatan</label>

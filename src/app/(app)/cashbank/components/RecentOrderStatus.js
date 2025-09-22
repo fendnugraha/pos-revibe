@@ -39,7 +39,7 @@ const RecentOrderStatus = () => {
     }, [fetchOrders]);
 
     return (
-        <div className="card p-4">
+        <div className="card p-4 mb-18 sm:mb-0">
             <h1 className="card-title mb-4">Recent updates</h1>
             {OrderList.orders?.data?.map((item) => (
                 <StatusCard key={item.id} order={item} />

@@ -79,26 +79,29 @@ const OrderDetail = ({ params }) => {
             {notification.message && (
                 <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
             )}
-            <div className="mb-4 flex justify-between items-start">
+            <div className="mb-4 flex justify-between flex-col sm:flex-row items-start gap-4 sm:gap-0">
                 <div>
                     <div className="flex items-center gap-2">
                         <Link className="underline hover:text-teal-500" href="/order">
                             <ArrowLeftIcon />
                         </Link>
                         <h1 className="text-slate-700">
-                            Order ID: <span className="text-xl font-bold">{order_number}</span>{" "}
+                            <span className="tex-xs sm:text-xl font-bold">{order_number}</span>{" "}
                         </h1>
-                        <StatusBadge
-                            status={!order?.payment_method || order?.payment_method === "Unpaid" ? "Pending" : "Completed"}
-                            statusText={order?.payment_method ?? "Unpaid"}
-                        />
-                        <StatusBadge status={order?.status} />
+                        <div className="hidden sm:block">
+                            <StatusBadge
+                                status={!order?.payment_method || order?.payment_method === "Unpaid" ? "Pending" : "Completed"}
+                                statusText={order?.payment_method ?? "Unpaid"}
+                            />
+                        </div>
+                        <div className="hidden sm:block">
+                            <StatusBadge status={order?.status} />
+                        </div>
                     </div>
                     <div className="px-8 mt-1">
                         <p className="text-xs text-slate-400">
-                            Created by <span className="font-semibold">{order?.user?.name}</span> on{" "}
-                            <span className="font-semibold">{formatDateTime(order?.date_issued)}</span> at{" "}
-                            <span className="font-semibold">{order?.warehouse?.name}</span>
+                            <span className="font-semibold">{order?.warehouse?.name}</span>, {formatDateTime(order?.date_issued)}{" "}
+                            <span className="font-semibold">{order?.user?.name}</span>
                         </p>
                     </div>
                 </div>
@@ -116,9 +119,9 @@ const OrderDetail = ({ params }) => {
                     />
                 )}
             </div>
-            <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-2 card p-4">
-                    <div className="mb-4 flex justify-between items-start">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-18 sm:mb-0">
+                <div className="sm:col-span-2 card p-4">
+                    <div className="mb-4 flex justify-between flex-col sm:flex-row gap-2 items-start">
                         <h1 className="card-title flex gap-2 items-center">
                             Part List <StatusBadge status={order?.status} />{" "}
                             <span className="text-slate-400 font-normal text-xs">({formatDateTime(order?.updated_at)})</span>
@@ -151,7 +154,7 @@ const OrderDetail = ({ params }) => {
                     <hr className="border-slate-200 my-4" />
                     {!["Canceled", "Rejected"].includes(order?.status) && (
                         <>
-                            <div className="mb-4 flex justify-between items-start">
+                            <div className="mb-4 flex justify-between items-start flex-col sm:flex-row gap-2">
                                 <h1 className="card-title flex gap-2 items-center mb-3">
                                     Order Summary{" "}
                                     <StatusBadge
@@ -258,7 +261,7 @@ const OrderDetail = ({ params }) => {
                     </div>
                 </div>
             </div>
-            <Modal isOpen={isModalCreatePaymentOpen} onClose={closeModal} modalTitle="Input Pembayaran" maxWidth="max-w-2xl">
+            <Modal isOpen={isModalCreatePaymentOpen} onClose={closeModal} modalTitle="Input Pembayaran" maxWidth="max-w-3xl">
                 <CreatePaymentFrom
                     order={order}
                     isModalOpen={setIsModalCreatePaymentOpen}

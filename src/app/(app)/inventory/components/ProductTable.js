@@ -14,6 +14,7 @@ import CreateStockAdjustment from "./CreateStockAdjustment";
 import CreateReversal from "./CreateReversal";
 import InputGroup from "@/components/InputGroup";
 import Paginator from "@/components/Paginator";
+import LoadingData from "@/components/LoadingData";
 
 const getCurrentDate = () => {
     const today = new Date();
@@ -125,6 +126,7 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
     const findProduct = warehouseStock?.products?.data?.find((item) => item.id === selectedProduct);
     return (
         <>
+            <LoadingData loading={loading} message="Geting product data..." />
             <div className="card p-4">
                 <div className="flex justify-between items-start mb-4">
                     <div>

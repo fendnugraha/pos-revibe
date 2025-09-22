@@ -16,6 +16,7 @@ import Input from "@/components/Input";
 import Dropdown from "@/components/Dropdown";
 import { useAuth } from "@/libs/auth";
 import exportToExcel from "@/libs/exportToExcel";
+import LoadingData from "@/components/LoadingData";
 
 const OrderListTable = () => {
     const { user } = useAuth();
@@ -146,9 +147,10 @@ const OrderListTable = () => {
             {notification.message && (
                 <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
             )}
+            <LoadingData loading={isLoading} message="Loading order data..." />
             <Button onClick={() => setIsModalCreateOrderOpen(true)}>New Order</Button>
 
-            <div className="mt-4 card">
+            <div className="mt-4 card mb-18 sm:mb-0">
                 <div className="p-4 flex items-start justify-between">
                     <div className="sm:hidden">
                         <Dropdown
