@@ -13,6 +13,7 @@ import formatDateTime from "@/libs/formatDateTime";
 import CreateStockAdjustment from "./CreateStockAdjustment";
 import CreateReversal from "./CreateReversal";
 import InputGroup from "@/components/InputGroup";
+import Paginator from "@/components/Paginator";
 
 const getCurrentDate = () => {
     const today = new Date();
@@ -24,6 +25,17 @@ const getCurrentDate = () => {
 
 const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) => {
     const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 500); // 3 detik
+
+        return () => {
+            clearTimeout(handler); // reset kalau user masih ngetik
+        };
+    }, [search]);
     const [endDate, setEndDate] = useState(getCurrentDate());
     const [errors, setErrors] = useState([]); // Store validation errors
     const [loading, setLoading] = useState(false);
@@ -45,7 +57,12 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
         async (url = `/api/get-all-products-by-warehouse/${warehouse}/${endDate}`) => {
             setLoading(true);
             try {
-                const response = await axios.get(url);
+                const response = await axios.get(url, {
+                    params: {
+                        search: debouncedSearch,
+                        paginated: true,
+                    },
+                });
                 setWarehouseStock(response.data.data);
             } catch (error) {
                 notification("error", error.response?.data?.message || "Something went wrong.");
@@ -54,35 +71,20 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                 setLoading(false);
             }
         },
-        [endDate, notification, warehouse]
+        [endDate, notification, warehouse, debouncedSearch]
     );
 
     useEffect(() => {
         fetchWarehouseStock();
     }, [fetchWarehouseStock]);
 
-    const filteredBySearch = warehouseStock.filter((item) => {
-        return item.name?.toLowerCase().includes(search.toLowerCase());
-    });
-
-    const totalItems = filteredBySearch?.length || 0;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentItems = filteredBySearch.slice(startIndex, startIndex + itemsPerPage);
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
+    const handleChangePage = (url) => {
+        fetchWarehouseStock(url);
     };
 
-    const summarizeTotal = (warehouseStock) => {
-        let total = 0;
-        warehouseStock.forEach((item) => {
-            total += item.current_cost * item.stock_movements_sum_quantity;
-        });
-        return total;
-    };
+    const summarizeTotal = warehouseStock?.summarizedProducts;
 
-    const exportStockToExcel = () => {
+    const exportStockToExcel = async () => {
         const headers = [
             { key: "name", label: "Nama Barang" },
             { key: "stock_movements_sum_quantity", label: "Qty" },
@@ -90,8 +92,15 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
             { key: "total", label: "Total" },
         ];
 
+        // ambil data produk dari API tanpa paginate
+        const response = await fetchWarehouseStock(`/api/get-all-products-by-warehouse/${warehouse}/${endDate}?paginated=false`);
+
+        // kalau API balikin { data: { products: [...], summarizedProducts: ... } }
+        const products = response?.products ?? [];
+        const summarizeTotal = response?.summarizedProducts ?? 0;
+
         const data = [
-            ...warehouseStock.map((item) => ({
+            ...products.map((item) => ({
                 name: item.name,
                 stock_movements_sum_quantity: formatNumber(item.stock_movements_sum_quantity),
                 cost: formatNumber(item.current_cost),
@@ -101,7 +110,7 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                 name: "Total",
                 stock_movements_sum_quantity: "",
                 cost: "",
-                total: formatNumber(summarizeTotal(warehouseStock)),
+                total: formatNumber(summarizeTotal),
             },
         ];
 
@@ -112,7 +121,8 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
             `Laporan Stok Gudang ${warehouseName} ${formatDateTime(new Date())}`
         );
     };
-    const findProduct = warehouseStock.find((item) => item.id === selectedProduct);
+
+    const findProduct = warehouseStock?.products?.data?.find((item) => item.id === selectedProduct);
     return (
         <>
             <div className="card p-4">
@@ -120,7 +130,7 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                     <div>
                         <h1 className="text-lg font-bold">Inventory: {warehouseName}</h1>
                         <span className="text-sm text-gray-500">
-                            {endDate}, Total: {formatNumber(summarizeTotal(warehouseStock))}
+                            {endDate}, Total: {formatNumber(summarizeTotal)}
                         </span>
                     </div>
                     <div className="flex gap-2">
@@ -177,7 +187,7 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentItems?.map((item, index) => (
+                            {warehouseStock?.products?.data?.map((item, index) => (
                                 <tr key={index} className="text-xs">
                                     <td className="text-start w-1/2">
                                         <Link className="hover:underline" href={`/setting/product/history/${item.id}`}>
@@ -215,21 +225,15 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                                 <th colSpan="3" className="text-end font-bold">
                                     Total
                                 </th>
-                                <th className="text-end font-bold">{formatNumber(summarizeTotal(warehouseStock))}</th>
+                                <th className="text-end font-bold">{formatNumber(summarizeTotal)}</th>
                                 <th></th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
-                {totalPages > 1 && (
-                    <Pagination
-                        className="w-full px-4"
-                        totalItems={totalItems}
-                        itemsPerPage={itemsPerPage}
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                    />
-                )}
+                <div className="px-4">
+                    {warehouseStock?.products?.last_page > 1 && <Paginator links={warehouseStock?.products} handleChangePage={handleChangePage} />}
+                </div>
             </div>
             <Modal isOpen={isModalAdjustmentOpen} onClose={closeModal} modalTitle="Stock Adjustment" maxWidth="max-w-md">
                 <CreateStockAdjustment

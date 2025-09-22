@@ -14,9 +14,17 @@ import Paginator from "@/components/Paginator";
 import Label from "@/components/Label";
 import Input from "@/components/Input";
 import Dropdown from "@/components/Dropdown";
+import { useAuth } from "@/libs/auth";
+import exportToExcel from "@/libs/exportToExcel";
 
 const OrderListTable = () => {
+    const { user } = useAuth();
+    const userRole = user?.role?.role;
+    const userWarehouseId = user?.role?.warehouse_id;
     const today = todayDate();
+
+    const [warehouses, setWarehouses] = useState([]);
+    const [selectedWarehouse, setSelectedWarehouse] = useState(userWarehouseId);
     const [OrderList, setOrderList] = useState([]);
     const [search, setSearch] = useState("");
 
@@ -24,7 +32,6 @@ const OrderListTable = () => {
     const [endDate, setEndDate] = useState(today);
 
     const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState([]);
     const [notification, setNotification] = useState({
         type: "",
         message: "",
@@ -41,6 +48,20 @@ const OrderListTable = () => {
         return OrderList.orderStatusCount?.[status] || 0;
     };
 
+    const fetchWarehouse = useCallback(async () => {
+        try {
+            const response = await axios.get("/api/get-all-warehouses");
+            setWarehouses(response.data.data);
+        } catch (error) {
+            console.error("Error fetching warehouses:", error);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchWarehouse();
+    }, [fetchWarehouse]);
+    console.log(warehouses);
+
     const fetchOrders = useCallback(
         async (url = "/api/orders") => {
             setIsLoading(true);
@@ -51,6 +72,8 @@ const OrderListTable = () => {
                         start_date: startDate,
                         end_date: endDate,
                         status: CurrentOrderStatus,
+                        warehouse_id: selectedWarehouse,
+                        paginated: true,
                     },
                 });
                 setOrderList(response.data.data);
@@ -60,7 +83,7 @@ const OrderListTable = () => {
                 setIsLoading(false);
             }
         },
-        [search, startDate, endDate, CurrentOrderStatus]
+        [search, startDate, endDate, CurrentOrderStatus, selectedWarehouse]
     );
 
     useEffect(() => {
@@ -76,6 +99,47 @@ const OrderListTable = () => {
     const closeModal = () => {
         setIsModalCreateOrderOpen(false);
         setIsModalFilterJournalOpen(false);
+    };
+
+    const exportOrderToExcel = async () => {
+        const header = [
+            { key: "date_issued", label: "Tanggal Masuk" },
+            { key: "order_number", label: "Order Number" },
+            { key: "customer", label: "Customer" },
+            { key: "phone_number", label: "No Telepon" },
+            { key: "description", label: "Keterangan" },
+            { key: "warehouse", label: "Cabang" },
+            { key: "technician", label: "Teknisi" },
+            { key: "status", label: "Status" },
+        ];
+
+        const response = await axios.get("/api/orders", {
+            params: {
+                search: search,
+                start_date: startDate,
+                end_date: endDate,
+                status: CurrentOrderStatus,
+                warehouse_id: selectedWarehouse,
+                paginated: false,
+            },
+        });
+
+        const allOrderList = response.data.data;
+
+        const data = [
+            ...allOrderList.orders?.map((item) => ({
+                date_issued: item.date_issued,
+                order_number: item.order_number,
+                customer: item.contact.name,
+                phone_number: item.contact.phone_number,
+                description: item.description,
+                warehouse: item.warehouse.name,
+                technician: item.technician?.name ?? "-",
+                status: item.status,
+            })),
+        ];
+
+        exportToExcel(data, header, `Laporan Order ${formatDateTime(new Date())}.xlsx`, `Laporan Order ${formatDateTime(new Date())}`);
     };
     return (
         <>
@@ -131,7 +195,7 @@ const OrderListTable = () => {
                         ))}
                     </div>
                     <div className="flex items-center gap-1">
-                        <button className="small-button">
+                        <button className="small-button" onClick={exportOrderToExcel}>
                             <DownloadIcon size={18} />
                         </button>
                         <button onClick={() => setIsModalFilterJournalOpen(true)} className="small-button">
@@ -216,6 +280,23 @@ const OrderListTable = () => {
                 />
             </Modal>
             <Modal isOpen={isModalFilterJournalOpen} onClose={closeModal} modalTitle="Filter Tanggal" maxWidth="max-w-md">
+                {["Administrator", "Cashier"].includes(userRole) && (
+                    <div className="mb-4">
+                        <Label>Cabang</Label>
+                        <select
+                            value={selectedWarehouse}
+                            onChange={(e) => setSelectedWarehouse(e.target.value)}
+                            className="w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        >
+                            <option value="">Semua Cabang</option>
+                            {warehouses.map((branch) => (
+                                <option key={branch.id} value={branch.id}>
+                                    {branch.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
                 <div className="grid grid-cols-2 gap-2 mb-4">
                     <div>
                         <Label>Tanggal</Label>
