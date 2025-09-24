@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from "date-fns";
+import { differenceInDays, formatDistanceToNow } from "date-fns";
 
 /**
  * Format angka dengan separator ribuan.
@@ -99,4 +99,8 @@ export function formatNumberToK(num) {
 
     // Tambahkan minus jika angka awalnya negatif
     return num < 0 ? `-${formatted}` : formatted;
+}
+
+export function diffInDays(date1, date2) {
+    return differenceInDays(new Date(date1), new Date(date2));
 }

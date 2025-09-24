@@ -35,6 +35,23 @@ const FinancePage = () => {
     const [selectedContactIdPayment, setSelectedContactIdPayment] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
+    const [contacts, setContacts] = useState([]);
+
+    const fetchContacts = async (url = "/api/get-all-contacts") => {
+        setLoading(true);
+        try {
+            const response = await axios.get(url);
+            setContacts(response.data.data);
+        } catch (error) {
+            notification("error", error.response?.data?.message || "Something went wrong.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchContacts();
+    }, []);
 
     const fetchFinance = useCallback(
         async (url = `/api/finance-by-type/${selectedContactId}/${financeType}/${startDate}/${endDate}`) => {
@@ -134,7 +151,7 @@ const FinancePage = () => {
             {notification.message && (
                 <Notification type={notification.type} notification={notification.message} onClose={() => setNotification({ type: "", message: "" })} />
             )}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="card p-4">
                     <div className="flex justify-between items-center mb-4">
                         <select
@@ -310,10 +327,11 @@ const FinancePage = () => {
                     isModalOpen={setIsModalCreateReceivableOpen}
                     notification={(type, message) => setNotification({ type, message })}
                     fetchFinance={fetchFinance}
+                    contacts={contacts}
                 />
             </Modal>
             <Modal isOpen={isModalCreateContactOpen} onClose={closeModal} modalTitle="Tambah Kontak">
-                <CreateContact isModalOpen={setIsModalCreateContactOpen} notification={(type, message) => setNotification({ type, message })} />
+                <CreateContact isModalOpen={setIsModalCreateContactOpen} notification={setNotification} fetchContacts={fetchContacts} />
             </Modal>
             <Modal isOpen={isModalPaymentOpen} onClose={closeModal} modalTitle="Form Pembayaran" maxWidth="max-w-2xl">
                 <PaymentForm

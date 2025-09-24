@@ -1,9 +1,9 @@
-import { LayoutDashboardIcon, ArrowLeftRightIcon, ScaleIcon, DollarSignIcon, ChartAreaIcon, CogIcon, BoxesIcon, CoinsIcon } from "lucide-react";
+import { LayoutDashboardIcon, DollarSignIcon, ChartAreaIcon, CogIcon, BoxesIcon, CoinsIcon, WrenchIcon } from "lucide-react";
 
 export const navMenu = {
     mainMenu: [
         // { name: "Dashboard", path: "/dashboard", href: "/dashboard", icon: LayoutDashboardIcon, role: ["Administrator", "Cashier", "Staff"] },
-        { name: "Order", path: "/order", href: "/order", icon: ArrowLeftRightIcon, role: ["Administrator", "Cashier", "Staff", "Technician"] },
+        { name: "Service", path: "/order", href: "/order", icon: WrenchIcon, role: ["Administrator", "Cashier", "Staff", "Technician"] },
         { name: "Cash & Bank", path: "/cashbank", href: "/cashbank", icon: CoinsIcon, role: ["Administrator", "Cashier", "Staff", "Technician"] },
         { name: "Inventory", path: "/inventory", href: "/inventory", icon: BoxesIcon, role: ["Administrator", "Cashier"] },
         { name: "Finance", path: "/finance", href: "/finance", icon: DollarSignIcon, role: ["Administrator", "Cashier", "Technician"] },

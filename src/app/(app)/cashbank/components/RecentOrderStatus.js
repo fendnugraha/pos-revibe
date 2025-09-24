@@ -12,6 +12,7 @@ const RecentOrderStatus = () => {
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
     const [loading, setLoading] = useState(false);
+    console.log(OrderList);
     const fetchOrders = useCallback(
         async (url = "/api/orders") => {
             setLoading(true);
@@ -22,6 +23,8 @@ const RecentOrderStatus = () => {
                         start_date: startDate,
                         end_date: endDate,
                         status: "All Orders",
+                        paginated: true,
+                        per_page: 5,
                     },
                 });
                 setOrderList(response.data.data);

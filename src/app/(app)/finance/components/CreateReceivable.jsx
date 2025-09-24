@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "@/libs/axios";
 import formatNumber from "@/libs/formatNumber";
 
-const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
+const CreateReceivable = ({ isModalOpen, fetchFinance, notification, contacts }) => {
     const now = new Date();
     const pad = (n) => n.toString().padStart(2, "0");
 
@@ -19,26 +19,9 @@ const CreateReceivable = ({ isModalOpen, fetchFinance, notification }) => {
         cred_code: "",
         type: "Receivable",
     });
-    const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [accounts, setAccounts] = useState([]);
     const [errors, setErrors] = useState([]);
-
-    const fetchContacts = async (url = "/api/get-all-contacts") => {
-        setLoading(true);
-        try {
-            const response = await axios.get(url);
-            setContacts(response.data.data);
-        } catch (error) {
-            notification("error", error.response?.data?.message || "Something went wrong.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchContacts();
-    }, []);
 
     const fetchAccounts = async ({ account_ids }) => {
         setLoading(true);

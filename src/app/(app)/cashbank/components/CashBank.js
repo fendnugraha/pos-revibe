@@ -178,6 +178,7 @@ const CashBank = () => {
                     <div className="flex justify-between items-center">
                         <h1 className="card-title">Total Pendapatan</h1>
                         <StatusBadge
+                            status="Completed"
                             statusText={`${formatNumber(revenueByWarehouse.service_order || 0)} Order${revenueByWarehouse.service_order > 1 ? "s" : ""}`}
                         />
                     </div>

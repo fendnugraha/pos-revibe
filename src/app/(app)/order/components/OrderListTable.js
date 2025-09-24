@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import StatusBadge from "@/components/StatusBadge";
-import { formatDate, formatDateTime, formatNumber, todayDate } from "@/libs/format";
+import { diffInDays, formatDate, formatDateTime, formatNumber, todayDate } from "@/libs/format";
 import { ChevronRightIcon, DownloadIcon, FilterIcon, PrinterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -61,7 +61,6 @@ const OrderListTable = () => {
     useEffect(() => {
         fetchWarehouse();
     }, [fetchWarehouse]);
-    console.log(warehouses);
 
     const fetchOrders = useCallback(
         async (url = "/api/orders") => {
@@ -214,7 +213,7 @@ const OrderListTable = () => {
                     />
                 </div>
                 <div className="overflow-x-auto px-4 mt-2">
-                    <table className="w-full text-xs table">
+                    <table className="w-full text-xs table mb-4">
                         <thead>
                             <tr>
                                 <th>Order No.</th>
@@ -230,28 +229,38 @@ const OrderListTable = () => {
                                 OrderList.orders?.data?.map((order) => (
                                     <tr key={order.id}>
                                         <td>
-                                            <Link href={`/order/detail/${order.order_number}`} className="hover:underline font-bold">
-                                                {order.order_number}
+                                            <Link
+                                                href={`/order/detail/${order.order_number}`}
+                                                className={`${
+                                                    diffInDays(new Date(), order.updated_at) > 7 && order.status === "In Progress"
+                                                        ? "text-red-500 dark:text-red-400"
+                                                        : ""
+                                                } hover:underline font-bold`}
+                                            >
+                                                {order.order_number}{" "}
+                                                {diffInDays(new Date(), order.updated_at) > 7 && order.status === "In Progress" ? "(>7 Days)" : ""}
                                             </Link>
-                                            <span className="text-slate-500 dark:text-slate-400 block text-xs">{formatDateTime(order.date_issued)}</span>
+                                            <span className="text-slate-500 dark:text-slate-400 block text-xs">
+                                                {order.warehouse?.name}, {formatDateTime(order.date_issued)}
+                                            </span>
                                         </td>
                                         <td>
                                             {order.contact?.name}
                                             <span className="text-slate-500 dark:text-slate-400 block text-xs">{order.contact?.phone_number}</span>
                                         </td>
                                         <td>
-                                            <span className="text-blue-500 dark:text-yellow-300 block text-xs font-bold">
-                                                {order.phone_type.toUpperCase()} <span className="font-normal text-slate-500">({order.warehouse?.name})</span>
-                                            </span>
+                                            <span className="text-blue-500 dark:text-yellow-300 block text-xs font-bold">{order.phone_type.toUpperCase()}</span>
                                             {order.description}
                                         </td>
                                         <td className="text-center">
                                             <div className="flex gap-2 items-center">
                                                 <StatusBadge status={order.status} />
-                                                <span className="text-slate-400 dark:text-slate-400 block text-xs">({formatDateTime(order.updated_at)})</span>
                                             </div>
                                         </td>
-                                        <td className="text-center">{order.technician?.name ?? "-"}</td>
+                                        <td className="text-center">
+                                            {order.technician?.name ?? "-"}
+                                            <span className="text-slate-400 dark:text-slate-400 block text-xs">({formatDateTime(order.updated_at)})</span>
+                                        </td>
                                         <td className="flex items-center justify-center">
                                             <Link
                                                 href={`/order/order_invoice/${order.order_number}`}

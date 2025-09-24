@@ -37,8 +37,9 @@ const FinanceLog = ({
             notification({ type: "error", message: error.response?.data?.message || "Something went wrong." });
         }
     };
+    console.log(finance);
     return (
-        <div className="card p-4 mb-18 sm:mb-0">
+        <div className="card p-4 mb-18 sm:mb-0 sm:col-span-2">
             <div className="flex justify-between items-start">
                 <h1 className="card-title mb-4">
                     Finance Log
@@ -94,9 +95,9 @@ const FinanceLog = ({
                                 {item.bill_amount > 0 ? <ArrowBigUp size={20} /> : <ArrowBigDown size={20} />}
                             </span>
                             <div className="flex flex-col text-xs justify-center">
-                                {item.contact?.name}
+                                <h1>{item.description}</h1>
                                 <span className="text-gray-500">{formatDateTime(item.date_issued)}</span>
-                                <h1>{item.journal?.description}</h1>
+                                {item.contact?.name}
                             </div>
                         </div>
                         <div className="flex gap-4 items-center">
