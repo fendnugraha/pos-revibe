@@ -234,13 +234,13 @@ const OrderListTable = () => {
                                             <Link
                                                 href={`/order/detail/${order.order_number}`}
                                                 className={`${
-                                                    differenceInDays(new Date(), order.updated_at) > 3 && order.status === "In Progress"
+                                                    differenceInDays(new Date(), order.updated_at) > 7 && order.status === "In Progress"
                                                         ? "text-red-500 dark:text-red-400"
                                                         : ""
                                                 } hover:underline font-bold`}
                                             >
                                                 {order.order_number}{" "}
-                                                {differenceInDays(new Date(), order.updated_at) > 3 && order.status === "In Progress" ? (
+                                                {differenceInDays(new Date(), order.updated_at) > 7 && order.status === "In Progress" ? (
                                                     <span className="font-normal">
                                                         <ClockAlertIcon size={12} strokeWidth={2} className="inline" /> {"> 7 days"}
                                                     </span>
