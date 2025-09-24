@@ -101,6 +101,19 @@ export function formatNumberToK(num) {
     return num < 0 ? `-${formatted}` : formatted;
 }
 
-export function diffInDays(date1, date2) {
-    return differenceInDays(new Date(date1), new Date(date2));
+export function formatDuration(toDate = new Date(), fromDate) {
+    const days = differenceInDays(toDate, new Date(fromDate));
+
+    if (days < 7) {
+        return `${days} Day${days > 1 ? "s" : ""}`;
+    } else if (days < 30) {
+        const weeks = Math.floor(days / 7);
+        return `${weeks} Week${weeks > 1 ? "s" : ""}`;
+    } else if (days < 365) {
+        const months = Math.floor(days / 30);
+        return `${months} Month${months > 1 ? "s" : ""}`;
+    } else {
+        const years = Math.floor(days / 365);
+        return `${years} Year${years > 1 ? "s" : ""}`;
+    }
 }

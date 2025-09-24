@@ -3,8 +3,8 @@ import Button from "@/components/Button";
 import InputGroup from "@/components/InputGroup";
 import Modal from "@/components/Modal";
 import StatusBadge from "@/components/StatusBadge";
-import { diffInDays, formatDate, formatDateTime, formatNumber, todayDate } from "@/libs/format";
-import { ChevronRightIcon, DownloadIcon, FilterIcon, PrinterIcon, SearchIcon } from "lucide-react";
+import { formatDuration, formatDate, formatDateTime, formatNumber, todayDate } from "@/libs/format";
+import { ChevronRightIcon, ClockAlert, ClockAlertIcon, DownloadIcon, FilterIcon, PrinterIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import CreateOrder from "./CreateOrder";
@@ -17,6 +17,7 @@ import Dropdown from "@/components/Dropdown";
 import { useAuth } from "@/libs/auth";
 import exportToExcel from "@/libs/exportToExcel";
 import LoadingData from "@/components/LoadingData";
+import { differenceInDays } from "date-fns";
 
 const OrderListTable = () => {
     const { user } = useAuth();
@@ -212,6 +213,7 @@ const OrderListTable = () => {
                         placeholder="Search"
                     />
                 </div>
+
                 <div className="overflow-x-auto px-4 mt-2">
                     <table className="w-full text-xs table mb-4">
                         <thead>
@@ -232,13 +234,19 @@ const OrderListTable = () => {
                                             <Link
                                                 href={`/order/detail/${order.order_number}`}
                                                 className={`${
-                                                    diffInDays(new Date(), order.updated_at) > 7 && order.status === "In Progress"
+                                                    differenceInDays(new Date(), order.updated_at) > 3 && order.status === "In Progress"
                                                         ? "text-red-500 dark:text-red-400"
                                                         : ""
                                                 } hover:underline font-bold`}
                                             >
                                                 {order.order_number}{" "}
-                                                {diffInDays(new Date(), order.updated_at) > 7 && order.status === "In Progress" ? "(>7 Days)" : ""}
+                                                {differenceInDays(new Date(), order.updated_at) > 3 && order.status === "In Progress" ? (
+                                                    <span className="font-normal">
+                                                        <ClockAlertIcon size={12} strokeWidth={2} className="inline" /> {"> 7 days"}
+                                                    </span>
+                                                ) : (
+                                                    ""
+                                                )}
                                             </Link>
                                             <span className="text-slate-500 dark:text-slate-400 block text-xs">
                                                 {order.warehouse?.name}, {formatDateTime(order.date_issued)}
@@ -254,7 +262,14 @@ const OrderListTable = () => {
                                         </td>
                                         <td className="text-center">
                                             <div className="flex gap-2 items-center">
-                                                <StatusBadge status={order.status} />
+                                                <StatusBadge
+                                                    status={order.status}
+                                                    statusText={
+                                                        order.status === "In Progress"
+                                                            ? `In Progress - ${formatDuration(new Date(), new Date(order.updated_at))}`
+                                                            : ""
+                                                    }
+                                                />
                                             </div>
                                         </td>
                                         <td className="text-center">
