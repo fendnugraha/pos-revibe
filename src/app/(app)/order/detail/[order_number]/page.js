@@ -126,7 +126,7 @@ const OrderDetail = ({ params }) => {
                             Part List <StatusBadge status={order?.status} />{" "}
                             <span className="text-slate-400 font-normal text-xs">({formatDateTime(order?.updated_at)})</span>
                         </h1>
-                        {["In Progress", "Completed", "Finished"].includes(order?.status) && (
+                        {["In Progress", "Completed", "Finished"].includes(order?.status) && ["Technician", "Administrator"].includes(user?.role?.role) && (
                             <div className="flex gap-2">
                                 {!["Completed", "Finished"].includes(order?.status) && user?.id === order?.technician_id && (
                                     <Link href={`/order/add/${order_number}`}>
