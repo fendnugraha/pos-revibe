@@ -22,7 +22,10 @@ const OrderAction = ({ status, isLoading = false, setIsLoading, fetchOrder, noti
     };
     return (
         <div>
-            <div className="flex gap-2" hidden={["Finished", "Completed", "Canceled", "Rejected"].includes(status)}>
+            <div
+                className="flex gap-2"
+                hidden={["Finished", "Completed", "Canceled", "Rejected"].includes(status) || !["Technician", "Administrator"].includes(user?.role?.role)}
+            >
                 {status !== "In Progress" ? (
                     <>
                         <Button

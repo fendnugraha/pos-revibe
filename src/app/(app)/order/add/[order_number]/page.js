@@ -198,6 +198,9 @@ const AddPartsReplacement = ({ params }) => {
             setLoading(false);
         }
     };
+
+    const filteredProductList = productList.data?.filter((product) => !["hp second"].includes(product.category?.name));
+    console.log(filteredProductList);
     return (
         <>
             {notification.message && (
@@ -237,8 +240,8 @@ const AddPartsReplacement = ({ params }) => {
                                 showProductList ? "py-1 h-fit" : "h-0 overflow-hidden"
                             } transition-all duration-300 ease-in-out`}
                         >
-                            {productList.data?.length > 0 ? (
-                                productList.data?.map((item) => (
+                            {filteredProductList?.length > 0 ? (
+                                filteredProductList?.map((item) => (
                                     <div
                                         className="flex justify-between items-center group dark:hover:bg-slate-700 px-3 py-1 last:border-0 border-b border-dashed border-slate-300"
                                         key={item.id}
