@@ -120,11 +120,17 @@ const TransactionDetail = ({ params }) => {
                     </div>
                 </div>
                 {order?.status === "On Delivery" && (
-                    <button type="button" onClick={() => confirmDeliveryStatus()} className="btn btn-primary">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (confirm("Apakah Anda yakin ingin melakukan konfirmasi penerimaan barang?")) confirmDeliveryStatus();
+                        }}
+                        className="btn btn-primary"
+                    >
                         Konfirmasi Penerimaan Barang
                     </button>
                 )}
-                <div>
+                <div className="overflow-x-auto">
                     <table className="w-full text-xs table">
                         <thead>
                             <tr className="text-left">

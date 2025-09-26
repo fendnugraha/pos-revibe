@@ -2,7 +2,7 @@
 import Notification from "@/components/Notification";
 import MainPage from "../main";
 import { useState, useEffect, useCallback } from "react";
-import { ArrowBigDown, ArrowBigUp, FilterIcon, PlusCircleIcon, SearchIcon, XCircleIcon } from "lucide-react";
+import { ArrowBigDown, ArrowBigUp, ArrowUpDownIcon, FilterIcon, PlusCircleIcon, SearchIcon, XCircleIcon } from "lucide-react";
 import Paginator from "@/components/Paginator";
 import Input from "@/components/Input";
 import Label from "@/components/Label";
@@ -114,8 +114,17 @@ const Inventory = () => {
                         <PlusCircleIcon className="w-4 h-4 inline" /> Pembelian
                     </Link>
                 )}
+                <Link href="/inventory/mutation" className="btn-primary text-sm font-normal flex items-center gap-2 justify-center">
+                    <ArrowUpDownIcon className="w-4 h-4 inline" /> Mutasi Barang
+                </Link>
             </div>
-            <ProductTable warehouse={warehouse} warehouses={warehouses} warehouseName={warehouseName} notification={setNotification} />
+            <ProductTable
+                warehouse={selectedWarehouse}
+                setWarehouse={setSelectedWarehouse}
+                warehouses={warehouses}
+                warehouseName={warehouseName}
+                notification={setNotification}
+            />
             <div className="card mt-4">
                 <div className="p-4 flex justify-between sm:flex-row flex-col items-start">
                     <h1 className="text-2xl font-bold mb-4">

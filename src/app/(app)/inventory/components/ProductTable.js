@@ -24,7 +24,8 @@ const getCurrentDate = () => {
     return `${year}-${month}-${day}`;
 };
 
-const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) => {
+const ProductTable = ({ warehouse, warehouses, notification, setWarehouse }) => {
+    const warehouseName = warehouses.data?.find((w) => w.id === Number(warehouse))?.name;
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -147,6 +148,21 @@ const ProductTable = ({ warehouse, warehouses, warehouseName, notification }) =>
                         </button>
                     </div>
                     <Modal isOpen={isModalFilterDataOpen} onClose={closeModal} modalTitle="Filter Tanggal" maxWidth="max-w-md">
+                        <div className="mb-4">
+                            <Label className="font-bold">Cabang</Label>
+                            <select
+                                value={warehouse}
+                                onChange={(e) => setWarehouse(e.target.value)}
+                                className="form-select w-full rounded-md border p-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            >
+                                <option value="">Pilih cabang</option>
+                                {warehouses?.data?.map((warehouse) => (
+                                    <option key={warehouse.id} value={warehouse.id}>
+                                        {warehouse.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                         <div className="mb-4">
                             <Label className="font-bold">Pilih tanggal</Label>
                             <Input
