@@ -89,7 +89,7 @@ const OrderAction = ({ status, isLoading = false, setIsLoading, fetchOrder, noti
                 onClick={() => {
                     if (confirm("Apakah anda yakin ingin membatalkan order ini?")) handleVoidOrder();
                 }}
-                hidden={["Finished", "Canceled", "In Progress", "Rejected", "Pending"].includes(status)}
+                hidden={["Canceled", "In Progress", "Rejected", "Pending"].includes(status)}
             >
                 <XCircle size={20} /> {isLoading ? "Sending..." : "Void Order"}
             </Button>

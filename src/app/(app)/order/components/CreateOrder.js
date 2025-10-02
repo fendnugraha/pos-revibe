@@ -14,9 +14,11 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
         phone_type: "",
         address: "",
     });
+    const [loading, setLoading] = useState(false);
 
     const handleCreateOrder = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await axios.post("/api/orders", formData);
             notification("success", response.data.message);
@@ -25,6 +27,8 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
         } catch (error) {
             notification("error", "Something went wrong.");
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
     return (
@@ -36,6 +40,7 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
                     className="form-control w-full"
                     value={formData.date_issued}
                     onChange={(e) => setFormData({ ...formData, date_issued: e.target.value })}
+                    required
                 />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -47,6 +52,7 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
                             className="form-control w-full"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -56,6 +62,7 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
                             className="form-control w-full"
                             value={formData.phone_number}
                             onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
+                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -65,6 +72,7 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
                             className="form-control w-full"
                             value={formData.address}
                             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                            required
                         />
                     </div>
                 </div>
@@ -76,6 +84,7 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
                             className="form-control w-full"
                             value={formData.phone_type}
                             onChange={(e) => setFormData({ ...formData, phone_type: e.target.value })}
+                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -84,6 +93,7 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
                             className="form-control w-full"
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            required
                         />
                     </div>
                 </div>
@@ -98,9 +108,10 @@ const CreateOrder = ({ isModalOpen, notification, fetchOrders }) => {
                 </button>
                 <button
                     type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed"
+                    disabled={loading}
                 >
-                    Submit
+                    {loading ? "Loading..." : "Submit"}
                 </button>
             </div>
         </form>
