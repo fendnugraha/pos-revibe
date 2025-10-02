@@ -200,7 +200,6 @@ const AddPartsReplacement = ({ params }) => {
     };
 
     const filteredProductList = productList.data?.filter((product) => !["hp second"].includes(product.category?.name));
-    console.log(filteredProductList);
     return (
         <>
             {notification.message && (
