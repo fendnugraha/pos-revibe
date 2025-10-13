@@ -190,7 +190,7 @@ const AddPartsReplacement = ({ params }) => {
             handleClearPart();
             setIsModalCheckOutOpen(false);
             setIsPartsAdded(true);
-            router.push(`/order/detail/${order_number}`);
+            // router.push(`/order/detail/${order_number}`);
         } catch (error) {
             setNotification({ type: "error", message: error.response?.data?.message || "Something went wrong." });
             console.log(error);
