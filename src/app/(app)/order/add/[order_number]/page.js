@@ -182,20 +182,18 @@ const AddPartsReplacement = ({ params }) => {
         setLoading(true);
         try {
             const response = await axios.post("/api/add-parts-to-order", {
-                order_number: order_number,
+                order_number,
                 parts: part,
-                transaction_type: "Order",
             });
             setNotification({ type: "success", message: response.data.message });
             handleClearPart();
-            setIsModalCheckOutOpen(false);
             setIsPartsAdded(true);
-            // router.push(`/order/detail/${order_number}`);
         } catch (error) {
-            setNotification({ type: "error", message: error.response?.data?.message || "Something went wrong." });
-            console.log(error);
+            const message = error.response?.data?.message || "Something went wrong.";
+            setNotification({ type: "error", message });
         } finally {
             setLoading(false);
+            setIsModalCheckOutOpen(false);
         }
     };
 

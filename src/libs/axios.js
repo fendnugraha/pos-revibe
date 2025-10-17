@@ -6,10 +6,11 @@ const axios = Axios.create({
     headers: {
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
+        "Content-Type": "application/json",
     },
 });
 
-// ✅ Tambahan: set header X-XSRF-TOKEN secara otomatis
+// Ambil cookie XSRF
 axios.interceptors.request.use((config) => {
     const xsrfToken = getCookie("XSRF-TOKEN");
     if (xsrfToken) {
@@ -18,27 +19,27 @@ axios.interceptors.request.use((config) => {
     return config;
 });
 
-// Fungsi helper untuk ambil cookie dari document.cookie
 function getCookie(name) {
     const nameEQ = name + "=";
     const ca = document.cookie.split(";");
     for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === " ") c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        let c = ca[i].trim();
+        if (c.startsWith(nameEQ)) return c.substring(nameEQ.length);
     }
     return null;
 }
 
-//tambahkan respon jika error 401
 axios.interceptors.response.use(
     (response) => response,
     (error) => {
-        const isUnauthorized = error.response?.status === 401;
-        const isOnLoginPage = window.location.pathname === "/login";
+        const status = error.response?.status;
 
-        if (isUnauthorized && !isOnLoginPage) {
-            window.location.href = "/login"; // atau router.push("/login");
+        if (status === 401 && window.location.pathname !== "/login") {
+            window.location.href = "/login";
+        }
+
+        if (!error.response) {
+            console.error("⚠️ Network error:", error.message);
         }
 
         return Promise.reject(error);
