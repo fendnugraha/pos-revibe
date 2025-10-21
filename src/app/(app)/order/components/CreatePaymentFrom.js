@@ -77,6 +77,7 @@ const CreatePaymentFrom = ({ isModalOpen, notification, fetchOrder, totalPrice, 
                                 placeholder="Rp."
                                 onChange={(e) => setFormData({ ...formData, serviceFee: e.target.value })}
                                 value={formData.serviceFee}
+                                autoComplete="off"
                             />
                         </div>
                         <div>
