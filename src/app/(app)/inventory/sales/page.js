@@ -11,6 +11,7 @@ import { formatRupiah } from "@/libs/format";
 import formatNumber from "@/libs/formatNumber";
 import { LoaderCircleIcon, MinusIcon, PlusIcon, XIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import CreateContact from "../../setting/contact/CreateContact";
 
 const useDebounce = (value, delay) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -49,6 +50,7 @@ const SalesOrder = () => {
     const [accounts, setAccounts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isModalCheckOutOpen, setIsModalCheckOutOpen] = useState(false);
+    const [isModalCreateContactOpen, setIsModalCreateContactOpen] = useState(false);
 
     const [search, setSearch] = useState("");
     const [productList, setProductList] = useState([]);
@@ -69,11 +71,14 @@ const SalesOrder = () => {
 
     const closeModal = () => {
         setIsModalCheckOutOpen(false);
+        setIsModalCreateContactOpen(false);
     };
 
     const fetchContact = useCallback(async () => {
         try {
-            const response = await axios.get("/api/contacts");
+            const response = await axios.get("/api/get-all-contacts", {
+                params: { type: "Customer" },
+            });
             setContacts(response.data.data);
         } catch (error) {
             console.log("Error fetching contacts:", error);
@@ -348,7 +353,7 @@ const SalesOrder = () => {
                 </div>
                 <div className="">
                     <div>
-                        <Label>Supplier</Label>
+                        <Label>Customer</Label>
                         <select
                             className="form-select w-full !bg-white"
                             value={formData.contact_id}
@@ -356,8 +361,8 @@ const SalesOrder = () => {
                             disabled={loading}
                             required
                         >
-                            <option value="">Pilih Supplier</option>
-                            {contacts?.data?.map((contact) => (
+                            <option value="">Pilih Customer</option>
+                            {contacts?.map((contact) => (
                                 <option key={contact.id} value={contact.id}>
                                     {contact.name}
                                 </option>
@@ -443,7 +448,15 @@ const SalesOrder = () => {
                             </select>
                         </div>
                         <div>
-                            <label className="block mb-1 text-sm font-medium text-gray-900">Supplier</label>
+                            <div className="mb-1 flex justify-between">
+                                <label className="text-sm font-medium text-gray-900">Customer</label>
+                                <button
+                                    onClick={() => setIsModalCreateContactOpen(true)}
+                                    className="text-xs hover:underline hover:text-blue-500 cursor-pointer"
+                                >
+                                    Tambah
+                                </button>
+                            </div>
                             <select
                                 className="w-full border bg-white border-slate-200 px-4 py-1 rounded-xl mb-4 disabled:bg-slate-300 disabled:cursor-not-allowed"
                                 value={formData.contact_id}
@@ -451,8 +464,8 @@ const SalesOrder = () => {
                                 disabled={loading}
                                 required
                             >
-                                <option value="">Pilih Supplier</option>
-                                {contacts?.data?.map((contact) => (
+                                <option value="">Pilih Customer</option>
+                                {contacts?.map((contact) => (
                                     <option key={contact.id} value={contact.id}>
                                         {contact.name}
                                     </option>
@@ -485,6 +498,9 @@ const SalesOrder = () => {
                 <Button buttonType="dark" onClick={handleCheckOut} disabled={loading}>
                     {loading ? <LoaderCircleIcon className="animate-spin" /> : "Simpan"}
                 </Button>
+            </Modal>
+            <Modal isOpen={isModalCreateContactOpen} onClose={closeModal} modalTitle="Create Contact" maxWidth={"max-w-lg"}>
+                <CreateContact isModalOpen={setIsModalCreateContactOpen} notification={setNotification} fetchContacts={fetchContact} />
             </Modal>
         </>
     );

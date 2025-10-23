@@ -69,16 +69,16 @@ const OrderAction = ({ status, isLoading = false, setIsLoading, fetchOrder, noti
                         >
                             Selesai
                         </Button>
-                        <button
-                            className="small-button border !border-red-500 !hover:bg-red-400 text-red-500"
+                        <Button
+                            buttonType="danger"
                             hidden={user?.id !== orderTechnicianId}
                             disabled={status === "Finished" || status === "Completed" || status === "Canceled" || status === "Rejected" || isLoading}
                             onClick={() => {
                                 if (confirm("Apakah anda yakin ingin membatalkan order ini?")) handleUpdateOrderStatus("Canceled");
                             }}
                         >
-                            <X size={16} />
-                        </button>
+                            Batalkan
+                        </Button>
                     </>
                 )}
             </div>
